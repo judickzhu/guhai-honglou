@@ -24,3 +24,15 @@ tools/admin_server.py          本地後台管理員(子嗥補充審核)
 ```bash
 python3 tools/build_honglou_site.py     # 冪等:重跑結果一致
 ```
+
+## 自檢與運維
+```bash
+bash tools/selfcheck.sh          # 一鍵自檢:斷鏈/子嗥JSON/關鍵內容/120回卡完整性/生成器冪等
+python3 tools/completeness_check.py .   # 單跑:回卡六字段+標記一致性+引用完整性
+```
+`tools/ops/` 收存治理文檔(HANDOFF 交接檔、安全審計報告、拆倉手冊、遷移/驗證腳本)。
+
+## 編輯紀律
+- 內容改動**優先改資料源**(`tools/content-source/*.json`),再重跑生成器;**不要手工改 HTML**(重跑會被覆蓋)
+- 手工改 HTML 只限生成器不管的獨立頁(如 `jiaxu.html`)
+- 每次改動後跑 `tools/selfcheck.sh`,全綠才提交

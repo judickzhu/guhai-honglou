@@ -30,6 +30,8 @@ check "神瑛侍者" chapters/001.html
 check "神瑛侍者" characters.html
 check "神瑛侍者" zi-hao-data.js
 check "阿巴亥" chapters/013.html
+echo "=== 3b. 120 回卡完整性掃描 ==="
+python3 tools/completeness_check.py . && echo "  ✓ 完整性OK" || FAIL=1
 echo "=== 4. 生成器冪等(若有) ==="
 if [ -f tools/build_honglou_site.py ]; then
   python3 tools/build_honglou_site.py >/dev/null 2>&1 && d=$(git status --short | wc -l | tr -d ' ') && echo "  跑通 ✓ 差異數: $d" && [ "$d" != "0" ] && FAIL=1

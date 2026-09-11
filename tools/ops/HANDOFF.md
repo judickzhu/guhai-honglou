@@ -66,3 +66,9 @@ bash /tmp/verify_new_site.sh
 - ✅ 治理工件入库:`tools/ops/`(HANDOFF/审计报告/拆仓手册/迁移脚本/验证脚本/sitemap工具)
 - ✅ 自检脚本 `tools/selfcheck.sh`(断链/子嗥JSON/8项关键内容/生成器幂等)——现全绿
 - push: b8123c0
+
+## 追加4(2026-09-11 自检强化)
+- ✅ 新增 `tools/completeness_check.py`:120 回卡六字段齐全 + 「已有解碼素材/待解碼」标记与内容一致 + 子嗥(109 refs)/检索(128 urls)引用完整性
+- ✅ 已接入 `tools/selfcheck.sh`(第3b步);**扫描有效性已验证**(注入坏引用 chapters/999.html → 成功抓到 → 还原)
+- 📊 扫描结果:120 卡 · 已有解碼 54(全有内容)· 待解碼 66 · 金句 18 · 脂批 26 · 詩詞 35 · **問題 0**
+- ✅ README 补「自检与运维」+「编辑纪律」(改 JSON 勿手改 HTML;每次改后跑 selfcheck)
