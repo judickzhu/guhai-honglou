@@ -1,0 +1,60 @@
+# 交接狀態檔 · 一起讀紅樓白話(2026-09-11 更新:方案B已執行)
+
+## 一、已完成(本日,經 gh 執行,未等工作區解鎖)
+| 項 | 狀態 |
+|---|---|
+| **新站獨立** | ✅ https://judickzhu.github.io/guhai-honglou/(public repo `guhai-honglou`) |
+| 遷移內容 | honglou/ 全站 624 文件(43MB,排除60MB PDF)→ 新倉庫根;README/robots/sitemap(131 URL) |
+| 甲戌本 | ✅ 482 頁翻頁正常(pg-001/pg-482 全 200) |
+| 章卡/欄目 | ✅ 全部 200(index/framework/characters/shixi/pingyu/mapping/qa/jiaxu/funding + 000/001/076/120) |
+| 斷鏈 | ✅ 0 |
+| **舊址跳轉** | ✅ /guhai/honglou/index.html → 新站(meta refresh + canonical) |
+| **robots 禁抓** | ✅ /guhai/robots.txt → Disallow: / |
+| **敏感文件刪除** | ✅ 8 個已刪並 404(v31_prompt.txt/DCOGAI開發需求單/DC姐姐人格主檔/X帳號內容包×3/backend_snapshot×2) |
+| EPUB | ✅ 遷至新倉庫 Releases(jiaxu-epub,43MB 可下載),jiaxu.html 鏈接已改指 |
+| PDF(60MB) | 上傳新倉庫 Releases(base-pdf)後台中 |
+
+## 二、待辦(需工作區解鎖,~/Downloads 仍被 TCC 鎖)
+1. **神瑛侍者解碼**:已寫入 `build_honglou_site.py`(第1回+子嗥),**未生成/未提交**——解鎖後跑生成器,或把生成器 copy 進新倉庫 tools/ 後在新站補上
+2. **人物檔案(賈寶玉)補注**「神瑛侍者＝寶玉前身＝胤礽…」(honglou_characters.json 寫入被拒)
+3. **生成器進新倉庫 tools/** + content-source 素材進新倉庫(消除單點故障;目前新站是「成品站點」,無生成器)
+4. 新站與舊站內容同步後,可選:舊倉庫 honglou/ 其餘文件刪除(只留跳轉)
+5. (可選)git filter-repo 清舊倉庫歷史
+
+## 三、安全(已做 vs 待做)
+- ✅ robots Disallow、敏感文件刪除、新站自足(EPUB 在新倉庫)
+- 🔴 **ima KB key 輪換(用戶側)**:`tools/gen_yuanwen_from_ima.py:22` 硬編碼 key 曾公開,須在 ima 後台撤銷
+- ⚠️ 舊倉庫歷史仍含已刪文件(需 filter-repo 才徹底清除;現實上假設已泄露)
+
+## 四、工件(/tmp,重開機即失——解鎖後收進新倉庫 tools/)
+runbook_b.md / migrate_b.sh / patch_generator_paths.py / redact_internal.sh / verify_new_site.sh / gen_sitemap.py / audit_20260911.md / split_plan.md / HANDOFF.md / newrepo_files/
+
+## 五、解鎖後
+```bash
+mkdir -p ~/dev && mv ~/Downloads/电子书ipa ~/dev/
+cp /tmp/*.md /tmp/*.sh /tmp/*.py ~/dev/电子书ipa/網站/tools/ 2>/dev/null
+# 生成器入新倉庫
+cp ~/dev/电子书ipa/build_honglou_site.py /tmp/hl_new/tools/
+cp ~/dev/电子书ipa/honglou_*.json /tmp/hl_new/tools/content-source/
+python3 /tmp/patch_generator_paths.py /tmp/hl_new/tools/build_honglou_site.py
+cd /tmp/hl_new && python3 tools/build_honglou_site.py && git add -A && git commit -m "生成器入庫+素材入庫(神瑛侍者等)" && git push
+# 驗證
+bash /tmp/verify_new_site.sh
+```
+
+## 追加(2026-09-11 13:xx)
+- ✅ 神瑛侍者解碼已上线新站(001.html + 子嗥 glyph 18条;push cb1e861)——不经工作区,直接改新站成品文件
+- ⏳ 第3项 filter-repo 清旧仓历史:filter-repo 已装(/tmp/frvenv);镜像克隆 bash-2 后台中
+- 待办剩余:生成器入库(需解锁);ima key 轮换(用户侧)
+
+## 追加2(2026-09-11 完成)
+- ✅ **第2項 神瑛侍者**:已上線新站(001.html + 子嗥 glyph 18條);**生成器入庫仍待工作區解鎖**
+- ✅ **第3項 舊倉歷史清理(完成)**:
+  - git-filter-repo 清除歷史中所有敏感檔(v31_prompt/DCOGAI*/DC姐姐*/backend_snapshot*/測試結果/日誌)+ `honglou/*`
+  - 倉庫 210MB → 105MB;重寫 416 提交
+  - 重建 `honglou/index.html` 跳轉頁(舊深鏈 404,新站為正典)
+  - **強推成功**:`+ 2dbeeafc...badfa592 (forced update)`,遠端 HEAD = badfa592
+  - 核驗:歷史中敏感檔出現 **0 次**;舊站根 200;跳轉 200;新站 200;敏感檔 404
+  - 商業站完整(HEAD 212 檔,index/style/app/kb/dc-kb/phenomena/acts/checklist/mapping/framework/robots 全在)
+- **遺留**:①生成器入庫(需解鎖)②ima KB key 輪換(用戶側)③舊深鏈 404(已接受)
+- /tmp 已清理(鏡像/下載/venv 刪除);保留 hl_new(新站工作副本 86M)+ 9 個工件檔
