@@ -72,3 +72,12 @@ bash /tmp/verify_new_site.sh
 - ✅ 已接入 `tools/selfcheck.sh`(第3b步);**扫描有效性已验证**(注入坏引用 chapters/999.html → 成功抓到 → 还原)
 - 📊 扫描结果:120 卡 · 已有解碼 54(全有内容)· 待解碼 66 · 金句 18 · 脂批 26 · 詩詞 35 · **問題 0**
 - ✅ README 补「自检与运维」+「编辑纪律」(改 JSON 勿手改 HTML;每次改后跑 selfcheck)
+
+## 追加5(2026-09-11 第1项部分完成)
+- ✅ **資料源入新倉** `tools/content-source/`(11 個素材 JSON——生成器讀取源,終於進版本管理)
+- ✅ **配套工具入新倉**:admin_server.py / build_obsidian_kb.py / gen_yuanwen_json.py / merge_yuanwen_pdfs.py / assets/ / README.md
+- ✅ **Obsidian 知識庫入新倉** `tools/obsidian-kb/`(127 md)
+- 🔒 **安全**:`gen_yuanwen_from_ima.py` 已消毒——移除硬編碼 KB key,改讀 `~/.config/ima/kb_id`(驗證無殘留)
+- ✅ tools/README 說明:佈局 / **待補主生成器** / 編輯紀律 / 已知雙源
+- ✅ 自檢修正:斷鏈掃描排除 `tools/`(404.html 模板非站點頁,曾致 2 個假斷鏈)
+- ⏸ **仍待**:主生成器 `build_honglou_site.py`(在鎖住的工作區裡,唯一未入庫項)

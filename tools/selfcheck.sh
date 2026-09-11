@@ -8,6 +8,7 @@ python3 - <<'PY'
 import re,glob,os
 bad=[]
 for f in glob.glob('**/*.html', recursive=True):
+    if f.startswith(('tools/','.git/')): continue   # 模板/構建資產非站點頁面
     d=os.path.dirname(f)
     for m in re.findall(r'(?:href|src)="([^"]+)"', open(f,encoding='utf-8',errors='ignore').read()):
         if m.startswith(('http','#','mailto')): continue
