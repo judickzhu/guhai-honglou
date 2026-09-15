@@ -35,7 +35,14 @@ echo "=== 3b. 120 回卡完整性掃描 ==="
 python3 tools/completeness_check.py . && echo "  ✓ 完整性OK" || FAIL=1
 echo "=== 4. 生成器冪等(若有) ==="
 if [ -f tools/build_honglou_site.py ]; then
-  python3 tools/build_honglou_site.py >/dev/null 2>&1 && d=$(git status --short | wc -l | tr -d ' ') && echo "  跑通 ✓ 差異數: $d" && [ "$d" != "0" ] && FAIL=1
+  # 正確判定:比對「再跑一次」前後的產物內容哈希(與工作區是否已提交無關)
+  snap() { find . -name '*.html' -not -path './tools/*' -not -path './.git/*' | sort | xargs shasum 2>/dev/null | shasum | cut -d' ' -f1; }
+  h1=$(snap)
+  if python3 tools/build_honglou_site.py >/dev/null 2>&1; then
+    h2=$(snap)
+    if [ "$h1" = "$h2" ]; then echo "  跑通 ✓ 冪等(產物哈希一致)"
+    else echo "  ✗ 非冪等(再跑一次產物有變)"; FAIL=1; fi
+  else echo "  ✗ 生成器執行失敗"; FAIL=1; fi
 else echo "  (生成器未入庫,跳過)"; fi
 echo
 [ $FAIL = 0 ] && echo "✅ 全部通過" || echo "⚠ 有問題(見上)"
