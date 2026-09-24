@@ -326,7 +326,7 @@ def auto_snippets(n, limit=3, maxlen=120):
 
 # ---------------- 页面框架（参照 guhai：header 导航/检索/字号/主题） ----------------
 NAV = [("index.html","首頁"),("chapters/000.html","逐回目錄"),("framework.html","解讀框架"),
-       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("index.html#acts","九幕")]
+       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
 def nav_html(active, sub):
     pre = "../" if sub else ""
     items = []
@@ -994,6 +994,7 @@ def search_entries():
     ents.append({"url":"jiaxu.html","title":"甲戌本·脂硯齋重評石頭記","text":"甲戌本 脂硯齋重評石頭記 彩色影印 482頁 原文 無標點 原書"})
     ents.append({"url":"shixi.html","title":"世系","text":"寧國府世系 清帝世系 努爾哈赤 皇太極 順治 康熙 胤礽 賈演 賈代化 賈敬 賈珍 賈蓉 太子"})
     ents.append({"url":"qa.html","title":"問答區","text":"問答 互動 子嗥 知識庫 補充 糾錯 迭代更新 九子奪嫡 判詞 字音字形"})
+    ents.append({"url":"jinghua.html","title":"深度精華·深度分析報告提純","text":"深度精華 深度分析報告 提純精華版 紅樓夢 古文經典 漢字方言 人生哲思 階級鬥爭 理治 石上偈 空空道人 九子奪嫡 被棄鏈 還淚史"})
     return ents
 
 def main():
