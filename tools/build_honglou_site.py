@@ -1053,6 +1053,19 @@ def search_entries():
     ents.append({"url":"jinghua.html","title":"深度精華·深度分析報告提純","text":"深度精華 深度分析報告 提純精華版 紅樓夢 古文經典 漢字方言 人生哲思 階級鬥爭 理治 石上偈 空空道人 九子奪嫡 被棄鏈 還淚史"})
     return ents
 
+
+def sitemap_xml():
+    """生成 sitemap.xml：站點全部頁面（根頁＋副頁＋120 回卡），保持與生成頁同步。"""
+    import datetime
+    today = datetime.date.today().isoformat()
+    urls = ["404.html", "index.html", "framework.html", "characters.html", "mapping.html",
+            "pingyu.html", "shixi.html", "qa.html", "zikao.html", "jinghua.html", "funding.html"]
+    urls += [f"chapters/{n:03d}.html" for n in range(1, 121)]
+    items = "\n".join(
+        f'  <url><loc>https://judickzhu.github.io/guhai-honglou/{u}</loc><lastmod>{today}</lastmod></url>'
+        for u in urls)
+    return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + items + '\n</urlset>\n'
+
 def main():
     os.makedirs(os.path.join(OUT, "chapters"), exist_ok=True)
     # index
@@ -1076,6 +1089,7 @@ def main():
     zh = "window.ZiHaoKB=" + json.dumps(zi_hao_data(), ensure_ascii=False) + ";"
     open(os.path.join(OUT, "zi-hao-data.js"), "w", encoding="utf-8").write(zh)
     print(f"ok: {OUT}")
+    open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8").write(sitemap_xml())
     print("pages: index+framework+characters+mapping+pingyu+shixi+qa+funding + 121 chapter + search-data + zi-hao-data")
 
 if __name__ == "__main__":
