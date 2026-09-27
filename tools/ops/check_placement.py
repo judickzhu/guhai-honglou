@@ -35,10 +35,10 @@ def check(n):
     secs = sections(html)
     issues = []
     dec = secs.get("解碼軌 · 歷史對位與字音字形", "")
-    for mk in POEM_MARKS:
-        if mk in dec and ("回前詩" in dec or "判詞" in dec or "聯句" in dec):
-            issues.append("解碼軌含詩詞特徵「%s」——詩應入詩詞解讀區" % mk)
-            break
+    # 註：判詞／詩句的「歷史對位」本來就應在解碼軌（如鳳姐判詞＝康熙繼位問題）；
+    # 只有「純詩解」（無歷史對位）誤入解碼軌才算問題——故此項從寬，僅在整條無解碼關鍵詞時報警。
+    if ("回前詩" in dec or "判詞" in dec) and not any(k in dec for k in ["＝", "康熙", "胤礽", "順治", "雍正", "孝莊", "九子奪嫡"]):
+        issues.append("解碼軌含詩詞但無歷史對位——詩解應入詩詞解讀區")
     poem = secs.get("詩詞解讀", "")
     if poem and any(k in poem for k in DIALOG_MARKS) and "解碼軌" in poem:
         issues.append("詩詞解讀區含對白解碼——對白解碼應入解碼軌")
