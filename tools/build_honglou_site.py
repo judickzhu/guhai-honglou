@@ -365,9 +365,9 @@ def nav_html(active, sub):
       f'<button class="tbtn" onclick="toggleTheme()" id="themeBtn">◐</button></div>'
       f'<div id="sr" class="sr hidden"></div></header>')
 
-FOOT = ('<footer><p>一起讀紅樓白話 · 白話文解讀書中白話。站內「歷史對位/字音字形」均為<strong>提問者個人讀法</strong>，'
-        '非紅學或史學界共識；【用户原话】保留原話、【AI 扩展·待核】為 AI 引申待查證。'
-        '回目引文依原書通行本（程乙本），不作學術定本之爭。</p><p class="foot-fund"><a href="https://github.com/sponsors/judickzhu" target="_blank" rel="noopener">♥ 資助本站（GitHub Sponsors）</a> —— 用於網站維護。</p></footer>')
+FOOT = ('<footer><p>一起讀紅樓白話 · 白話文解讀書中白話。站內「歷史對位/字音字形」為<b>本體系解讀</b>——以文本內證＋史實對位為據，'
+        '【用户原话】保留提問者原話、【AI 扩展·待核】為 AI 引申待查證。'
+        '<b>本體系以手抄本（甲戌／庚辰）為據，通行本異文處另註</b>——紅學把理學之書讀成曹家傳記，中心思想整個漏掉。</p><p class="foot-fund"><a href="https://github.com/sponsors/judickzhu" target="_blank" rel="noopener">♥ 資助本站（GitHub Sponsors）</a> —— 用於網站維護。</p></footer>')
 
 def page(title, desc, body, active="", sub=False, prefix=""):
     pre = "../" if sub else ""
