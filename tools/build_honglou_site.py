@@ -471,11 +471,27 @@ def hui_card(n):
         rows.append('<section class="fillme"><h2>詩詞解讀</h2>'
                     '<p class="placeholder">【無詩詞】本回以白話敘事為主（敘事＝前因後果），未錄詩詞——'
                     '若你發現本回實有詩詞，可在 「詩詞解讀檔」 補填（三足：核心觀點／理學 · 敘事前因後果 · 脂批路標）。</p></section>')
-    # 待填字段骨架（文学轨等,后续增量）
-    rows.append('<section class="fillme"><h2>文學軌與其餘字段（待填）</h2>'
-                '<p class="placeholder">逐回卡九字段：一句定位／情節提要／出場人物／關鍵細節與伏筆／'
-                '歷史解碼層／詩詞金句／存疑與版本／前後勾連／一句話結論——'
-                '此骨架先立結構，內容逐回後補。</p></section>')
+    # 文學軌（機械提取已有素材；判斷性內容留待提問者）
+    _c = CH.get(n) or CH.get(str(n)) or ()
+    _hui = _c[1] if isinstance(_c, (list, tuple)) and len(_c) > 1 else ""
+    _act = _c[3] if isinstance(_c, (list, tuple)) and len(_c) > 3 else ""
+    _ppl = "、".join(p for p, _ in (CHAR_REVIEW.get(str(n)) or [])) or "待填"
+    _jin = len(JINJU.get(str(n)) or [])
+    _pm = len(POEM_DATA.get(str(n)) or [])
+    _mt = MENT.get(str(n)) or []
+    _ai = sum(1 for it in _mt if not it.get("user"))
+    _rel0 = related_chapters(n)
+    _reltxt = "、".join("第%d回" % x for x in _rel0) if _rel0 else "—"
+    rows.append(
+        '<section><h2>文學軌與其餘字段</h2><ul class="plain">'
+        f'<li><b>一句定位</b>：{esc(_hui) or "待填"}</li>'
+        f'<li><b>情節提要</b>：{esc(_act) or "待填"}</li>'
+        f'<li><b>出場人物</b>：{esc(_ppl)}</li>'
+        f'<li><b>詩詞金句</b>：金句 {_jin} 條 · 詩詞 {_pm} 條</li>'
+        f'<li><b>歷史解碼層</b>：素材 {len(_mt)} 條（其中 AI 引申待核 {_ai} 條）</li>'
+        f'<li><b>前後勾連</b>：{_reltxt}</li>'
+        '</ul><p class="note">本區為<b>機械提取</b>（回目／人物名單／素材計數），非 AI 創作；'
+        '「關鍵細節與伏筆」「存疑與版本」「一句話結論」待提問者填（「文學軌檔」）。</p></section>')
     # 前後勾連（機械關聯，非 AI 創作）
     rel = related_chapters(n)
     if rel:
