@@ -397,6 +397,23 @@ def page(title, desc, body, active="", sub=False, prefix=""):
 def esc(s): return html.escape(s, quote=False)
 
 # ---------------- 逐回卡片 ----------------
+def related_chapters(n, limit=6):
+    """前後勾連：依本回素材關鍵詞自動關聯其他回（機械匹配，非 AI 創作）"""
+    KEYS = ['賈雨村','甄士隱','林黛玉','賈寶玉','薛寶釵','史湘雲','王熙鳳','妙玉','賈母','賈政','賈赦','賈珍','秦可卿','元春','探春','惜春','李紈','晴雯','襲人','香菱','冷子興','空空道人','太虛幻境','護官符','贔屭','還淚','通靈','補天','九子奪嫡','順治','康熙','胤礽','胤祥','雍正','孝莊','多爾袞','皇太極','劉姥姥','畸笏叟']
+    def _txt(x):
+        return " ".join(it.get("text","") for it in MENT.get(str(x),[]))
+    my = _txt(n)
+    hits = [k for k in KEYS if k in my]
+    if not hits: return []
+    rel = []
+    for mm in range(1,121):
+        if mm == n: continue
+        ot = _txt(mm)
+        sc = sum(1 for k in hits if k in ot)
+        if sc > 0: rel.append((sc, mm))
+    rel.sort(key=lambda t: (-t[0], t[1]))
+    return [mm for sc, mm in rel[:limit]]
+
 def hui_card(n):
     num, up, low, act = CH[n-1]
     status = "has" if has_material(n) else "none"
