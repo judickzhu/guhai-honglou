@@ -460,6 +460,12 @@ def hui_card(n):
                 '<p class="placeholder">逐回卡九字段：一句定位／情節提要／出場人物／關鍵細節與伏筆／'
                 '歷史解碼層／詩詞金句／存疑與版本／前後勾連／一句話結論——'
                 '此骨架先立結構，內容逐回後補。</p></section>')
+    # 前後勾連（機械關聯，非 AI 創作）
+    rel = related_chapters(n)
+    if rel:
+        links = "".join(f'<a href="{mm:03d}.html">第{mm}回</a>' for mm in rel)
+        rows.append(f'<section><h2>前後勾連（相關回目）</h2><p class="chips">{links}</p>'
+                    '<p class="note">依本回素材關鍵詞自動關聯（機械匹配，非 AI 創作）——同一線索在不同回的落點。</p></section>')
     # 前后翻页
     prev, nxt = "", ""
     if n > 1: prev = f'<a href="{n-1:03d}.html">← 第{n-1}回</a>'
