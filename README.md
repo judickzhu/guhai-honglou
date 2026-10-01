@@ -15,9 +15,14 @@ chapters/         120 回卡片
 jiaxu/            甲戌本 482 頁影印
 tools/build_honglou_site.py    站點生成器(唯一真源)
 tools/content-source/          素材(honglou_*.json,生成器讀取源)
-tools/content-mirror/          素材鏡像(備份)
-tools/obsidian-kb/             Obsidian 知識庫(127 md)
+tools/obsidian-kb/             Obsidian 知識庫(127 md,由 build_obsidian_kb.py 生成)
+tools/build_obsidian_kb.py     Obsidian 知識庫生成器(讀 content-source,寫 obsidian-kb)
+tools/build_jilu.py / build_jinghua.py   記錄頁 / 深度精華頁生成器
+tools/completeness_check.py    回卡完整性檢查
+tools/gen_yuanwen_json.py      原文(無標點) JSON 生成
 tools/admin_server.py          本地後台管理員(子嗥補充審核)
+tools/ops/                     治理文檔(HANDOFF 交接檔、安全審計、拆倉手冊、遷移/驗證腳本)
+tools/sync_push.py / update.sh 發布 / 更新輔助
 ```
 
 ## 生成站點

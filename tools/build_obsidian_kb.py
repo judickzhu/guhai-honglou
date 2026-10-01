@@ -10,24 +10,30 @@ build_obsidian_kb.py — 把「一起讀紅樓白話」知識庫輸出為 Obsidi
 import json, os, re
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(ROOT, "紅樓夢知識庫")
+OUT = os.path.join(ROOT, "obsidian-kb")  # 與 README／入庫位置一致（原誤寫為「紅樓夢知識庫」，會生成新目錄而非更新知識庫）
 CHP = os.path.join(ROOT, "build_honglou_site.py")
 
 def load_ch():
-    """从 build_honglou_site.py 提取 CH(回目/幕) 与 CURATED(解码)。"""
+    """从 build_honglou_site.py 提取 CH(回目/幕)/CURATED(解码)/LABEL_TXT，
+    並取與網站一致的 has_material（已解碼判定）與 auto_snippets（機械取樣）。"""
     import importlib.util
     spec = importlib.util.spec_from_file_location("bhs", CHP)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    return mod.CH, mod.CURATED, mod.LABEL_TXT
+    return mod
+
+SRC = os.path.join(ROOT, "content-source")  # 素材實際位置（與 build_honglou_site.py 一致）
 
 def rd(name):
     try:
-        return json.load(open(os.path.join(ROOT, name), encoding="utf-8"))
+        return json.load(open(os.path.join(SRC, name), encoding="utf-8"))
     except Exception:
         return {}
 
-CH, CURATED, LABEL_TXT = load_ch()
+M = load_ch()
+CH, CURATED, LABEL_TXT = M.CH, M.CURATED, M.LABEL_TXT
+has_material = M.has_material
+auto_snippets = M.auto_snippets
 JINJU = rd("honglou_jinju.json")
 PINGYU = rd("honglou_pingyu.json")
 POEM = rd("honglou_poem.json")
@@ -49,7 +55,7 @@ def fm(title, tags, **kv):
 # ---------- 總覽 ----------
 def gen_overview():
     rows = "\n".join(
-        f"- 第{n:03d}回　{up}　{low}｜幕{ACT_NAMES[act-1]}{'｜●已解碼' if n in CURATED or JINJU.get(str(n)) or PINGYU.get(str(n)) else ''}"
+        f"- 第{n:03d}回　{up}　{low}｜幕{ACT_NAMES[act-1]}{'｜●已解碼' if has_material(n) else ''}"
         for n, up, low, act in CH)
     body = fm("紅樓夢知識庫 · 總覽", ["紅樓","解碼","索引"])
     body += "# 紅樓夢知識庫 · 總覽\n\n"
@@ -185,7 +191,7 @@ def gen_hui():
     for n, up, low, act in CH:
         parts = []
         parts.append(fm(f"第{n}回　{up}　{low}", ["紅樓", "解碼"], hui=n, act=ACT_NAMES[act-1],
-                        status="已解碼" if (n in CURATED or JINJU.get(str(n)) or PINGYU.get(str(n))) else "待解碼"))
+                        status="已解碼" if has_material(n) else "待解碼"))
         parts.append(f"# 第{n}回　{up}　{low}\n")
         parts.append(f"幕:{ACT_NAMES[act-1]} ｜ [[00-總覽|回總覽]]\n")
         # 中心思想所在回
@@ -196,8 +202,10 @@ def gen_hui():
             parts.append("## 本回金句\n")
             for q, note in JINJU[str(n)]:
                 parts.append(f"- 「{q}」— {note}\n")
-        # 解码
+        # 解码（CURATED 優先；僅對話/總綱有料者以與網站一致的機械取樣補足）
         dec = CURATED.get(n)
+        if not dec and has_material(n):
+            dec = auto_snippets(n, limit=3, maxlen=5000)
         if dec:
             parts.append("## 解碼軌\n")
             for t, x in dec:
