@@ -20,6 +20,7 @@ tools/build_obsidian_kb.py     Obsidian 知識庫生成器(讀 content-source,�
 tools/build_jilu.py / build_jinghua.py   記錄頁 / 深度精華頁生成器
 tools/completeness_check.py    回卡完整性檢查
 tools/gen_yuanwen_json.py      原文(無標點) JSON 生成
+tools/mine_user_material.py    逐回素材挖掘(只取提問者原話,排除 AI 輸出;--chapter/--kw/--stats)
 tools/admin_server.py          本地後台管理員(子嗥補充審核)
 tools/ops/                     治理文檔(HANDOFF 交接檔、安全審計、拆倉手冊、遷移/驗證腳本)
 tools/sync_push.py / update.sh 發布 / 更新輔助
