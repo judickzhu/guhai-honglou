@@ -182,3 +182,9 @@ html[data-theme="dark"] .ss-row{background:var(--card)}
 .eco-nav a{margin:0 6px;padding:2px 8px;border-radius:6px;border:1px solid var(--line)}
 .eco-nav a.act{background:var(--accent);color:#fff;border-color:var(--accent)}
 .eco-nav .dim{color:var(--sub);font-size:.9em;margin-left:6px}
+
+/* 抄本原文（核對用·可折疊） */
+.yuanwen{white-space:pre-wrap;word-break:break-word;font-size:.95em;line-height:1.9;
+  background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;
+  max-height:60vh;overflow:auto}
+details summary{cursor:pointer;color:var(--accent);font-weight:600}

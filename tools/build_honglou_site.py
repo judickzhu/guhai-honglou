@@ -531,6 +531,14 @@ def hui_card(n):
         rows.append('<section class="fillme"><h2>詩詞曲戲解讀</h2>'
                     '<p class="placeholder">【無詩詞】本回以白話敘事為主（敘事＝前因後果），未錄詩詞——'
                     '若你發現本回實有詩詞，可在 「詩詞曲戲解讀檔」 補填（三足：核心觀點／理學 · 敘事前因後果 · 脂批路標）。</p></section>')
+    # 抄本原文（核對用·可折疊；honglou_yuanwen.json 120 回）
+    yw = YUANWEN_DATA.get(str(n)) or ""
+    if yw:
+        rows.append('<section><h2>抄本原文（核對用）</h2>'
+                    f'<details><summary>展開原文（{len(yw)} 字）——混合底本轉錄，含批語（括號內）與回前評</summary>'
+                    f'<p class="yuanwen">{esc(yw)}</p></details>'
+                    '<p class="note">原文無標點（甲戌／庚辰／己卯皆無標點）；本站為混合底本轉錄，不宜逐字抽取，'
+                    '通行本標點係後人（程偉元／高鶚）加工，斷句係讀法——詳見「解讀框架」原文三層。</p></section>')
     # 文學軌（機械提取）——CH 為 list，n-1 即本回元組（num, up, low, act）
     _c = CH[n-1] if 1 <= n <= len(CH) else ()
     _hui = _c[1] if isinstance(_c, (list, tuple)) and len(_c) > 1 else ""
