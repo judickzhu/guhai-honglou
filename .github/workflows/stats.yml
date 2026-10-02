@@ -21,9 +21,27 @@ jobs:
           python3 - <<'EOF'
           import json, datetime
           v = json.load(open('/tmp/views.json')); c = json.load(open('/tmp/clones.json'))
+          today = datetime.date.today().isoformat()
+          # 累計訪客（第幾位訪客）：取今日 unique 增量，防同日重複計入
+          cum = {"cumulative_visitors": 0, "last_counted_date": ""}
+          try:
+              old = json.load(open('stats.json', encoding='utf-8'))
+              cum = {"cumulative_visitors": old.get("cumulative_visitors", 0),
+                     "last_counted_date": old.get("last_counted_date", "")}
+          except Exception:
+              pass
+          today_uniques = 0
+          for d in v.get("views", []):
+              if d["timestamp"][:10] == today:
+                  today_uniques = d.get("uniques", 0); break
+          if today != cum["last_counted_date"]:
+              cum["cumulative_visitors"] += today_uniques
+              cum["last_counted_date"] = today
           data = {
             "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
             "views_total": v.get("count", 0), "views_uniques": v.get("uniques", 0),
+            "cumulative_visitors": cum["cumulative_visitors"],
+            "last_counted_date": cum["last_counted_date"],
             "daily": [{"date": d["timestamp"][:10], "views": d["count"], "uniques": d["uniques"]}
                       for d in v.get("views", [])]
           }

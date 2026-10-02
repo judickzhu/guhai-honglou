@@ -44,5 +44,6 @@ applyPrefs();
     function s(id, v){ var e = document.getElementById(id); if (e) e.textContent = v; }
     s("ftV", d.views_total); s("ftU", d.views_uniques);
     s("ftT", (d.updated_at || "").slice(0, 10));
+    s("ftVis", d.cumulative_visitors);
   }).catch(function(){});
 })();
