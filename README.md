@@ -26,9 +26,17 @@ tools/ops/                     治理文檔(HANDOFF 交接檔、安全審計、�
 tools/sync_push.py / update.sh 發布 / 更新輔助
 ```
 
-## 生成站點
+## 生成站點（一鍵迭代）
 ```bash
-python3 tools/build_honglou_site.py     # 冪等:重跑結果一致
+bash tools/update.sh "commit message"   # 一鍵：四生成器 → 自檢 → 提交 → 直推
+```
+流程：改源檔（`tools/content-source/*.json`、`analysis/*.md`）→ 跑 update.sh → GitHub Pages 約 1 分鐘後生效。
+單跑生成器（update.sh 已含全部四個，漏跑任一會令該頁過時）：
+```bash
+python3 tools/build_honglou_site.py   # 主站：首頁/框架/人物/映射/脂批/世系/問答/留言/字考/卡/目錄/檢索/sitemap
+python3 tools/build_jilu.py           # 記錄欄（索引）
+python3 tools/build_jinghua.py        # 深度精華
+python3 tools/build_obsidian_kb.py    # Obsidian 知識庫
 ```
 
 ## 自檢與運維

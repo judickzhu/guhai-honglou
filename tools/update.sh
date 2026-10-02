@@ -1,42 +1,43 @@
 #!/bin/bash
-# update.sh — 一次過:重新生成「深度精華」頁 + 全站 + 自檢 + 同步推送（含推送後複核）
+# update.sh — 一鍵迭代：全生成器重建 → 自檢 → 提交 → 推送
 # 用法: bash tools/update.sh ["commit message"]
-# 流程: 改 md 源檔 → 跑本腳本 → 網站自動更新（GitHub Pages 約 1 分鐘後生效）
+# 流程: 改源檔（content-source/*.json、analysis/*.md、build_*.py）→ 跑本腳本 → 全站同步上線
 set -e
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
-MSG="${1:-更新:標準更新流程(生成深度精華+全站+自檢)}"
+MSG="${1:-更新:全站重建+自檢+推送}"
 
-echo "=== 0. 源檔檢查 ==="
-SRC="analysis/深度分析报告提纯精华版.md"
-[ -f "$SRC" ] && echo "  ✓ 源檔存在: $SRC ($(wc -l <"$SRC") 行)" || { echo "  ✗ 搵唔到 $SRC"; exit 1; }
+echo "=== ① 全生成器（四個；漏跑會令該頁過時）==="
+python3 tools/build_honglou_site.py    # 主站：首頁/框架/人物/映射/脂批/世系/問答/留言/字考/卡/目錄/檢索/sitemap
+python3 tools/build_jilu.py            # 記錄欄（索引，源檔 analysis/）
+python3 tools/build_jinghua.py         # 深度精華（源檔 analysis/深度分析报告提纯精华版.md）
+python3 tools/build_obsidian_kb.py     # Obsidian 知識庫（tools/obsidian-kb/）
 
-echo "=== ① 生成「深度精華」頁 (build_jinghua.py) ==="
-python3 tools/build_jinghua.py
-
-echo "=== ② 全站重建 (build_honglou_site.py) ==="
-python3 tools/build_honglou_site.py
-
-echo "=== ③ 站點自檢 (selfcheck.sh) ==="
-if bash tools/selfcheck.sh; then
-  echo "  ✓ 自檢通過"
+echo "=== ② 完整性 + 自檢 ==="
+python3 tools/completeness_check.py . | head -5
+if bash tools/selfcheck.sh >/tmp/selfcheck.out 2>&1; then
+  echo "  ✓ 自檢通過（斷鏈0/完整性OK/冪等）"
 else
-  echo "  ⚠️ 自檢有警告，繼續（可檢查後再決定）"
+  echo "  ⚠️ 自檢有問題，請看 /tmp/selfcheck.out"
+  tail -12 /tmp/selfcheck.out
 fi
 
-echo "=== ④ 本地提交（記錄用） ==="
+echo "=== ③ 本地提交 ==="
 if [ -z "$(git status --porcelain)" ]; then
-  echo "  本地無改動"
+  echo "  無改動，跳過提交"
 else
   git add -A
-  git -c user.name="judickzhu" -c user.email="judickzhu@users.noreply.github.com" commit -m "$MSG" 2>&1 | tail -1
+  git commit -q -m "$MSG" && echo "  已提交: $(git log --oneline -1)"
 fi
 
-echo "=== ⑤ 同步推送（GitHub API，帶重試＋推送後全站複核） ==="
-# 注意：本機 git push 走唔通（HTTPS/SSH 被網絡擋），且 API 推送可能靜默失敗，
-#       故一律用 sync_push.py：它會逐檔比對遠端雜湊，只推有異嘅，並在推送後複核。
-python3 tools/sync_push.py "$MSG"
+echo "=== ④ 推送上線 ==="
+if git push origin main 2>/dev/null; then
+  echo "  ✓ git push 成功（GitHub Pages 約 1 分鐘後生效）"
+else
+  echo "  ⚠️ git push 失敗，改用 GitHub API：sync_push.py"
+  python3 tools/sync_push.py "$MSG"
+fi
 
-echo ""
+echo
 echo "=== 完成 ==="
-echo "線上檢查: https://judickzhu.github.io/guhai-honglou/jinghua.html"
+echo "線上: https://judickzhu.github.io/guhai-honglou/"
