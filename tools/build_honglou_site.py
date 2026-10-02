@@ -395,7 +395,7 @@ def auto_snippets(n, limit=3, maxlen=120):
 
 # ---------------- 页面框架（参照 guhai：header 导航/检索/字号/主题） ----------------
 NAV = [("index.html","首頁"),("chapters/000.html","逐回目錄"),("framework.html","解讀框架"),
-       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("zikao.html","字考"),("jilu.html","記錄"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
+       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("liuyan.html","留言區"),("zikao.html","字考"),("jilu.html","記錄"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
 def nav_html(active, sub):
     pre = "../" if sub else ""
     items = []
@@ -1217,12 +1217,29 @@ def sitemap_xml():
     import datetime
     today = datetime.date.today().isoformat()
     urls = ["404.html", "index.html", "framework.html", "characters.html", "mapping.html",
-            "pingyu.html", "shixi.html", "qa.html", "zikao.html", "jilu.html", "jinghua.html", "funding.html"]
+            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "jilu.html", "jinghua.html", "funding.html"]
     urls += [f"chapters/{n:03d}.html" for n in range(1, 121)]
     items = "\n".join(
         f'  <url><loc>https://judickzhu.github.io/guhai-honglou/{u}</loc><lastmod>{today}</lastmod></url>'
         for u in urls)
     return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + items + '\n</urlset>\n'
+
+def liuyan_body():
+    """留言區：GitHub Issues 為入口，集思優化、改進解讀正確性。"""
+    return '''<h1>留言區 · 集思優化</h1>
+<section><p class="lead">本站解讀為<b>提問者個人讀法</b>——或顛覆通識本／紅學定論，<b>非權威共識</b>。歡迎各方讀者留言：提出更正、補充證據、指正斷章取義，集思優化，改進解讀正確性。</p></section>
+<section><h2>留言方式（GitHub Issues）</h2>
+<p>點此開一個 Issue 留言（建議先登入 GitHub 帳號；無需本站帳號）：</p>
+<p class="cta"><a class="card" href="https://github.com/judickzhu/guhai-honglou/issues/new?title=留言區意見：&amp;body=%E3%80%90%E5%AF%BE%E6%87%89%E5%9B%9E%E7%9B%AE%EF%BC%8F%E4%B8%BB%E9%A1%8C%E3%80%91%0A%0A%E3%80%90%E6%84%8F%E8%A6%8B%EF%BC%8F%E6%9B%B4%E6%AD%A3%EF%BC%8F%E8%A3%9C%E5%85%85%E8%AD%89%E6%93%9A%E3%80%91%0A%0A%E3%80%90%E4%BE%9D%E6%93%9A%E3%80%91%0A-%E6%96%87%E6%9C%AC%EF%BC%9A%0A-%E8%84%82%E6%89%B9%EF%BC%9A%0A-%E5%8F%B2%E5%AF%A6%EF%BC%9A%0A-%E8%A1%8C%E8%99%9F%EF%BC%9A"><b>✍️ 開 Issue 留言</b></a></p>
+<ul class="plain">
+<li><b>為咗改進解讀正確性，留言請附依據</b>：抄本原文（甲戌／庚辰／蒙府／程乙）／脂批原文／史料出處與行號——站規「核對須以全文脈絡為據，不以孤立截句作證」，避免斷章取義。</li>
+<li>指正範圍：任何回卡、判詞、十二支曲、字音字形解碼、成書與流傳。</li>
+<li>留言由站主審閱：<b>合則入卡（標註來源），不合則存檔不採納</b>——公開、可核對。</li>
+<li>已有回覆會集中喺 <a href="qa.html">問答區</a> 同步。</li>
+</ul></section>
+<section><h2>進階（可選）</h2>
+<p>若想頁內直接留言（唔使跳去 GitHub）：開啟倉庫 <b>Discussions</b>（Settings → Features → Discussions）後可接入 <a href="https://giscus.app" target="_blank" rel="noopener">giscus</a>；或安裝 <a href="https://utteranc.es" target="_blank" rel="noopener">utterances</a> App（以 Issues 為評論）。兩者皆免費、無後端，需要時我可代為接入。</p></section>
+'''
 
 def main():
     os.makedirs(os.path.join(OUT, "chapters"), exist_ok=True)
@@ -1234,6 +1251,7 @@ def main():
     open(os.path.join(OUT, "pingyu.html"), "w", encoding="utf-8").write(page("脂批路標", "脂批是路標·逐回匯總", pingyu_body(), "脂批"))
     open(os.path.join(OUT, "shixi.html"), "w", encoding="utf-8").write(page("世系", "寧國府世系=清帝世系", shixi_body(), "世系"))
     open(os.path.join(OUT, "qa.html"), "w", encoding="utf-8").write(page("問答區", "子嗥互動·知識庫瀏覽·迭代更新", qa_body(), "問答區"))
+    open(os.path.join(OUT, "liuyan.html"), "w", encoding="utf-8").write(page("留言區", "集思優化·改進解讀正確性", liuyan_body(), "留言區"))
     open(os.path.join(OUT, "funding.html"), "w", encoding="utf-8").write(page("資助本站", "資助用於網站維護", funding_body(), ""))
     open(os.path.join(OUT, "zikao.html"), "w", encoding="utf-8").write(page("生僻字考證·古文白話解讀法", "以粵語白話讀音解讀古文生僻字的方法論——窾／贔屭／罘罳／祿蠢／虢礫𡃈嘞／埞／崖广／鬄匸", zikao_body(), "字考"))
     open(os.path.join(OUT, "chapters", "000.html"), "w", encoding="utf-8").write(page("逐回目錄", "120 回總表", catalog_body(), "逐回目錄", sub=True))
@@ -1248,7 +1266,7 @@ def main():
     open(os.path.join(OUT, "zi-hao-data.js"), "w", encoding="utf-8").write(zh)
     print(f"ok: {OUT}")
     open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8").write(sitemap_xml())
-    print("pages: index+framework+characters+mapping+pingyu+shixi+qa+funding + 121 chapter + search-data + zi-hao-data")
+    print("pages: index+framework+characters+mapping+pingyu+shixi+qa+liuyan+funding + 121 chapter + search-data + zi-hao-data")
 
 if __name__ == "__main__":
     main()
