@@ -1,0 +1,37 @@
+name: 瀏覽統計（GitHub Traffic）
+on:
+  schedule:
+    - cron: '17 3 * * *'   # 每日 03:17 UTC = 11:17 +08
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 取瀏覽統計（Traffic API）並寫入 stats.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          curl -sf -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/traffic/views" -o /tmp/views.json
+          curl -sf -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/traffic/clones" -o /tmp/clones.json
+          python3 - <<'EOF'
+          import json, datetime
+          v = json.load(open('/tmp/views.json')); c = json.load(open('/tmp/clones.json'))
+          data = {
+            "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            "views_total": v.get("count", 0), "views_uniques": v.get("uniques", 0),
+            "clones_total": c.get("count", 0), "clones_uniques": c.get("uniques", 0),
+            "daily": [{"date": d["timestamp"][:10], "views": d["count"], "uniques": d["uniques"]}
+                      for d in v.get("views", [])]
+          }
+          json.dump(data, open('stats.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add stats.json
+          git diff --cached --quiet || git commit -m "更新瀏覽統計 $(date -u +%F)"
+          git push

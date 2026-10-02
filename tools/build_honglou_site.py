@@ -558,6 +558,13 @@ def ch_body(n):
     return hui_card(n)
 
 # ---------------- 首页 ----------------
+ST_JS = '''<script>/* 瀏覽統計：讀取 stats.json（GitHub Actions 每日更新；缺失時靜默隱藏） */
+(function(){fetch('stats.json').then(function(r){return r.ok?r.json():null}).then(function(d){if(!d)return;
+function s(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+s('stV',d.views_total);s('stU',d.views_uniques);s('stC',d.clones_total);s('stCU',d.clones_uniques);
+s('stT',(d.updated_at||'').slice(0,10));}).catch(function(){});})();
+</script>'''
+
 def index_body():
     has_cnt = sum(1 for n, *_ in CH if has_material(n))
     act_links = []
@@ -582,6 +589,8 @@ def index_body():
   <a class="card" href="characters.html"><b>人物對標</b><i>九子奪嫡對標速查：寶玉／黛玉／寶釵／湘雲／鳳姐／妙玉…</i></a>
 </div>
 <div class="stat"><b>{has_cnt}</b> 回已有解碼素材 · <b>{120-has_cnt}</b> 回待解碼（占位不硬編） · 全站可檢索</div>
+<div class="stat"><b>站點瀏覽統計</b>（近 14 天，GitHub Traffic）：瀏覽 <b id="stV">—</b> 次（獨立訪客 <b id="stU">—</b>） · 克隆 <b id="stC">—</b> 次（獨立 <b id="stCU">—</b>） · 更新 <span id="stT">—</span></div>
+{ST_JS}
 </section>
 <section id="acts"><h2>全書九幕（總坐標）</h2><div class="actgrid">{"".join(act_links)}</div></section>
 <section><h2>已解碼回目（素材入口）</h2><p class="chips">{covered_chips}</p>
