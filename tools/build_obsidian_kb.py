@@ -218,7 +218,7 @@ def gen_hui():
                 parts.append(f"- {t}\n" if (src and src in t) else f"- {t}（{src}）\n")
         # 诗词
         if POEM.get(str(n)):
-            parts.append("## 詩詞解讀\n")
+            parts.append("## 詩詞曲戲解讀\n")
             for name_, txt in POEM[str(n)]:
                 parts.append(f"- **{name_}** — {txt}\n")
         # 人物点评槽

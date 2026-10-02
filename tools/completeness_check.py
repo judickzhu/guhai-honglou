@@ -9,7 +9,7 @@ import re, os, sys, json, glob
 ROOT = sys.argv[1] if len(sys.argv) > 1 else "."
 os.chdir(ROOT)
 
-SEC = ["本回金句", "解碼軌", "脂批路標", "人物點評", "詩詞解讀", "文學軌"]
+SEC = ["本回金句", "解碼軌", "脂批路標", "人物點評", "詩詞曲戲解讀", "文學軌"]
 issues, stats = [], {"cards": 0, "dec": 0, "jinju": 0, "pingyu": 0, "poem": 0, "has": 0, "none": 0}
 
 def has_real(html, sec):
@@ -39,7 +39,7 @@ for f in sorted(glob.glob("chapters/*.html")):
         stats["none"] += 1
         if dec_real: issues.append((n, "標記『待解碼』但解碼軌有內容"))
     # ③ 其他欄位覆蓋
-    for key, sec in [("jinju","本回金句"), ("pingyu","脂批路標"), ("poem","詩詞解讀")]:
+    for key, sec in [("jinju","本回金句"), ("pingyu","脂批路標"), ("poem","詩詞曲戲解讀")]:
         _, real = has_real(h, sec)
         if real: stats[key] += 1
     # ④ 中心思想只在 76
