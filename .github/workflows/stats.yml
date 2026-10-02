@@ -24,10 +24,11 @@ jobs:
           data = {
             "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
             "views_total": v.get("count", 0), "views_uniques": v.get("uniques", 0),
-            "clones_total": c.get("count", 0), "clones_uniques": c.get("uniques", 0),
             "daily": [{"date": d["timestamp"][:10], "views": d["count"], "uniques": d["uniques"]}
                       for d in v.get("views", [])]
           }
+          # 克隆數僅站主本人可查（gh api repos/{owner}/{repo}/traffic/clones），不入公開 stats.json
+          print("克隆（僅站主）:", c.get("count", 0), c.get("uniques", 0))
           json.dump(data, open('stats.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
           EOF
           git config user.name "github-actions[bot]"

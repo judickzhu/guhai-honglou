@@ -43,7 +43,6 @@ applyPrefs();
     if (!d) return;
     function s(id, v){ var e = document.getElementById(id); if (e) e.textContent = v; }
     s("ftV", d.views_total); s("ftU", d.views_uniques);
-    s("ftC", d.clones_total); s("ftCU", d.clones_uniques);
     s("ftT", (d.updated_at || "").slice(0, 10));
   }).catch(function(){});
 })();
