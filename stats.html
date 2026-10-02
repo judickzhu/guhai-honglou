@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>站點統計｜一起讀紅樓白話</title>
+<meta name="description" content="瀏覽統計·GitHub Traffic">
+<meta property="og:title" content="站點統計">
+<meta property="og:description" content="瀏覽統計·GitHub Traffic">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="style.css">
+<script>var PREFIX="";</script>
+</head><body>
+<header><div class="bar"><a class="brand" href="index.html">一起讀紅樓白話</a><nav><a href="index.html">首頁</a><a href="chapters/000.html">逐回目錄</a><a href="framework.html">解讀框架</a><a href="characters.html">人物對標</a><a href="mapping.html">三層映射</a><a href="pingyu.html">脂批</a><a href="jiaxu.html">甲戌本</a><a href="shixi.html">世系</a><a href="qa.html">問答區</a><a href="liuyan.html">留言區</a><a class="act" href="stats.html">統計</a><a href="zikao.html">字考</a><a href="jilu.html">記錄</a><a href="jinghua.html">深度精華</a><a href="index.html#acts">九幕</a></nav></div><div class="tools"><input id="q" placeholder="檢索全部回目…" onkeyup="if(event.key=='Enter')searchSite()"><button onclick="searchSite()">檢索</button><span class="spacer"></span><button class="tbtn" onclick="setSize('s')" title="小字">A</button><button class="tbtn" onclick="setSize('m')" title="中字">A</button><button class="tbtn" onclick="setSize('l')" title="大字">A</button><button class="tbtn" onclick="toggleTheme()" id="themeBtn">◐</button></div><div id="sr" class="sr hidden"></div></header>
+<main>
+<h1>站點瀏覽統計</h1>
+<section><p class="lead">數據來源：<b>GitHub Traffic API</b>（近 14 天），由 GitHub Actions 每日自動更新——非第三方統計，僅本站真實瀏覽／克隆數據。</p>
+<p class="note">瀏覽 <b id="pgV">—</b> 次（獨立訪客 <b id="pgU">—</b>）· 克隆 <b id="pgC">—</b> 次（獨立 <b id="pgCU">—</b>）· 更新 <span id="pgT">—</span></p></section>
+<section><h2>每日瀏覽趨勢（近 14 天）</h2>
+<table class="acts" id="dailyTbl"><tr><th>日期</th><th>瀏覽</th><th>獨立訪客</th></tr></table>
+<p class="note">（某日無數據＝GitHub 當日未記錄流量；克隆數為完整 14 天累計。）</p></section>
+<script>/* 統計頁：填充總數與每日趨勢（stats.json） */
+(function(){
+var p=(typeof PREFIX!=="undefined")?PREFIX:"";
+fetch(p+"stats.json").then(function(r){return r.ok?r.json():null}).then(function(d){
+if(!d)return;
+function s(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+s("pgV",d.views_total);s("pgU",d.views_uniques);s("pgC",d.clones_total);s("pgCU",d.clones_uniques);
+s("pgT",(d.updated_at||"").slice(0,10));
+var tb=document.getElementById("dailyTbl");
+if(tb&&d.daily&&d.daily.length){var rows="";for(var i=0;i<d.daily.length;i++){var r=d.daily[i];rows+="<tr><td>"+r.date+"</td><td>"+r.views+"</td><td>"+r.uniques+"</td></tr>";}
+tb.insertAdjacentHTML("beforeend",rows);}
+}).catch(function(){});})();
+</script>
+</main>
+<footer><p>一起讀紅樓白話 · 白話文解讀書中白話。站內「歷史對位/字音字形」均為<b>提問者個人讀法</b>——本體系或顛覆通識本／紅學定論，<b>不代表學術共識、不具權威性</b>，僅作記錄、自證、開放核對；以文本內證＋史實對位為據，【用户原话】保留提問者原話、【AI 扩展·待核】為 AI 引申待查證。<b>本體系以手抄本（甲戌／庚辰）為據，通行本異文處另註</b>。</p><p class="foot-license">© 2026 一起讀紅樓白話 · 內容依 <a href="LICENSE" rel="license">CC BY-NC-SA 4.0</a> 授權：非商業使用、轉載須署名本站；未經授權不得用作 AI 模型訓練資料。</p><p class="foot-stats">站點統計：瀏覽 <b id="ftV">—</b> · 訪客 <b id="ftU">—</b> · 克隆 <b id="ftC">—</b> · 更新 <span id="ftT">—</span>　<a href="stats.html">詳見統計頁</a></p><p class="foot-fund"><a href="https://github.com/sponsors/judickzhu" target="_blank" rel="noopener">♥ 資助本站（GitHub Sponsors）</a> —— 用於網站維護。</p></footer>
+<script src="app.js"></script>
+<script src="search-data.js"></script>
+<script src="zi-hao-data.js"></script>
+<script src="zi-hao.js"></script>
+</body></html>

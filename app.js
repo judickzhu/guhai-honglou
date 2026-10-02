@@ -35,3 +35,15 @@ document.addEventListener("keydown", function (e) {
   if (e.key === "Escape") { var b = document.getElementById("sr"); if (b) b.classList.add("hidden"); }
 });
 applyPrefs();
+
+/* 瀏覽統計：填充頁尾迷你統計（stats.json 由 GitHub Actions 每日更新；缺失時靜默） */
+(function(){
+  var p = (typeof PREFIX !== "undefined") ? PREFIX : "";
+  fetch(p + "stats.json").then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
+    if (!d) return;
+    function s(id, v){ var e = document.getElementById(id); if (e) e.textContent = v; }
+    s("ftV", d.views_total); s("ftU", d.views_uniques);
+    s("ftC", d.clones_total); s("ftCU", d.clones_uniques);
+    s("ftT", (d.updated_at || "").slice(0, 10));
+  }).catch(function(){});
+})();
