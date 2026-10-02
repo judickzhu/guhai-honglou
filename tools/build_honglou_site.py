@@ -566,8 +566,9 @@ def index_body():
     for a in range(1, 10):
         lo, hi = 1 if a==1 else (6 if a==2 else (19 if a==3 else (37 if a==4 else (55 if a==5 else (70 if a==6 else (81 if a==7 else (99 if a==8 else 111))))))), (5 if a==1 else (18 if a==2 else (36 if a==3 else (54 if a==4 else (69 if a==5 else (80 if a==6 else (98 if a==7 else (110 if a==8 else 120))))))))
         lit, dec = ACT_TITLES[a]
+        _hs, _tot = act_stat(a)
         act_links.append(f'<a class="actcard" href="chapters/000.html#a{a}"><b>第 {CN[a-1]} 幕</b>'
-                         f'<span class="r">{lo}–{hi} 回</span><i>{esc(lit)}</i><em>{esc(dec)}</em></a>')
+                         f'<span class="r">{lo}–{hi} 回 · 已解 {_hs}/{_tot}</span><i>{esc(lit)}</i><em>{esc(dec)}</em></a>')
     recent_covered = [n for n,*_ in CH if has_material(n)]
     covered_chips = "".join(f'<a href="chapters/{n:03d}.html">{n}</a>' for n in recent_covered)
     return f'''
@@ -585,7 +586,8 @@ def index_body():
 </div>
 <div class="stat"><b>{has_cnt}</b> 回已有解碼素材 · <b>{120-has_cnt}</b> 回待解碼（占位不硬編） · 全站可檢索</div>
 </section>
-<section id="acts"><h2>全書九幕（總坐標）</h2><div class="actgrid">{"".join(act_links)}</div></section>
+<section id="acts"><h2>全書九幕（總坐標）</h2>
+{eco_nav("九幕")}<div class="actgrid">{"".join(act_links)}</div></section>
 <section><h2>已解碼回目（素材入口）</h2><p class="chips">{covered_chips}</p>
 <p class="note">章回後期（81–120 回）素材稀少，屬正常——總綱原以「前 80 回解碼」為重，後 40 回多為補錄段，待後續對話增補。</p></section>
 '''
@@ -818,11 +820,12 @@ MAPPING_ITEMS = [
 def mapping_body():
     rows = ""
     for a, b, c, d, e in MAPPING_ITEMS:
-        rows += (f'<div class="mp-item"><div class="mp-head"><b>{esc(a)}</b><span class="r">代表回：{esc(e)}</span></div>'
+        rows += (f'<div class="mp-item"><div class="mp-head"><b>{esc(a)}</b><span class="r">代表回：{hui_links(e)}</span></div>'
                  f'<table><tr><th>情節（現象）</th><td>{esc(b)}</td></tr>'
                  f'<tr><th>解碼（歷史對位）</th><td>{esc(c)}</td></tr>'
                  f'<tr><th>讀法（方法）</th><td>{esc(d)}</td></tr></table></div>')
     return f'''<h1>三層映射（三生萬物）</h1>
+{eco_nav("三層映射")}
 <p class="lead">三層映射不是並列三層，而是「<strong>三生萬物</strong>」的歷史生成鏈（提問者親授）：</p>
 <div class="sansheng">
   <div class="ss-row"><b>道生一</b><span>孝莊把順治推到入主中原的第一個滿清皇帝</span></div>
@@ -1028,6 +1031,41 @@ def shixi_body():
 <p class="note">此為提問者個人讀法，非紅學/史學界共識；與紅學最大分野：同一歷史人物在寧榮兩府用不同身分分身出現。</p>'''
 
 # ---------------- 目录页（000） ----------------
+def act_stat(a):
+    """該幕（已解, 總數）——由 CH + has_material 實時計算，內容增即更新。"""
+    nums = [c for c in CH if c[3] == a]
+    return sum(1 for n, *_ in nums if has_material(n)), len(nums)
+
+def hui_links(s):
+    """『1–13、76』→ 章回連結；『全書』→ 目錄連結（生態鏈：映射→逐回卡）。"""
+    if not s:
+        return ""
+    if "全" in s:
+        return '<a href="chapters/000.html">全書</a>'
+    out = []
+    for part in re.split(r"[、,，]", s):
+        part = part.strip()
+        m = re.match(r"^(\d+)[–\-~](\d+)$", part)
+        if m:
+            a, b = int(m.group(1)), int(m.group(2))
+            out.append(f'<a href="chapters/{a:03d}.html">{a}</a>–<a href="chapters/{b:03d}.html">{b}</a>')
+        elif part.isdigit():
+            n = int(part)
+            out.append(f'<a href="chapters/{n:03d}.html">{n}</a>')
+        elif part:
+            out.append(esc(part))
+    return "、".join(out)
+
+def eco_nav(active="", pre=""):
+    """生態鏈導航：九幕 ↔ 逐回目錄 ↔ 三層映射 ↔ 解讀框架（同源生成，重跑即同步）。"""
+    items = [("index.html#acts", "九幕"), ("chapters/000.html", "逐回目錄"),
+             ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
+    lis = "".join(
+        (f'<a class="act" href="{pre}{u}">{t}</a>' if t == active else f'<a href="{pre}{u}">{t}</a>')
+        for u, t in items)
+    return (f'<p class="eco-nav"><b>生態鏈</b>：{lis}'
+            f'<span class="dim">（同源生成 · 內容增即同步）</span></p>')
+
 def catalog_body():
     sections = []
     for a in range(1, 10):
@@ -1039,10 +1077,14 @@ def catalog_body():
                         f'<b>{n:03d}</b><span>{esc(up)}　{esc(low)}</span><i>{st}</i></a>')
         lo, hi = nums[0][0], nums[-1][0]
         lit, dec = ACT_TITLES[a]
+        hs, tot = act_stat(a)
         sections.append(f'<section id="a{a}"><h2>第 {CN[a-1]} 幕 · {lo}–{hi} 回</h2>'
-                        f'<p class="dim">{esc(lit)}</p><div class="clist">{"".join(rows)}</div></section>')
+                        f'<p class="dim">{esc(lit)}　·　<b>已解 {hs}/{tot}</b>　·　'
+                        f'<a href="../mapping.html">三層映射</a>　<a href="../index.html#acts">九幕</a></p>'
+                        f'<div class="clist">{"".join(rows)}</div></section>')
     return f'''<h1>逐回目錄</h1>
-<p class="lead">● = 總綱已有解碼素材（點入見卡）　○ = 待解碼（框架占位，不硬編）。每回獨立成卡，字段固定。</p>
+{eco_nav("逐回目錄", "../")}
+<p class="lead">● = 已有解碼素材（點入見卡）　○ = 待解碼（框架占位，不硬編）。本頁與九幕／三層映射同源生成，內容增即同步。</p>
 {"".join(sections)}'''
 
 # ---------------- 子嗥知识库（zi-hao-data.js） ----------------
