@@ -14,11 +14,12 @@ import json, os, subprocess, sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs
 
-ROOT = os.path.dirname(os.path.abspath(__file__))  # 電子書ipa/網站/tools
-REPO = os.path.dirname(ROOT)                        # 電子書ipa/網站（git 倉庫根）
-WS   = os.path.dirname(REPO)                        # 電子書ipa（素材與生成器所在）
-FEED = os.path.join(WS, "honglou_qa_feedback.json")
-GEN  = os.path.join(WS, "build_honglou_site.py")
+ROOT = os.path.dirname(os.path.abspath(__file__))  # 本倉庫 tools/
+REPO = os.path.dirname(ROOT)                        # 本倉庫根（guhai-honglou）
+WS   = REPO                                        # 生成器工作目錄＝倉庫根
+SRC  = os.path.join(ROOT, "content-source")        # 素材目錄
+FEED = os.path.join(SRC, "honglou_qa_feedback.json")
+GEN  = os.path.join(ROOT, "build_honglou_site.py")
 
 def load_feed():
     try:
