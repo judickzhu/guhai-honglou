@@ -164,8 +164,8 @@ def gen_shixi():
 def gen_pingyu():
     body = fm("脂批路標", ["紅樓","脂批","路標"])
     body += "# 脂批路標\n\n> 脂批是路標——只收真實批語引文（帶出處），絕不臆造。\n\n"
-    for k in sorted(PINGYU, key=lambda x: int(x) if x != "_说明" else 0):
-        if k == "_说明":
+    for k in sorted(PINGYU, key=lambda x: int(x) if x not in ("_说明", "_版权") else 0):
+        if k in ("_说明", "_版权"):
             continue
         body += f"\n## 第{k}回\n\n"
         for it in PINGYU[k]:
@@ -178,8 +178,8 @@ def gen_pingyu():
 def gen_jinju():
     body = fm("每回金句", ["紅樓","金句"])
     body += "# 每回金句\n\n> 金句採通行本文字（本站原文為混合底本轉錄，不宜逐字抽取）。\n\n"
-    for k in sorted(JINJU, key=lambda x: int(x) if x != "_说明" else 0):
-        if k == "_说明":
+    for k in sorted(JINJU, key=lambda x: int(x) if x not in ("_说明", "_版权") else 0):
+        if k in ("_说明", "_版权"):
             continue
         body += f"\n## 第{k}回\n\n"
         for q, note in JINJU[k]:

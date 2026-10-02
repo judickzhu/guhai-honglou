@@ -6,6 +6,10 @@ build_honglou_site.py — 《红楼梦》逐回解读网站生成器
 读 honglou_mentions.json（总纲逐回素材，44/120 回有料）→ 生成 网站/honglou/ 静态站。
 结构：index / framework / characters / chapters/000 + 001..120 / search-data.js / style.css / app.js
 内容纪律：解码轨素材逐条标注【用户原话】或【AI 扩展·待核】；无素材回显示【待解码】占位，不硬编。
+
+版權聲明：本生成器及其產生之解讀內容（含 tools/content-source/*.json 素材），
+依 CC BY-NC-SA 4.0 授權（© 2026 一起讀紅樓白話）：非商業使用、轉載須署名、
+未經授權不得用作 AI 模型訓練資料。詳見 LICENSE。
 """
 import json, os, re, html
 
@@ -419,7 +423,7 @@ def nav_html(active, sub):
 FOOT = ('<footer><p>一起讀紅樓白話 · 白話文解讀書中白話。站內「歷史對位/字音字形」均為<b>提問者個人讀法</b>——本體系或顛覆通識本／紅學定論，<b>不代表學術共識、不具權威性</b>，僅作記錄、自證、開放核對；以文本內證＋史實對位為據，'
         '【用户原话】保留提問者原話、【AI 扩展·待核】為 AI 引申待查證。'
         '<b>本體系以手抄本（甲戌／庚辰）為據，通行本異文處另註</b>。</p>'
-         '<p class="foot-license">© 2026 一起讀紅樓白話 · 內容依 <a href="LICENSE" rel="license">CC BY-NC-SA 4.0</a> 授權：非商業使用、轉載須署名本站；未經授權不得用作 AI 模型訓練資料。</p>'
+         '<p class="foot-license">© 2026 一起讀紅樓白話 · 內容依 <a href="{pre}LICENSE" rel="license">CC BY-NC-SA 4.0</a> 授權：非商業使用、轉載須署名本站；未經授權不得用作 AI 模型訓練資料。</p>'
          '<p class="foot-fund"><a href="https://github.com/sponsors/judickzhu" target="_blank" rel="noopener">♥ 資助本站（GitHub Sponsors）</a> —— 用於網站維護。</p></footer>')
 
 def page(title, desc, body, active="", sub=False, prefix=""):
@@ -440,7 +444,7 @@ def page(title, desc, body, active="", sub=False, prefix=""):
 <main>
 {body}
 </main>
-{FOOT}
+{FOOT.format(pre=pre)}
 <script src="{pre}app.js"></script>
 <script src="{pre}search-data.js"></script>
 <script src="{pre}zi-hao-data.js"></script>
