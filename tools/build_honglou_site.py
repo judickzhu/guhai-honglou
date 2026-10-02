@@ -1281,12 +1281,15 @@ def search_entries():
     ents = [{"url":"index.html","title":"一起讀紅樓白話 · 首頁","text":"紅樓夢逐回解讀 白話文解讀書中白話 九幕 框架 人物對標 詩詞 脂批"}]
     for n, up, low, act in CH:
         text = f"第{n}回 {up} {low}"
+        # 詩詞曲戲（第三軌）：曲名／詩題優先入檢索——十二支曲等
+        for nm, tx in (POEM_DATA.get(str(n)) or []):
+            text += f" {nm} {tx}"
         if n in CURATED:
             text += " " + " ".join(x for _, x in CURATED[n])
         else:
             for _, x in auto_snippets(n): text += " " + x
-        ents.append({"url": f"chapters/{n:03d}.html", "title": f"第{n}回　{up}　{low}", "text": text[:600]})
-    ents.append({"url":"framework.html","title":"解讀框架","text":"一回一卡 雙軌並行 九字段 四條秩序規則 九幕分期"})
+        ents.append({"url": f"chapters/{n:03d}.html", "title": f"第{n}回　{up}　{low}", "text": text[:1400]})
+    ents.append({"url":"framework.html","title":"解讀框架","text":"一回一卡 雙軌並行 九字段 四條秩序規則 九幕分期 生態鏈 十二支曲對照 終身誤 枉凝眉 恨無常 分骨肉 樂中悲 世難容 喜冤家 虛花悟 聰明累 留餘慶 晚韶華 好事終 飛鳥各投林 成書與流傳 後四十回補寫 後見之明 中心思想 贔屭罘罳 解讀核心 通識本不認同 AI 角色聲明 非 AI 生成 只核對抄本"})
     ents.append({"url":"characters.html","title":"人物對標速查","text":"胤礽 雍正 胤祥 順治 孝莊 胤褆 人物對標"})
     ents.append({"url":"mapping.html","title":"三層映射","text":"情節 解碼 讀法 三層映射 回目即密鑰 判詞 人物分身 字音字形 金麒麟 中秋聯詩 抄檢大觀園 風月寶鑑 寶玉出家"})
     ents.append({"url":"pingyu.html","title":"脂批路標","text":"脂批 眉批 夾批 側批 一芹一脂 雪芹舊有 風月寶鑑 庚辰本 甲戌本 靖藏本 路標"})
@@ -1295,6 +1298,7 @@ def search_entries():
     ents.append({"url":"qa.html","title":"問答區","text":"問答 互動 子嗥 知識庫 補充 糾錯 迭代更新 九子奪嫡 判詞 字音字形"})
     ents.append({"url":"zikao.html","title":"生僻字考證·古文白話解讀法","text":"生僻字 考證 窾 贔屭 罘罳 祿蠢 虢礫𡃈嘞 埞 崖广 鬄匸 偶 三五 粵語 白話 古文 解讀法 字音字形 方法論"})
     ents.append({"url":"jilu.html","title":"記錄·昨日對話留底","text":"記錄 對話留底 2026-09-26 三國對位 曹魏 蜀漢 東吳 吳玉峰 無冕之王 寶釵夜出嫁 冷月葬屍魂 揚州城 瀋陽"})
+    ents.append({"url":"liuyan.html","title":"留言區·集思優化","text":"留言 集思優化 改進解讀正確性 GitHub Issues 補充 糾錯 更正 開放核對 非權威共識 審核入卡"})
     ents.append({"url":"jinghua.html","title":"深度精華·深度分析報告提純","text":"深度精華 深度分析報告 提純精華版 紅樓夢 古文經典 漢字方言 人生哲思 階級鬥爭 理治 石上偈 空空道人 九子奪嫡 被棄鏈 還淚史"})
     return ents
 
