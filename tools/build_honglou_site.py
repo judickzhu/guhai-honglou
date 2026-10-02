@@ -416,7 +416,7 @@ def nav_html(active, sub):
       f'<button class="tbtn" onclick="toggleTheme()" id="themeBtn">◐</button></div>'
       f'<div id="sr" class="sr hidden"></div></header>')
 
-FOOT = ('<footer><p>一起讀紅樓白話 · 白話文解讀書中白話。站內「歷史對位/字音字形」為<b>本體系解讀</b>——以文本內證＋史實對位為據，'
+FOOT = ('<footer><p>一起讀紅樓白話 · 白話文解讀書中白話。站內「歷史對位/字音字形」均為<b>提問者個人讀法</b>——本體系或顛覆通識本／紅學定論，<b>不代表學術共識、不具權威性</b>，僅作記錄、自證、開放核對；以文本內證＋史實對位為據，'
         '【用户原话】保留提問者原話、【AI 扩展·待核】為 AI 引申待查證。'
         '<b>本體系以手抄本（甲戌／庚辰）為據，通行本異文處另註</b>。</p><p class="foot-fund"><a href="https://github.com/sponsors/judickzhu" target="_blank" rel="noopener">♥ 資助本站（GitHub Sponsors）</a> —— 用於網站維護。</p></footer>')
 
@@ -488,7 +488,7 @@ def hui_card(n):
         items = "".join(f'<li><span class="tag">{LABEL_TXT.get(t,t)}</span> {x}</li>' for t, x in dec)
         rows.append(f'<section><h2>解碼軌 · 歷史對位與字音字形</h2><ul class="dec">{items}</ul>'
                     '<p class="note">素材出自《紅樓夢解讀總綱·整理版》與 DeepSeek 對話記錄（deepseek_對話提取）對應回目段；'
-                    '【用户原话】為提問者親授、【AI 扩展·待核】為引申待查證。</p></section>')
+                    '【用户原话】為<b>提問者個人讀法</b>（本體系或顛覆通識本／紅學定論，<b>非權威共識</b>）、【AI 扩展·待核】為引申待查證。</p></section>')
     else:
         rows.append('<section><h2>解碼軌 · 歷史對位與字音字形</h2>'
                     '<p class="placeholder">【待解碼】總綱尚未覆蓋本回；框架已就位，內容後續填補。'
@@ -518,7 +518,7 @@ def hui_card(n):
     if pms:
         items = "".join(f'<li><b>{esc(p)}</b> — {esc(c)}</li>' for p, c in pms)
         rows.append(f'<section><h2>詩詞曲戲解讀</h2><ul class="chars">{items}</ul>'
-                    '<p class="note">解讀為提問者自填（「詩詞曲戲解讀檔」），非 AI 代筆。</p></section>')
+                    '<p class="note">解讀為提問者自填（「詩詞曲戲解讀檔」），非 AI 代筆；<b>提問者個人讀法</b>，可能顛覆通識本，<b>非權威共識</b>。</p></section>')
     else:
         rows.append('<section class="fillme"><h2>詩詞曲戲解讀</h2>'
                     '<p class="placeholder">【無詩詞】本回以白話敘事為主（敘事＝前因後果），未錄詩詞——'
