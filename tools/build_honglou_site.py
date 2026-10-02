@@ -1047,13 +1047,15 @@ def shixi_body():
         f'<span class="t-book">{esc(b)}</span><i>→</i>'
         f'<span class="t-hist">{esc(c)}</span>'
         f'<span class="t-judge">判別：{esc(d)}</span></div>' for a,b,c,d in TRACKS)
-    nei_rows = "".join(f'<div class="gen-pair"><span class="book">{esc(a)}</span><i>→</i><span class="hist">{esc(b)}</span></div><p class="dim">{esc(c)}</p>' for a,b,c in NEI)
-    wai_rows = "".join(f'<div class="gen-pair"><span class="book">{esc(a)}</span><i>→</i><span class="hist">{esc(b)}</span></div><p class="dim">{esc(c)}</p>' for a,b,c in WAI)
+    nei_rows = "".join(f'<div class="gen-pair"><span class="book">{esc(a)}</span><i>→</i><span class="hist">{esc(b)}</span></div><p class="dim">{esc(c)}</p>{hui_link_row(re.sub(r"（.*?）", "", a))}' for a,b,c in NEI)
+    wai_rows = "".join(f'<div class="gen-pair"><span class="book">{esc(a)}</span><i>→</i><span class="hist">{esc(b)}</span></div><p class="dim">{esc(c)}</p>{hui_link_row(re.sub(r"（.*?）", "", a))}' for a,b,c in WAI)
     rows = ""
     for g, hui, qing, note in gens:
         rows += (f'<div class="gen"><div class="gen-head">第{g}代</div>'
                  f'<div class="gen-pair"><span class="book">{esc(hui)}</span><i>→</i><span class="hist">{esc(qing)}</span></div>'
-                 f'<p class="dim">{esc(note)}</p></div>')
+                 f'<p class="dim">{esc(note)}</p>'
+                 f'{hui_link_row(re.sub(r"（.*?）", "", hui))}'
+                 f'{hui_link_row(re.sub(r"（.*?）", "", qing))}</div>')
     return f'''<h1>寧國府世系 ＝ 清帝世系</h1>
 {eco_nav("世系")}
 <p class="lead">寧國府＝大家（國/皇權）。其世系即清帝世系——五代入五代：</p>
