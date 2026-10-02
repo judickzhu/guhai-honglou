@@ -399,7 +399,7 @@ def auto_snippets(n, limit=3, maxlen=120):
 
 # ---------------- 页面框架（参照 guhai：header 导航/检索/字号/主题） ----------------
 NAV = [("index.html","首頁"),("chapters/000.html","逐回目錄"),("framework.html","解讀框架"),
-       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("liuyan.html","留言區"),("stats.html","統計"),("zikao.html","字考"),("jilu.html","記錄"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
+       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("liuyan.html","留言區"),("zikao.html","字考"),("jilu.html","記錄"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
 def nav_html(active, sub):
     pre = "../" if sub else ""
     items = []
@@ -424,7 +424,7 @@ FOOT = ('<footer><p>一起讀紅樓白話 · 白話文解讀書中白話。站�
         '【用户原话】保留提問者原話、【AI 扩展·待核】為 AI 引申待查證。'
         '<b>本體系以手抄本（甲戌／庚辰）為據，通行本異文處另註</b>。</p>'
          '<p class="foot-license">© 2026 一起讀紅樓白話 · 內容依 <a href="{pre}LICENSE" rel="license">CC BY-NC-SA 4.0</a> 授權：非商業使用、轉載須署名本站；未經授權不得用作 AI 模型訓練資料。</p>'
-         '<p class="foot-stats">站點統計：瀏覽 <b id="ftV">—</b> · 訪客 <b id="ftU">—</b> · 克隆 <b id="ftC">—</b> · 更新 <span id="ftT">—</span>　<a href="{pre}stats.html">詳見統計頁</a></p>'
+         '<p class="foot-stats">站點統計：瀏覽 <b id="ftV">—</b> · 訪客 <b id="ftU">—</b> · 克隆 <b id="ftC">—</b> · 更新 <span id="ftT">—</span></p>'
          '<p class="foot-fund"><a href="https://github.com/sponsors/judickzhu" target="_blank" rel="noopener">♥ 資助本站（GitHub Sponsors）</a> —— 用於網站維護。</p></footer>')
 
 def page(title, desc, body, active="", sub=False, prefix=""):
@@ -1233,36 +1233,12 @@ def sitemap_xml():
     import datetime
     today = datetime.date.today().isoformat()
     urls = ["404.html", "index.html", "framework.html", "characters.html", "mapping.html",
-            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "stats.html", "zikao.html", "jilu.html", "jinghua.html", "funding.html"]
+            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "jilu.html", "jinghua.html", "funding.html"]
     urls += [f"chapters/{n:03d}.html" for n in range(1, 121)]
     items = "\n".join(
         f'  <url><loc>https://judickzhu.github.io/guhai-honglou/{u}</loc><lastmod>{today}</lastmod></url>'
         for u in urls)
     return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + items + '\n</urlset>\n'
-
-ST_PG_JS = '''<script>/* 統計頁：填充總數與每日趨勢（stats.json） */
-(function(){
-var p=(typeof PREFIX!=="undefined")?PREFIX:"";
-fetch(p+"stats.json").then(function(r){return r.ok?r.json():null}).then(function(d){
-if(!d)return;
-function s(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
-s("pgV",d.views_total);s("pgU",d.views_uniques);s("pgC",d.clones_total);s("pgCU",d.clones_uniques);
-s("pgT",(d.updated_at||"").slice(0,10));
-var tb=document.getElementById("dailyTbl");
-if(tb&&d.daily&&d.daily.length){var rows="";for(var i=0;i<d.daily.length;i++){var r=d.daily[i];rows+="<tr><td>"+r.date+"</td><td>"+r.views+"</td><td>"+r.uniques+"</td></tr>";}
-tb.insertAdjacentHTML("beforeend",rows);}
-}).catch(function(){});})();
-</script>'''
-
-def stats_body():
-    return ( '''<h1>站點瀏覽統計</h1>
-<section><p class="lead">數據來源：<b>GitHub Traffic API</b>（近 14 天），由 GitHub Actions 每日自動更新——非第三方統計，僅本站真實瀏覽／克隆數據。</p>
-<p class="note">瀏覽 <b id="pgV">—</b> 次（獨立訪客 <b id="pgU">—</b>）· 克隆 <b id="pgC">—</b> 次（獨立 <b id="pgCU">—</b>）· 更新 <span id="pgT">—</span></p></section>
-<section><h2>每日瀏覽趨勢（近 14 天）</h2>
-<table class="acts" id="dailyTbl"><tr><th>日期</th><th>瀏覽</th><th>獨立訪客</th></tr></table>
-<p class="note">（某日無數據＝GitHub 當日未記錄流量；克隆數為完整 14 天累計。）</p></section>
-''' + ST_PG_JS)
-
 
 def liuyan_body():
     """留言區：GitHub Issues 為入口，集思優化、改進解讀正確性。"""
@@ -1292,7 +1268,6 @@ def main():
     open(os.path.join(OUT, "shixi.html"), "w", encoding="utf-8").write(page("世系", "寧國府世系=清帝世系", shixi_body(), "世系"))
     open(os.path.join(OUT, "qa.html"), "w", encoding="utf-8").write(page("問答區", "子嗥互動·知識庫瀏覽·迭代更新", qa_body(), "問答區"))
     open(os.path.join(OUT, "liuyan.html"), "w", encoding="utf-8").write(page("留言區", "集思優化·改進解讀正確性", liuyan_body(), "留言區"))
-    open(os.path.join(OUT, "stats.html"), "w", encoding="utf-8").write(page("站點統計", "瀏覽統計·GitHub Traffic", stats_body(), "統計"))
     open(os.path.join(OUT, "funding.html"), "w", encoding="utf-8").write(page("資助本站", "資助用於網站維護", funding_body(), ""))
     open(os.path.join(OUT, "zikao.html"), "w", encoding="utf-8").write(page("生僻字考證·古文白話解讀法", "以粵語白話讀音解讀古文生僻字的方法論——窾／贔屭／罘罳／祿蠢／虢礫𡃈嘞／埞／崖广／鬄匸", zikao_body(), "字考"))
     open(os.path.join(OUT, "chapters", "000.html"), "w", encoding="utf-8").write(page("逐回目錄", "120 回總表", catalog_body(), "逐回目錄", sub=True))
