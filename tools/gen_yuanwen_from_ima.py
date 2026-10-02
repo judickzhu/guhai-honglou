@@ -25,7 +25,7 @@ if os.path.exists(_kbf):
     KB = open(_kbf).read().strip()   # 憑證不進倉庫
 MID_PREFIX = "pdf_ca17ebdc245535d61494ceff12f5a7ca_"
 SKILL_DIR = os.path.expanduser("~/.openclaw/workspace/skills/ima-skill")
-JSON_PATH = os.path.expanduser("~/Downloads/电子书ipa/honglou_yuanwen.json")
+JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "content-source", "honglou_yuanwen.json")
 DL_DIR = "/tmp/ima_pdf"
 NODE = "/Users/macbookair/.workbuddy/binaries/node/versions/22.22.2-2/bin/node"
 PY_VENV = "/Users/macbookair/.workbuddy/binaries/python/envs/default/bin/python"

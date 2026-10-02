@@ -8,7 +8,7 @@
   2. 逐條「通過→已審」/「駁回→刪除」
   3. 手動貼入補充(子嗥窗「⤴ 導出」的 JSON)
   4. 一鍵「重跑生成器 + git 提交推送」(審核通過即入庫上線)
-數據檔: 電子書ipa/honglou_qa_feedback.json
+數據檔: tools/content-source/honglou_qa_feedback.json
 """
 import json, os, subprocess, sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer

@@ -6,13 +6,13 @@ merge_yuanwen_pdfs.py — 把 ima 知识库那套庚辰/甲戌/蒙本 分册 PDF
 
 用法：
     python3 tools/merge_yuanwen_pdfs.py
-输出：<电子书ipa>/红楼梦底本合集_120回.pdf
+输出：<倉庫>/analysis/红楼梦底本合集_120回.pdf
 """
 import os, glob
 from pypdf import PdfWriter, PdfReader
 
 CACHE = "/tmp/ima_pdf"
-OUT = "/Users/macbookair/Downloads/电子书ipa/红楼梦底本合集_120回.pdf"
+OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "analysis", "红楼梦底本合集_120回.pdf")
 
 # (回起, 回止(不含), media_id 后缀, 底本标注) —— 按回序
 SOURCES = [

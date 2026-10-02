@@ -88,9 +88,9 @@ def main():
     ap = argparse.ArgumentParser()
     here = os.path.dirname(os.path.abspath(__file__))
     root = os.path.dirname(here)                       # 網站/
-    ap.add_argument("--sources", default=os.path.join(root, "honglou", "yuanwen_sources"))
-    ap.add_argument("--json", default=os.path.join(os.path.dirname(root), "honglou_yuanwen.json"))
-    ap.add_argument("--chapters", default=os.path.join(root, "honglou", "chapters"))
+    ap.add_argument("--sources", default=os.path.join(root, "tools", "content-source", "yuanwen_sources"))
+    ap.add_argument("--json", default=os.path.join(root, "tools", "content-source", "honglou_yuanwen.json"))
+    ap.add_argument("--chapters", default=os.path.join(root, "chapters"))
     ap.add_argument("--from-chapters", action="store_true")
     args = ap.parse_args()
 
