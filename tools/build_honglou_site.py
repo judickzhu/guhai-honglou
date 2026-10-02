@@ -473,6 +473,11 @@ def related_chapters(n, limit=6):
     rel.sort(key=lambda t: (-t[0], t[1]))
     return [mm for sc, mm in rel[:limit]]
 
+def render_yuanwen(t):
+    """原文渲染：括號內批語以 .pi 標示（正文／批語可辨，供核對）。"""
+    e = esc(t)
+    return re.sub(r"([（(][^（()）]{1,300}[)）])", r'<span class="pi">\1</span>', e)
+
 def hui_card(n):
     num, up, low, act = CH[n-1]
     status = "has" if has_material(n) else "none"
@@ -536,7 +541,7 @@ def hui_card(n):
     if yw:
         rows.append('<section><h2>抄本原文（核對用）</h2>'
                     f'<details><summary>展開原文（{len(yw)} 字）——混合底本轉錄，含批語（括號內）與回前評</summary>'
-                    f'<p class="yuanwen">{esc(yw)}</p></details>'
+                    f'<p class="yuanwen">{render_yuanwen(yw)}</p></details>'
                     '<p class="note">原文無標點（甲戌／庚辰／己卯皆無標點）；本站為混合底本轉錄，不宜逐字抽取，'
                     '通行本標點係後人（程偉元／高鶚）加工，斷句係讀法——詳見「解讀框架」原文三層。</p></section>')
     # 文學軌（機械提取）——CH 為 list，n-1 即本回元組（num, up, low, act）
