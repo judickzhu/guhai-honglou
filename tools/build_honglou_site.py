@@ -631,6 +631,7 @@ def framework_body():
     qu_cnt = sum(1 for _, _, s in qu if s == "已解")
     return f'''
 <h1>逐回解讀框架</h1>
+{eco_nav("解讀框架")}
 <section><h2>【作者定位】閨閣之事（表） · 宮牆之內（裡）</h2>
 <p class="lead"><b>紅樓＝紫禁城外牆之紅色</b>——書名已指宮牆，非尋常人家之樓。表層寫<b>閨閣之事</b>（大旨談情，作者自掩之辭），裡層是<b>宮牆之內</b>的權力與對話。寫書者是<b>行走南書房的人</b>——近臣能入宮庭、聞核心對話；明末清初文人等外人，無從爆出紫禁城的核心對話內容。作者復借第1回石兄與空空道人的對話自述定稿方向：要把《石頭記》<b>修改為「理治之書」</b>。</p><ul class="plain">
 <li><b>中心思想</b>（第76回妙玉續詩）：「<b>贔屭朝光透，罘罳曉露屯</b>」——<b>不在第1回、不在第5回</b>（第1回是開卷敘事總綱、第5回是判詞總綱）。</li>
@@ -759,6 +760,30 @@ CHAR_ROWS = [
  ("賈雨村","<b>多重身分（場景決定）</b>：入京護送黛玉＝多爾袞；風塵懷閨秀＝雍正上位回顧；葫蘆案＝康熙（判決廢太子）；娶嬌杏＝雍正（選胤祥輔助）；不辭而別＝雍正脫離太子黨","「假語村言」回顧上位經歷"),
  ("吳新登／趙國基","八爺黨殘餘（胤禩舊部）⚠️待核","「無新凳」=再無新主登基；趙國基=阿其那——網站體系延伸（四源無逐字錨；「阿其那＝胤禩」為史實 L9638）"),
 ]
+def hui_of_name(name, limit=10):
+    """該名出現在哪些回（解碼素材／總綱／詩詞曲戲）——生態鏈：人物→回卡，實時推導。"""
+    hits = []
+    for n, *_ in CH:
+        texts = [x for _t, x in (CURATED.get(n) or [])]
+        texts += [it.get("text", "") for it in (MENT.get(str(n)) or [])]
+        texts += [nm for nm, _tx in (POEM_DATA.get(str(n)) or [])]
+        if any(name in t for t in texts):
+            hits.append(n)
+            if len(hits) >= limit:
+                break
+    return hits
+
+def hui_link_row(name, limit=10):
+    hits = hui_of_name(name, limit)
+    if not hits:
+        return ""
+    links = "、".join(f'<a href="chapters/{n:03d}.html">{n}</a>' for n in hits)
+    return f'<p class="dim">相關回目：{links}</p>'
+
+def hui_links_row_inline(name, limit=8):
+    hits = hui_of_name(name, limit)
+    return "、".join(f'<a href="chapters/{n:03d}.html">{n}</a>' for n in hits) if hits else "—"
+
 def characters_body():
     arch_rows = ""
     for name, dd in CHARS_ARCH_DATA.items():
@@ -767,16 +792,22 @@ def characters_body():
                       f'<span class="hist">{esc(dd.get("qing",""))}</span></div>'
                       f'<p><em>書内：</em>{esc(dd.get("book",""))}</p>'
                       f'<p><em>反寫/暗線：</em>{esc(dd.get("fanzhuan",""))}</p>'
-                      f'<p class="dim">{esc(dd.get("note",""))}</p></div>')
+                      f'<p class="dim">{esc(dd.get("note",""))}</p>'
+                      f'{hui_link_row(name)}</div>')
     shoufa = CHARS_ARCH_DATA.get('_手法', {})
     sf_rows = "".join(f'<li><b>{esc(k)}</b> — {esc(v)}</li>' for k, v in shoufa.items())
     trs = "".join(f'<tr><td>{esc(a)}</td><td>{b}</td><td class="dim">{esc(c)}</td></tr>' for a,b,c in CHAR_ROWS)
+    trs2 = "".join(
+        f'<tr><td><b>{esc(a.split("（")[0])}</b>{("（" + esc(a.split("（",1)[1])) if "（" in a else ""}</td>'
+        f'<td>{b}</td><td class="dim">{esc(c)}</td><td class="dim">{hui_links_row_inline(a.split("（")[0])}</td></tr>'
+        for a,b,c in CHAR_ROWS)
     return f'''
 <h1>人物對標速查</h1>
+{eco_nav("人物對標")}
 <p class="lead"><b>人物對標＝每回身分的匯總</b>——同一人物隨「所處的線」切換身分（一人多身），故本表列「多重身分」；<b>逐回身分見各回卡「人物點評」區</b>（每回核對）。關係線：世系代際線／兩府矛盾線／父子線／場所切換／官場線。</p>
 <p class="lead">下表為提問者白話解讀的人物─歷史對位（<strong>個人讀法，非共識</strong>）。
 紅樓人物「一人多身、一字多音、真相唯一」，同一角色可有多個歷史投影，隨情節階段切換。</p>
-<table class="chars"><tr><th>書中人物</th><th>歷史對位（提問者讀法）</th><th>備註</th></tr>{trs}</table>
+<table class="chars"><tr><th>書中人物</th><th>歷史對位（提問者讀法）</th><th>備註</th><th>相關回目</th></tr>{trs2}</table>
 <section><h2>核心口訣</h2><ul class="plain">
 <li>寶玉／黛玉／可卿／香菱／晴雯＝胤礽系（太子）</li>
 <li>寶釵／雨村／鶴＝雍正系（胤禛）</li>
@@ -825,6 +856,7 @@ def mapping_body():
                  f'<tr><th>解碼（歷史對位）</th><td>{esc(c)}</td></tr>'
                  f'<tr><th>讀法（方法）</th><td>{esc(d)}</td></tr></table></div>')
     return f'''<h1>三層映射（三生萬物）</h1>
+{eco_nav("人物對標")}
 {eco_nav("三層映射")}
 <p class="lead">三層映射不是並列三層，而是「<strong>三生萬物</strong>」的歷史生成鏈（提問者親授）：</p>
 <div class="sansheng">
@@ -852,6 +884,7 @@ def pingyu_body():
     cnt_hui = sum(1 for h in range(1,121) if PINGYU_DATA.get(str(h)))
     cnt_tiao = sum(len(PINGYU_DATA.get(str(h),[])) for h in range(1,121))
     return f'''<h1>脂批路標總覽</h1>
+{eco_nav("脂批")}
 <p class="lead">脂批是路標——全部批語逐回匯總（帶出處），點回目入回卡。共 {cnt_hui} 回、{cnt_tiao} 條。
 無批語回顯示【未及】待補，不臆造批語（總綱紀律：AI 不可偽造脂批）。</p>
 {''.join(rows)}'''
@@ -865,6 +898,7 @@ def qa_body():
         lis = ''.join(f'<li><b>{esc(q["q"])}</b> — {esc(q["a"][:80])}…' for q in c['qa'][:6])
         cats_html.append(f'<section><h2>{esc(c["title"])}（{len(c["qa"])}條）</h2><ul class="dec">{lis}</ul></section>')
     return f'''<h1>問答區</h1>
+{eco_nav("問答區")}
 <p class="lead">與<strong>子嗥</strong>互動（右下角「嗥」浮窗）：可問九子奪嫡、人物對標、判詞、字音字形、逐回解碼。</p>
 <p class="lead">回答後可按「✎ 補充／糾錯」——你的補充會存下來，管理員執行「導出補充」貼入 「問答回饋檔」，重跑生成即進知識庫（迭代更新）。</p>
 <div class="stat"><b>知識庫現有</b>：下列分類（自動生成於 zi-hao-data.js）</div>
@@ -885,6 +919,7 @@ def qa_body():
 # ---------------- 资助页 ----------------
 def zikao_body():
     return f'''<h1>生僻字考證 · 古文白話解讀法</h1>
+{eco_nav("字考")}
 <p class="lead"><b>方法論</b>：以粵語白話讀音解讀古文生僻字，係「以白話解白話、以口語還原文本」嘅核心工具（L90099）——生僻字唔係死字，係「字典字庫有否記錄」嘅問題（L63773）；每一個漢字都可獨立成義、四個字可組成新義，此乃老祖宗嘅智慧（L63838）。</p>
 <section><h2>方法七條（如何用粵語讀音解字）</h2><ul class="plain">
 <li><b>① 文白異讀對應文言字</b>：窾＝寬、函胡＝含糊、清越＝清悅、埞 deng6——以粵語白讀／文白異讀拆文言字（L18403–18429、L18642）。</li>
@@ -981,6 +1016,7 @@ def shixi_body():
                  f'<div class="gen-pair"><span class="book">{esc(hui)}</span><i>→</i><span class="hist">{esc(qing)}</span></div>'
                  f'<p class="dim">{esc(note)}</p></div>')
     return f'''<h1>寧國府世系 ＝ 清帝世系</h1>
+{eco_nav("世系")}
 <p class="lead">寧國府＝大家（國/皇權）。其世系即清帝世系——五代入五代：</p>
 <p class="note"><b>【核對】</b>此五代入五代之對位屬<b>⚠️解碼層</b>（結構對應，無直接史料）；世系對位是體系的讀法骨架，逐回以文本/脂批/史實逐步核對（✅者如上「阿巴亥殉葬」等史實錨點）。</p>
 <div class="genline">{rows}</div>
@@ -1278,6 +1314,7 @@ def sitemap_xml():
 def liuyan_body():
     """留言區：GitHub Issues 為入口，集思優化、改進解讀正確性。"""
     return '''<h1>留言區 · 集思優化</h1>
+''' + eco_nav("留言區") + '''
 <section><p class="lead">本站解讀為<b>提問者個人讀法</b>——或顛覆通識本／紅學定論，<b>非權威共識</b>。歡迎各方讀者留言：提出更正、補充證據、指正斷章取義，集思優化，改進解讀正確性。</p></section>
 <section><h2>留言方式（GitHub Issues）</h2>
 <p>點此開一個 Issue 留言（建議先登入 GitHub 帳號；無需本站帳號）：</p>

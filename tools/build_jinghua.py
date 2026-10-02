@@ -124,8 +124,11 @@ def main():
     if not os.path.exists(MD_REL):
         print('找不到源文件: %s' % MD_REL)
         sys.exit(1)
-    body = convert(open(MD_REL, encoding='utf-8').read())
-    htmlout = HEADER.replace('TITLE', TITLE).replace('DESC', DESC) + body + FOOTER
+    # 沿用主生成器頁框：導航／頁尾（授權·統計）／生態鏈一次到位
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import build_honglou_site as B
+    body = B.eco_nav("深度精華") + convert(open(MD_REL, encoding='utf-8').read())
+    htmlout = B.page(TITLE.replace('｜一起讀紅樓白話', ''), DESC, body, "深度精華")
     open(OUT_REL, 'w', encoding='utf-8').write(htmlout)
     print('已生成 %s（%s 字元）' % (OUT_REL, len(htmlout)))
 
