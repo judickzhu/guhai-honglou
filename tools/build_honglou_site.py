@@ -115,7 +115,7 @@ ACT_TITLES = {
  6:("敗象顯露：抄檢 · 晴雯夭亡 · 芙蓉誄","中秋聯詩（76 回）=全書解碼樞紐、寒塘渡鶴影=胤祥"),
  7:("後四十回上：黛死釵嫁 · 元妃薨","登基後補錄段（胤祥病逝致後 40 回不完整）"),
  8:("查抄敗落 · 賈母歸天","參與者後人修改補錄段"),
- 9:("順治出家：寶玉卻塵緣 · 歸結紅樓夢","散場寶玉出家＝順治——<b>這是閉環</b>：第1幕順治登基→第9幕順治出家，首尾相接；甄士隱詳說太虛情=順治佛眼觀紅樓"),
+ 9:("順治出家：寶玉卻塵緣 · 歸結紅樓夢","散場寶玉出家＝順治——這是閉環：第1幕順治登基→第9幕順治出家，首尾相接；甄士隱詳說太虛情=順治佛眼觀紅樓"),
 }
 
 # ---------------- 精选解码轨（手工,标注来源） ----------------
@@ -1351,6 +1351,19 @@ def zi_hao_data():
         if k == "_说明": continue
         if v:
             poems[k] = v
+    _strip = lambda t: re.sub(r"<[^>]+>", "", t) if isinstance(t, str) else t
+    for _c in cats:
+        for _qa in _c.get("qa", []):
+            for _k in ("q", "a"):
+                if _k in _qa: _qa[_k] = _strip(_qa[_k])
+            if isinstance(_qa.get("keywords"), list):
+                _qa["keywords"] = [_strip(k) for k in _qa["keywords"]]
+    for _qa in review:
+        for _k in ("q", "a"):
+            if _k in _qa: _qa[_k] = _strip(_qa[_k])
+    for _qa in poems:
+        for _k in ("q", "a"):
+            if _k in _qa: _qa[_k] = _strip(_qa[_k])
     return {"meta": meta, "categories": cats, "charReview": review, "poemReview": poems}
 
 # ---------------- search-data ----------------
