@@ -411,7 +411,7 @@ def auto_snippets(n, limit=3, maxlen=120):
 
 # ---------------- 页面框架（参照 guhai：header 导航/检索/字号/主题） ----------------
 NAV = [("index.html","首頁"),("chapters/000.html","逐回目錄"),("framework.html","解讀框架"),
-       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("liuyan.html","留言區"),("zikao.html","字考"),("jilu.html","記錄"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
+       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("liuyan.html","留言區"),("zikao.html","字考"),("poems.html","詩詞總覽"),("jilu.html","記錄"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
 def nav_html(active, sub):
     pre = "../" if sub else ""
     items = []
@@ -997,6 +997,27 @@ def zikao_table():
         for a, b, c, d in ZIKAO_ROWS)
     return head + body + "</table>"
 
+def poems_body():
+    """詩詞總覽：逐回列出詩詞條目（原詩＋三足解讀），接入生態鏈。"""
+    rows=[]; tot=0; raw_all=0
+    for n, up, low, act in CH:
+        items = POEM_DATA.get(str(n)) or []
+        if not items: continue
+        raw=[x for x in items if "｜原詩" in x[0]]
+        san=[x for x in items if "｜原詩" not in x[0]]
+        tot+=len(items); raw_all+=len(raw)
+        lis="".join(
+            f'<li><b>{esc(nm.split("｜")[0][:60])}</b>'
+            + ('　<span class="tag">原詩</span>' if "｜原詩" in nm else '　<span class="tag">解讀</span>')
+            + '</li>' for nm,_tx in items)
+        rows.append(f'<section><h2><a href="chapters/{n:03d}.html">第{n}回</a>　{esc(up)}</h2>'
+                    f'<p class="dim">詩詞 {len(items)} 條（原詩 {len(raw)} · 解讀 {len(san)}）</p>'
+                    f'<ul class="plain">{lis}</ul></section>')
+    return (f'<h1>詩詞總覽</h1>' + eco_nav("詩詞總覽")
+            + f'<p class="lead">全書詩詞曲戲索引：<b>{tot} 條</b>（其中<b>原詩 {raw_all} 首</b>取自抄本原文，'
+              f'標「原詩」；標「解讀」為三足解讀條目）。點回目進入該回卡核對原文。</p>'
+            + "".join(rows))
+
 def zikao_body():
     return f'''<h1>生僻字考證 · 古文白話解讀法</h1>
 {eco_nav("字考")}
@@ -1165,7 +1186,7 @@ def hui_links(s):
 def eco_nav(active="", pre=""):
     """生態鏈導航：九幕 ↔ 逐回目錄 ↔ 三層映射 ↔ 解讀框架（同源生成，重跑即同步）。"""
     items = [("index.html#acts", "九幕"), ("chapters/000.html", "逐回目錄"),
-             ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
+             ("poems.html", "詩詞總覽"), ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
     lis = "".join(
         (f'<a class="act" href="{pre}{u}">{t}</a>' if t == active else f'<a href="{pre}{u}">{t}</a>')
         for u, t in items)
@@ -1320,6 +1341,7 @@ def zi_hao_data():
             {"q": "被棄鏈係咩", "a": "「棄」字七環（提問者定案·2026-10-02）：女媧棄石（想做天子而判無材）→ 關外二代（努爾哈赤·皇太極）→ 順治棄江山（出家）→ 康熙棄太子（二廢胤礽）→ 胤礽被廢（棄儲位）→ 被抄（棄家業——雍正繼位＝抄咗胤礽嘅家，外部抄·第105回；抄檢大觀園＝內部自抄·第74回）→ 死（棄生命·圈禁至死）→ 寶玉出家（閉環·返回順治）。「抄」＝「棄」嘅執行：廢→抄→死。", "keywords": ["被棄鏈", "棄字七環", "順治棄江山", "抄", "閉環", "寶玉出家"], "ref": "mapping.html"},
             {"q": "點解通識本讀歪", "a": "提問者（2026-10-02）：通識本一直沒有直說此書係九子奪嫡，即係讀歪咗——此書真身係九子奪嫡嘅加密史（理治之書），通識本讀成閨閣閒情／曹家家史／明史，中心思想整個漏掉。因文本被後人修改過，讀「明末清初」要<b>偏清這邊</b>：書主體係清初（九子奪嫡·康熙雍正朝）之事，「明」係掩體／借代。", "keywords": ["通識本", "讀歪", "九子奪嫡", "明末清初", "偏清", "掩體", "理治之書"], "ref": "framework.html"},
             {"q": "全書寫咩 內容分佈", "a": "提問者（2026-10-03）全書內容分佈三層：① 清初段＝交代<b>順治繼位到出家</b>；② 後面大部分＝交代<b>康熙後期九子奪嫡</b>；③ <b>詩詞歌賦＝寫康熙諸子（兒子們）嘅政治抱負</b>——詩詞非閒情吟詠，係諸皇子政治志向之密寫。", "keywords": ["全書內容", "內容分佈", "清初", "順治繼位", "九子奪嫡", "詩詞歌賦", "政治抱負"], "ref": "framework.html"},
+            {"q": "詩詞總覽 喺邊", "a": "本站新增「詩詞總覽」頁（poems.html）：全書詩詞曲戲索引 183 條，其中<b>原詩 115 首</b>直接取自抄本原文（標「原詩」），其餘為三足解讀條目（標「解讀」）；逐回列出、可點回目核對抄本原文。原詩解讀留待提問者逐首補。", "keywords": ["詩詞總覽", "詩詞", "原詩", "索引", "三足解讀"], "ref": "poems.html"},
         ]},
     ]
     for m in manual:
@@ -1402,6 +1424,7 @@ def search_entries():
     ents.append({"url":"qa.html","title":"問答區","text":"問答 互動 子嗥 知識庫 補充 糾錯 迭代更新 九子奪嫡 判詞 字音字形"})
     ents.append({"url":"zikao.html","title":"生僻字考證·古文白話解讀法","text":"生僻字 考證 窾 贔屭 罘罳 祿蠢 虢礫𡃈嘞 埞 崖广 鬄匸 偶 三五 粵語 白話 古文 解讀法 字音字形 方法論"})
     ents.append({"url":"jilu.html","title":"記錄·昨日對話留底","text":"記錄 對話留底 2026-09-26 三國對位 曹魏 蜀漢 東吳 吳玉峰 無冕之王 寶釵夜出嫁 冷月葬屍魂 揚州城 瀋陽"})
+    ents.append({"url":"poems.html","title":"詩詞總覽·全書詩詞曲戲索引","text":"詩詞總覽 詩詞曲戲 原詩 三足解讀 葬花吟 菊花詩 詠白海棠 懷古絕句 五美吟 桃花行 柳絮詞 中秋聯句 芙蓉女兒誄 題帕三絕 春燈謎 花名籤 酒令 大觀園題詠"})
     ents.append({"url":"liuyan.html","title":"留言區·集思優化","text":"留言 集思優化 改進解讀正確性 GitHub Issues 補充 糾錯 更正 開放核對 非權威共識 審核入卡"})
     ents.append({"url":"jinghua.html","title":"深度精華·深度分析報告提純","text":"深度精華 深度分析報告 提純精華版 紅樓夢 古文經典 漢字方言 人生哲思 階級鬥爭 理治 石上偈 空空道人 九子奪嫡 被棄鏈 還淚史"})
     return ents
@@ -1412,7 +1435,7 @@ def sitemap_xml():
     import datetime
     today = datetime.date.today().isoformat()
     urls = ["404.html", "index.html", "framework.html", "characters.html", "mapping.html",
-            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "jilu.html", "jinghua.html", "funding.html"]
+            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "poems.html", "jilu.html", "jinghua.html", "funding.html"]
     urls += [f"chapters/{n:03d}.html" for n in range(1, 121)]
     items = "\n".join(
         f'  <url><loc>https://judickzhu.github.io/guhai-honglou/{u}</loc><lastmod>{today}</lastmod></url>'
@@ -1450,6 +1473,7 @@ def main():
     open(os.path.join(OUT, "liuyan.html"), "w", encoding="utf-8").write(page("留言區", "集思優化·改進解讀正確性", liuyan_body(), "留言區"))
     open(os.path.join(OUT, "funding.html"), "w", encoding="utf-8").write(page("資助本站", "資助用於網站維護", funding_body(), ""))
     open(os.path.join(OUT, "zikao.html"), "w", encoding="utf-8").write(page("生僻字考證·古文白話解讀法", "以粵語白話讀音解讀古文生僻字的方法論——窾／贔屭／罘罳／祿蠢／虢礫𡃈嘞／埞／崖广／鬄匸", zikao_body(), "字考"))
+    open(os.path.join(OUT, "poems.html"), "w", encoding="utf-8").write(page("詩詞總覽", "全書詩詞曲戲索引——逐回列出原詩與三足解讀，可點回目核對抄本原文", poems_body(), "詩詞總覽"))
     open(os.path.join(OUT, "chapters", "000.html"), "w", encoding="utf-8").write(page("逐回目錄", "120 回總表", catalog_body(), "逐回目錄", sub=True))
     for n, *_ in CH:
         open(os.path.join(OUT, "chapters", f"{n:03d}.html"), "w", encoding="utf-8").write(
