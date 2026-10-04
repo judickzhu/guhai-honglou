@@ -496,21 +496,22 @@ def related_chapters(n, limit=6):
     return [mm for sc, mm in rel[:limit]]
 
 YI_COLORS = {
-    "嬴": "#c62828",   # 甲戌本嬴（嬴政之嬴·第2回回前詩）
-    "徔": "#1565c0",   # 從之異體（徔·判詞處）
-    "死": "#2e7d32",   # 冷月葬死魂之死（抄本異文，通行本作花魂）
-    "⻛": "#e65100",   # 部首形「風」
-    "⻓": "#e65100",   # 部首形「長」
-    "⻦": "#e65100",   # 部首形「鳥」
-    "淂": "#00838f",   # 得之異體
-    "踈": "#f57f17",   # 疏之異體
+    "嬴": ("#b71c1c", "#ffebee"),   # 甲戌本嬴（嬴政之嬴）：紅字淡紅底
+    "徔": ("#0d47a1", "#e3f2fd"),   # 從之異體：藍字淡藍底
+    "死": ("#1b5e20", "#e8f5e9"),   # 冷月葬死魂之死：綠字淡綠底
+    "⻛": ("#e65100", "#fff3e0"),   # 部首形風：橙字淡橙底
+    "⻓": ("#e65100", "#fff3e0"),   # 部首形長
+    "⻦": ("#e65100", "#fff3e0"),   # 部首形鳥
+    "淂": ("#006064", "#e0f7fa"),   # 得之異體：青字淡青底
+    "踈": ("#f57f17", "#fff8e1"),   # 疏之異體：琥珀字淡琥珀底
 }
 
 def mark_yi(html, n=None):
-    """抄本異文字以各自顏色標示（全域）——不同異文不同色。"""
-    for ch, c in YI_COLORS.items():
-        html = html.replace(ch, f'<span class="yi" style="color:{c}">{ch}</span>')
+    """抄本異文字以「文字色＋淺底色」標示（全域）——不同異文不同色系，整句不染色。"""
+    for ch, (fc, bg) in YI_COLORS.items():
+        html = html.replace(ch, f'<span class="yi" style="color:{fc};background:{bg}">{ch}</span>')
     return html
+
 
 def mark_poem_yi(txt, n):
     return mark_yi(txt, n)
