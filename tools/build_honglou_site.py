@@ -1486,7 +1486,7 @@ def main():
     open(os.path.join(OUT, "zi-hao-data.js"), "w", encoding="utf-8").write(zh)
     print(f"ok: {OUT}")
     open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8").write(sitemap_xml())
-    print("pages: index+framework+characters+mapping+pingyu+shixi+qa+liuyan+funding + 121 chapter + search-data + zi-hao-data")
+    print("pages: index+framework+characters+mapping+pingyu+shixi+qa+liuyan+zikao+poems+funding + 121 chapter + search-data + zi-hao-data + sitemap")
 
 if __name__ == "__main__":
     main()
