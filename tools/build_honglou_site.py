@@ -894,8 +894,10 @@ def mapping_body():
                  f'<tr><th>解碼（歷史對位）</th><td>{esc(c)}</td></tr>'
                  f'<tr><th>讀法（方法）</th><td>{esc(d)}</td></tr></table></div>')
     return f'''<h1>三層映射（三生萬物）</h1>
-{eco_nav("人物對標")}
 {eco_nav("三層映射")}
+<section class="zx-box"><h2>全書中心思想（統攝之軸）</h2>
+<p class="zx-quote">「贔屭朝光透，罘罳曉露屯」</p>
+<p class="dim">三層映射（三生萬物）即由此中心思想展開——上句（國運之衰）統前段、下句（救亡之志）統後段與諸子政治抱負；詳見<a href="index.html">首頁</a>·<a href="chapters/076.html">第76回</a>。</p></section>
 <p class="lead">三層映射不是並列三層，而是「<strong>三生萬物</strong>」的歷史生成鏈（提問者親授）：</p>
 <div class="sansheng">
   <div class="ss-row"><b>道生一</b><span>孝莊把順治推到入主中原的第一個滿清皇帝</span></div>
