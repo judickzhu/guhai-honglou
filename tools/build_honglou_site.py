@@ -910,7 +910,7 @@ def mapping_body():
 </div>
 <h2>被棄鏈（「棄」字七環）</h2>
 <div class="sansheng">
-  <div class="ss-row"><b>女媧棄石</b><span><b>石頭＝胤礽</b>：補天＝做皇帝之代稱，石頭補不上天＝<b>胤礽冇當上皇帝（被棄）</b>——<b>非順治棄江山</b></span></div>
+  <div class="ss-row"><b>女媧棄石</b><span><b>補天石＝皇權之石：順治、康熙、雍正皆屬</b>（補天＝做皇帝）；<b>胤礽＝補不上天嘅遺棄石</b>（冇當上皇帝·被棄）——<b>非順治棄江山</b></span></div>
   <div class="ss-row"><b>關外二代</b><span>努爾哈赤、皇太極——關外崛起奠基，未入關</span></div>
   <div class="ss-row"><b>順治棄江山</b><span>為情出家——留下權力真空</span></div>
   <div class="ss-row"><b>康熙棄太子</b><span>二廢胤礽——繼承體系崩壞</span></div>
