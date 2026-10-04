@@ -189,3 +189,9 @@ html[data-theme="dark"] .ss-row{background:var(--card)}
   max-height:60vh;overflow:auto}
 details summary{cursor:pointer;color:var(--accent);font-weight:600}
 .yuanwen .pi{color:var(--sub);font-size:.92em}
+
+/* 全書中心思想橫幅 */
+.zx-box{background:linear-gradient(180deg,var(--card),#f7ecdc);border:2px solid var(--accent);border-radius:12px;
+  padding:18px 22px;margin:18px 0;box-shadow:var(--shadow)}
+.zx-box h2{color:var(--accent);margin:0 0 6px}
+.zx-quote{font-size:1.5em;font-weight:700;color:var(--accent2);letter-spacing:2px;margin:6px 0}
