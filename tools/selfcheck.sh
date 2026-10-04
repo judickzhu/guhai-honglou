@@ -10,7 +10,8 @@ bad=[]
 for f in glob.glob('**/*.html', recursive=True):
     if f.startswith(('tools/','.git/')): continue   # 模板/構建資產非站點頁面
     d=os.path.dirname(f)
-    for m in re.findall(r'(?:href|src)="([^"]+)"', open(f,encoding='utf-8',errors='ignore').read()):
+    html = re.sub(r'<script[^>]*>.*?</script>', '', open(f,encoding='utf-8',errors='ignore').read(), flags=re.S)  # 剔除 JS 區塊（拼接字串非靜態連結）
+    for m in re.findall(r'(?:href|src)="([^"]+)"', html):
         if m.startswith(('http','#','mailto')): continue
         p=m.split('#')[0]
         if p and not os.path.exists(os.path.normpath(os.path.join(d,p))): bad.append((f,m))
