@@ -495,6 +495,13 @@ def related_chapters(n, limit=6):
     rel.sort(key=lambda t: (-t[0], t[1]))
     return [mm for sc, mm in rel[:limit]]
 
+def mark_yi(html, n):
+    """甲戌本異文『嬴』（嬴政之嬴）以顏色標示——目前僅第2回回前詩處。"""
+    return html.replace("嬴", '<span class="yi">嬴</span>') if n == 2 else html
+
+def mark_poem_yi(txt, n):
+    return txt.replace("嬴", '<span class="yi">嬴</span>') if n == 2 else txt
+
 def render_yuanwen(t):
     """原文渲染：括號內批語以 .pi 標示（正文／批語可辨，供核對）。"""
     e = esc(t)
@@ -551,7 +558,7 @@ def hui_card(n):
     # 诗词解读（提问者自填位）
     pms = POEM_DATA.get(str(n))
     if pms:
-        items = "".join(f'<li><b>{esc(p)}</b> — {esc(c)}</li>' for p, c in pms)
+        items = "".join(f'<li><b>{mark_poem_yi(esc(p), n)}</b> — {mark_poem_yi(esc(c), n)}</li>' for p, c in pms)
         rows.append(f'<section><h2>詩詞曲戲解讀</h2><ul class="chars">{items}</ul>'
                     '<p class="note">解讀為提問者自填（「詩詞曲戲解讀檔」），非 AI 代筆；<b>提問者個人讀法</b>，可能顛覆通識本，<b>非權威共識</b>。</p></section>')
     else:
@@ -563,7 +570,7 @@ def hui_card(n):
     if yw:
         rows.append('<section><h2>抄本原文（核對用）</h2>'
                     f'<details><summary>展開原文（{len(yw)} 字）——混合底本轉錄，含批語（括號內）與回前評</summary>'
-                    f'<p class="yuanwen">{render_yuanwen(yw)}</p></details>'
+                    f'<p class="yuanwen">{mark_yi(render_yuanwen(yw), n)}</p></details>'
                     '<p class="note">原文無標點（甲戌／庚辰／己卯皆無標點）；本站為混合底本轉錄，不宜逐字抽取，得異文另註' + ('（<b>第76回異文</b>：抄本有作「冷月葬死魂」者，本站從通行本作「葬花魂」——「花魂」理應理解為菊花）' if n == 76 else '') + '，'
                     '通行本標點係後人（程偉元／高鶚）加工，斷句係讀法——詳見「解讀框架」原文三層。</p></section>')
     # 文學軌（機械提取）——CH 為 list，n-1 即本回元組（num, up, low, act）
