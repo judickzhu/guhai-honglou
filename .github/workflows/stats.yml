@@ -12,25 +12,17 @@ jobs:
       - uses: actions/checkout@v4
       - name: 取瀏覽統計（Traffic API）並寫入 stats.json
         env:
-          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          # 修正點：github.token（自動 GITHUB_TOKEN）沒有 traffic 權限，
-          # 必須用你自己建的 classic PAT（勾 repo scope），存成 repo secret TRAFFIC_TOKEN。
-          set -o pipefail
-          if ! curl -sf -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/traffic/views" -o /tmp/views.json; then
-            echo "::error::traffic/views 失敗（401/403 通常是 token 沒權限，請確認 TRAFFIC_TOKEN 是 classic PAT 且有 repo scope）"
-            exit 1
-          fi
-          if ! curl -sf -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/traffic/clones" -o /tmp/clones.json; then
-            echo "::warning::traffic/clones 失敗（不影響主統計）"
-            echo '{}' > /tmp/clones.json
-          fi
+          curl -sf -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/traffic/views" -o /tmp/views.json
+          curl -sf -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/traffic/clones" -o /tmp/clones.json
           python3 - <<'EOF'
           import json, datetime
           v = json.load(open('/tmp/views.json')); c = json.load(open('/tmp/clones.json'))
           today = datetime.date.today().isoformat()
+          # 累計訪客（第幾位訪客）：取今日 unique 增量，防同日重複計入
           cum = {"cumulative_visitors": 0, "last_counted_date": ""}
           try:
               old = json.load(open('stats.json', encoding='utf-8'))
@@ -53,6 +45,7 @@ jobs:
             "daily": [{"date": d["timestamp"][:10], "views": d["count"], "uniques": d["uniques"]}
                       for d in v.get("views", [])]
           }
+          # 克隆數僅站主本人可查（gh api repos/{owner}/{repo}/traffic/clones），不入公開 stats.json
           print("克隆（僅站主）:", c.get("count", 0), c.get("uniques", 0))
           json.dump(data, open('stats.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
           EOF
