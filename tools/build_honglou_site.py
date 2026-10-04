@@ -827,7 +827,8 @@ def characters_body():
     sf_rows = "".join(f'<li><b>{esc(k)}</b> — {esc(v)}</li>' for k, v in shoufa.items())
     trs = "".join(f'<tr><td>{esc(a)}</td><td>{b}</td><td class="dim">{esc(c)}</td></tr>' for a,b,c in CHAR_ROWS)
     trs2 = "".join(
-        f'<tr><td><b>{esc(a.split("（")[0])}</b>{("（" + esc(a.split("（",1)[1])) if "（" in a else ""}</td>'
+        f'<tr><td><b>{esc(a.split("（")[0])}</b>{("（" + esc(a.split("（",1)[1])) if "（" in a else ""}'
+        f'　<a class="s" href="yuanwen.html?q={esc(a.split("（")[0][:4])}">原文搜</a></td>'
         f'<td>{b}</td><td class="dim">{esc(c)}</td><td class="dim">{hui_links_row_inline(a.split("（")[0])}</td></tr>'
         for a,b,c in CHAR_ROWS)
     return f'''
@@ -998,6 +999,13 @@ def zikao_table():
         for a, b, c, d in ZIKAO_ROWS)
     return head + body + "</table>"
 
+def poem_q(nm):
+    """詩名→原文搜查詢詞：取詩題（如『菊花詩·憶菊』→『憶菊』；『判詞（香菱）…』→『根并荷花』）。"""
+    t = nm.split("｜")[0].split("（")[0]
+    for sep in ("·", "／", "「"):
+        if sep in t: t = t.split(sep)[-1]
+    return t.strip()[:6] or "紅樓夢"
+
 def poems_body():
     """詩詞總覽：逐回列出詩詞條目（原詩＋三足解讀），接入生態鏈。"""
     rows=[]; tot=0; raw_all=0
@@ -1010,6 +1018,7 @@ def poems_body():
         lis="".join(
             f'<li><b>{esc(nm.split("｜")[0][:60])}</b>'
             + ('　<span class="tag">原詩</span>' if "｜原詩" in nm else '　<span class="tag">解讀</span>')
+            + f'　<a class="s" href="yuanwen.html?q={esc(poem_q(nm))}">原文搜</a>'
             + '</li>' for nm,_tx in items)
         rows.append(f'<section><h2><a href="chapters/{n:03d}.html">第{n}回</a>　{esc(up)}</h2>'
                     f'<p class="dim">詩詞 {len(items)} 條（原詩 {len(raw)} · 解讀 {len(san)}）</p>'
