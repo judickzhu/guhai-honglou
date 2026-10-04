@@ -13,7 +13,7 @@ for f in glob.glob('**/*.html', recursive=True):
     html = re.sub(r'<script[^>]*>.*?</script>', '', open(f,encoding='utf-8',errors='ignore').read(), flags=re.S)  # 剔除 JS 區塊（拼接字串非靜態連結）
     for m in re.findall(r'(?:href|src)="([^"]+)"', html):
         if m.startswith(('http','#','mailto')): continue
-        p=m.split('#')[0]
+        p=m.split('#')[0].split('?')[0]
         if p and not os.path.exists(os.path.normpath(os.path.join(d,p))): bad.append((f,m))
 print('  斷鏈:', len(bad))
 for b in bad[:8]: print('   ', b)

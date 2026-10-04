@@ -993,7 +993,8 @@ def zikao_table():
     head = ('<table class="acts"><tr><th>字</th><th>粵音／拆解</th><th>破譯</th>'
             '<th>錨位</th><th>見於回目（原文）</th></tr>')
     body = "".join(
-        f'<tr><td>{a}</td><td>{b}</td><td>{c}</td><td>{d}</td><td>{char_chapters(a)}</td></tr>'
+        f'<tr><td>{a}　<a class="s" href="yuanwen.html?q={a.split("／")[0][:2]}">原文搜</a></td>'
+        f'<td>{b}</td><td>{c}</td><td>{d}</td><td>{char_chapters(a)}</td></tr>'
         for a, b, c, d in ZIKAO_ROWS)
     return head + body + "</table>"
 
@@ -1482,6 +1483,9 @@ YUANWEN_JS = """
     });
   }
   inp.addEventListener('input',run);
+  // 支援 URL 參數 ?q=字（字考/詩詞等頁可深連結）
+  var qp=new URLSearchParams(location.search).get('q');
+  if(qp){inp.value=qp;run();}
 })();
 """
 

@@ -59,6 +59,9 @@
     });
   }
   inp.addEventListener('input',run);
+  // 支援 URL 參數 ?q=字（字考/詩詞等頁可深連結）
+  var qp=new URLSearchParams(location.search).get('q');
+  if(qp){inp.value=qp;run();}
 })();
 </script>
 </main>
