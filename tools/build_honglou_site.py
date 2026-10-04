@@ -495,12 +495,26 @@ def related_chapters(n, limit=6):
     rel.sort(key=lambda t: (-t[0], t[1]))
     return [mm for sc, mm in rel[:limit]]
 
-def mark_yi(html, n):
-    """甲戌本異文『嬴』（嬴政之嬴）以顏色標示——目前僅第2回回前詩處。"""
-    return html.replace("嬴", '<span class="yi">嬴</span>') if n == 2 else html
+YI_COLORS = {
+    "嬴": "#c62828",   # 甲戌本嬴（嬴政之嬴·第2回回前詩）
+    "徔": "#1565c0",   # 從之異體（徔·判詞處）
+    "死": "#2e7d32",   # 冷月葬死魂之死（抄本異文，通行本作花魂）
+    "⻛": "#e65100",   # 部首形「風」
+    "⻓": "#e65100",   # 部首形「長」
+    "⻦": "#e65100",   # 部首形「鳥」
+    "淂": "#00838f",   # 得之異體
+    "踈": "#f57f17",   # 疏之異體
+}
+
+def mark_yi(html, n=None):
+    """抄本異文字以各自顏色標示（全域）——不同異文不同色。"""
+    for ch, c in YI_COLORS.items():
+        html = html.replace(ch, f'<span class="yi" style="color:{c}">{ch}</span>')
+    return html
 
 def mark_poem_yi(txt, n):
-    return txt.replace("嬴", '<span class="yi">嬴</span>') if n == 2 else txt
+    return mark_yi(txt, n)
+
 
 def render_yuanwen(t):
     """原文渲染：括號內批語以 .pi 標示（正文／批語可辨，供核對）。"""
