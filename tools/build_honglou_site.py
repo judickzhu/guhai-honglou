@@ -620,7 +620,9 @@ def index_body():
 <p><a href="chapters/076.html">第76回原詩</a> · <a href="framework.html">解讀框架</a> · <a href="yuanwen.html?q=贔屭">原文搜「贔屭」</a> · <a href="yuanwen.html?q=罘罳">原文搜「罘罳」</a></p>
 </section>
 <section id="acts"><h2>全書九幕（總坐標）</h2>
-{eco_nav("九幕")}<div class="actgrid">{"".join(act_links)}</div></section>
+{eco_nav("九幕")}
+<p class="dim">九幕圍繞全書中心思想「贔屭朝光透，罘罳曉露屯」展開——<b>第1幕順治登基（朝光透·國運初啟）→ 第9幕順治出家（閉環·曉露屯後之歸宿）</b>，首尾相接；中間各幕即奪嫡與改革之局。</p>
+<div class="actgrid">{"".join(act_links)}</div></section>
 <section><h2>已解碼回目（素材入口）</h2><p class="chips">{covered_chips}</p>
 <p class="note">章回後期（81–120 回）素材稀少，屬正常——總綱原以「前 80 回解碼」為重，後 40 回多為補錄段，待後續對話增補。</p></section>
 '''
