@@ -436,8 +436,8 @@ FOOT = ('<footer><p>一起讀紅樓白話 · 白話文解讀書中白話。站�
         '【用户原话】保留提問者原話、【AI 扩展·待核】為 AI 引申待查證。'
         '<b>本體系以手抄本（甲戌／庚辰）為據，通行本異文處另註</b>。</p>'
          '<p class="foot-license">© 2026 一起讀紅樓白話 · 內容依 <a href="{pre}LICENSE" rel="license">CC BY-NC-SA 4.0</a> 授權：非商業使用、轉載須署名本站；未經授權不得用作 AI 模型訓練資料。</p>'
-         '<p class="foot-stats">站點統計：瀏覽 <b id="ftV">—</b> · 訪客 <b id="ftU">—</b> · 更新 <span id="ftT">—</span></p>'
-        '<p class="foot-visits"><b style="color:#2e7d32">你是第 <span id="ftVis">—</span> 位訪客</b>（本站累計·GitHub Traffic 每日更新）</p>' 
+         '<p class="foot-stats">倉庫瀏覽（GitHub Traffic·非頁面訪問）：<b id="ftV">—</b> · 訪客 <b id="ftU">—</b> · 更新 <span id="ftT">—</span></p>'
+        '<p class="foot-visits"><b style="color:#2e7d32">你是第 <span id="ftVis">—</span> 位訪客</b>（累計取自 GitHub 倉庫 Traffic·每日更新；GitHub Pages 不提供頁面訪問統計）</p>' 
          '<p class="foot-fund"><a href="https://github.com/sponsors/judickzhu" target="_blank" rel="noopener">♥ 資助本站（GitHub Sponsors）</a> —— 用於網站維護。</p></footer>')
 
 def page(title, desc, body, active="", sub=False, prefix=""):
