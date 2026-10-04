@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>抄本原文全文檢索｜一起讀紅樓白話</title>
+<meta name="description" content="直接搜尋抄本原文 120 回 989,322 字——查字查句查異文，命中即回該回核對區">
+<meta property="og:title" content="抄本原文全文檢索">
+<meta property="og:description" content="直接搜尋抄本原文 120 回 989,322 字——查字查句查異文，命中即回該回核對區">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="style.css">
+<script>var PREFIX="";</script>
+</head><body>
+<header><div class="bar"><a class="brand" href="index.html">一起讀紅樓白話</a><nav><a href="index.html">首頁</a><a href="chapters/000.html">逐回目錄</a><a href="framework.html">解讀框架</a><a href="characters.html">人物對標</a><a href="mapping.html">三層映射</a><a href="pingyu.html">脂批</a><a href="jiaxu.html">甲戌本</a><a href="shixi.html">世系</a><a href="qa.html">問答區</a><a href="liuyan.html">留言區</a><a href="zikao.html">字考</a><a href="poems.html">詩詞總覽</a><a class="act" href="yuanwen.html">原文檢索</a><a href="jilu.html">記錄</a><a href="jinghua.html">深度精華</a><a href="index.html#acts">九幕</a></nav></div><div class="tools"><input id="q" placeholder="檢索全部回目…" onkeyup="if(event.key=='Enter')searchSite()"><button onclick="searchSite()">檢索</button><span class="spacer"></span><button class="tbtn" onclick="setSize('s')" title="小字">A</button><button class="tbtn" onclick="setSize('m')" title="中字">A</button><button class="tbtn" onclick="setSize('l')" title="大字">A</button><button class="tbtn" onclick="toggleTheme()" id="themeBtn">◐</button></div><div id="sr" class="sr hidden"></div></header>
+<main>
+<h1>抄本原文全文檢索</h1><p class="eco-nav"><b>生態鏈</b>：<a href="index.html#acts">九幕</a><a href="chapters/000.html">逐回目錄</a><a href="poems.html">詩詞總覽</a><a class="act" href="yuanwen.html">原文檢索</a><a href="mapping.html">三層映射</a><a href="framework.html">解讀框架</a><span class="dim">（同源生成 · 內容增即同步）</span></p>
+<p class="lead">直接搜尋<b>抄本原文</b>（120 回·989,322 字·混合底本轉錄）——查字、查句、查異文，命中即回該回卡的「抄本原文（核對用）」區。</p>
+<p><input id="ywQ" type="search" placeholder="輸入字詞，如：贔屭／徔／冷月／葬花魂" style="width:min(100%,420px);padding:8px 10px;font-size:1em;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)"></p>
+<p class="note">首次檢索會下載原文資料（約 2.6MB）——其後即時。原文為混合底本轉錄，含批語與重文號，不宜逐字抽取；通行本用字或異（風→⻛、長→⻓、鳥→⻦）。</p>
+<div id="ywOut"></div>
+<script>
+(function(){
+  var data=null,loading=false,pending=null;
+  var inp=document.getElementById('ywQ'),out=document.getElementById('ywOut');
+  if(!inp)return;
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function load(cb){
+    if(data){cb();return;}
+    if(loading){pending=cb;return;}
+    loading=true;out.innerHTML='<p class="dim">首次載入抄本原文（約 2.6MB）…</p>';
+    var sc=document.createElement('script');sc.src='yuanwen.js';
+    sc.onload=function(){data=window.YW;loading=false;cb();if(pending){var f=pending;pending=null;f();}};
+    sc.onerror=function(){out.innerHTML='<p class="dim">載入失敗，請重新整理再試。</p>';loading=false;};
+    document.head.appendChild(sc);
+  }
+  function run(){
+    var q=(inp.value||'').trim();
+    if(!q){out.innerHTML='';return;}
+    load(function(){
+      var hits=[],total=0;
+      for(var k in data){
+        var t=data[k],i=t.indexOf(q);
+        if(i<0)continue;
+        var n=0,sn=[];
+        while(i>=0&&n<5){
+          sn.push('…'+esc(t.substring(Math.max(0,i-26),i))+'<mark>'+esc(t.substr(i,q.length))+'</mark>'+esc(t.substring(i+q.length,i+q.length+26))+'…');
+          n++;total++;i=t.indexOf(q,i+q.length);
+        }
+        hits.push([parseInt(k,10),n,sn]);
+      }
+      hits.sort(function(a,b){return a[0]-b[0];});
+      if(!hits.length){out.innerHTML='<p class="dim">原文中找不到「'+esc(q)+'」。本站原文為混合底本轉錄，通行本用字或異（如風→⻛、長→⻓）。</p>';return;}
+      var h='<p class="lead">「<b>'+esc(q)+'</b>」見於 <b>'+hits.length+'</b> 回，共 <b>'+total+'</b> 處：</p>';
+      hits.forEach(function(it){
+        var nn=('00'+it[0]).slice(-3);
+        h+='<section><h2><a href="chapters/'+nn+'.html">第'+it[0]+'回</a>　<span class="dim">'+it[1]+' 處</span></h2><ul class="plain">';
+        it[2].forEach(function(x){h+='<li>'+x+'</li>';});
+        h+='</ul></section>';
+      });
+      out.innerHTML=h;
+    });
+  }
+  inp.addEventListener('input',run);
+})();
+</script>
+</main>
+<footer><p>一起讀紅樓白話 · 白話文解讀書中白話。站內「歷史對位/字音字形」均為<b>提問者個人讀法</b>——本體系或顛覆通識本／紅學定論，<b>不代表學術共識、不具權威性</b>，僅作記錄、自證、開放核對；以文本內證＋史實對位為據，【用户原话】保留提問者原話、【AI 扩展·待核】為 AI 引申待查證。<b>本體系以手抄本（甲戌／庚辰）為據，通行本異文處另註</b>。</p><p class="foot-license">© 2026 一起讀紅樓白話 · 內容依 <a href="LICENSE" rel="license">CC BY-NC-SA 4.0</a> 授權：非商業使用、轉載須署名本站；未經授權不得用作 AI 模型訓練資料。</p><p class="foot-stats">倉庫瀏覽（GitHub Traffic·非頁面訪問）：<b id="ftV">—</b> · 訪客 <b id="ftU">—</b> · 更新 <span id="ftT">—</span></p><p class="foot-visits"><b style="color:#2e7d32">你是第 <span id="ftVis">—</span> 位訪客</b>（累計取自 GitHub 倉庫 Traffic·每日更新；GitHub Pages 不提供頁面訪問統計）</p><p class="foot-fund"><a href="https://github.com/sponsors/judickzhu" target="_blank" rel="noopener">♥ 資助本站（GitHub Sponsors）</a> —— 用於網站維護。</p></footer>
+<script src="app.js"></script>
+<script src="search-data.js"></script>
+<script src="zi-hao-data.js"></script>
+<script src="zi-hao.js"></script>
+</body></html>

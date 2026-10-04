@@ -411,7 +411,7 @@ def auto_snippets(n, limit=3, maxlen=120):
 
 # ---------------- 页面框架（参照 guhai：header 导航/检索/字号/主题） ----------------
 NAV = [("index.html","首頁"),("chapters/000.html","逐回目錄"),("framework.html","解讀框架"),
-       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("liuyan.html","留言區"),("zikao.html","字考"),("poems.html","詩詞總覽"),("jilu.html","記錄"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
+       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("liuyan.html","留言區"),("zikao.html","字考"),("poems.html","詩詞總覽"),("yuanwen.html","原文檢索"),("jilu.html","記錄"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
 def nav_html(active, sub):
     pre = "../" if sub else ""
     items = []
@@ -1018,6 +1018,14 @@ def poems_body():
               f'標「原詩」；標「解讀」為三足解讀條目）。點回目進入該回卡核對原文。</p>'
             + "".join(rows))
 
+def yuanwen_body():
+    return (f'''<h1>抄本原文全文檢索</h1>{eco_nav("原文檢索")}
+<p class="lead">直接搜尋<b>抄本原文</b>（120 回·989,322 字·混合底本轉錄）——查字、查句、查異文，命中即回該回卡的「抄本原文（核對用）」區。</p>
+<p><input id="ywQ" type="search" placeholder="輸入字詞，如：贔屭／徔／冷月／葬花魂" style="width:min(100%,420px);padding:8px 10px;font-size:1em;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)"></p>
+<p class="note">首次檢索會下載原文資料（約 2.6MB）——其後即時。原文為混合底本轉錄，含批語與重文號，不宜逐字抽取；通行本用字或異（風→⻛、長→⻓、鳥→⻦）。</p>
+<div id="ywOut"></div>
+<script>{YUANWEN_JS}</script>''')
+
 def zikao_body():
     return f'''<h1>生僻字考證 · 古文白話解讀法</h1>
 {eco_nav("字考")}
@@ -1186,7 +1194,7 @@ def hui_links(s):
 def eco_nav(active="", pre=""):
     """生態鏈導航：九幕 ↔ 逐回目錄 ↔ 三層映射 ↔ 解讀框架（同源生成，重跑即同步）。"""
     items = [("index.html#acts", "九幕"), ("chapters/000.html", "逐回目錄"),
-             ("poems.html", "詩詞總覽"), ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
+             ("poems.html", "詩詞總覽"), ("yuanwen.html", "原文檢索"), ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
     lis = "".join(
         (f'<a class="act" href="{pre}{u}">{t}</a>' if t == active else f'<a href="{pre}{u}">{t}</a>')
         for u, t in items)
@@ -1424,18 +1432,71 @@ def search_entries():
     ents.append({"url":"qa.html","title":"問答區","text":"問答 互動 子嗥 知識庫 補充 糾錯 迭代更新 九子奪嫡 判詞 字音字形"})
     ents.append({"url":"zikao.html","title":"生僻字考證·古文白話解讀法","text":"生僻字 考證 窾 贔屭 罘罳 祿蠢 虢礫𡃈嘞 埞 崖广 鬄匸 偶 三五 粵語 白話 古文 解讀法 字音字形 方法論"})
     ents.append({"url":"jilu.html","title":"記錄·昨日對話留底","text":"記錄 對話留底 2026-09-26 三國對位 曹魏 蜀漢 東吳 吳玉峰 無冕之王 寶釵夜出嫁 冷月葬屍魂 揚州城 瀋陽"})
+    ents.append({"url":"yuanwen.html","title":"抄本原文全文檢索","text":"原文檢索 抄本原文 全文檢索 120回 989322字 混合底本 異文 風⻛ 長⻓ 鳥⻦ 核對"})
     ents.append({"url":"poems.html","title":"詩詞總覽·全書詩詞曲戲索引","text":"詩詞總覽 詩詞曲戲 原詩 三足解讀 葬花吟 菊花詩 詠白海棠 懷古絕句 五美吟 桃花行 柳絮詞 中秋聯句 芙蓉女兒誄 題帕三絕 春燈謎 花名籤 酒令 大觀園題詠"})
     ents.append({"url":"liuyan.html","title":"留言區·集思優化","text":"留言 集思優化 改進解讀正確性 GitHub Issues 補充 糾錯 更正 開放核對 非權威共識 審核入卡"})
     ents.append({"url":"jinghua.html","title":"深度精華·深度分析報告提純","text":"深度精華 深度分析報告 提純精華版 紅樓夢 古文經典 漢字方言 人生哲思 階級鬥爭 理治 石上偈 空空道人 九子奪嫡 被棄鏈 還淚史"})
     return ents
 
 
+YUANWEN_JS = """
+(function(){
+  var data=null,loading=false,pending=null;
+  var inp=document.getElementById('ywQ'),out=document.getElementById('ywOut');
+  if(!inp)return;
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function load(cb){
+    if(data){cb();return;}
+    if(loading){pending=cb;return;}
+    loading=true;out.innerHTML='<p class="dim">首次載入抄本原文（約 2.6MB）…</p>';
+    var sc=document.createElement('script');sc.src='yuanwen.js';
+    sc.onload=function(){data=window.YW;loading=false;cb();if(pending){var f=pending;pending=null;f();}};
+    sc.onerror=function(){out.innerHTML='<p class="dim">載入失敗，請重新整理再試。</p>';loading=false;};
+    document.head.appendChild(sc);
+  }
+  function run(){
+    var q=(inp.value||'').trim();
+    if(!q){out.innerHTML='';return;}
+    load(function(){
+      var hits=[],total=0;
+      for(var k in data){
+        var t=data[k],i=t.indexOf(q);
+        if(i<0)continue;
+        var n=0,sn=[];
+        while(i>=0&&n<5){
+          sn.push('…'+esc(t.substring(Math.max(0,i-26),i))+'<mark>'+esc(t.substr(i,q.length))+'</mark>'+esc(t.substring(i+q.length,i+q.length+26))+'…');
+          n++;total++;i=t.indexOf(q,i+q.length);
+        }
+        hits.push([parseInt(k,10),n,sn]);
+      }
+      hits.sort(function(a,b){return a[0]-b[0];});
+      if(!hits.length){out.innerHTML='<p class="dim">原文中找不到「'+esc(q)+'」。本站原文為混合底本轉錄，通行本用字或異（如風→⻛、長→⻓）。</p>';return;}
+      var h='<p class="lead">「<b>'+esc(q)+'</b>」見於 <b>'+hits.length+'</b> 回，共 <b>'+total+'</b> 處：</p>';
+      hits.forEach(function(it){
+        var nn=('00'+it[0]).slice(-3);
+        h+='<section><h2><a href="chapters/'+nn+'.html">第'+it[0]+'回</a>　<span class="dim">'+it[1]+' 處</span></h2><ul class="plain">';
+        it[2].forEach(function(x){h+='<li>'+x+'</li>';});
+        h+='</ul></section>';
+      });
+      out.innerHTML=h;
+    });
+  }
+  inp.addEventListener('input',run);
+})();
+"""
+
+def yuanwen_js():
+    """原文全文檢索資料（延遲載入）：window.YW = {回: 原文}。"""
+    import json as _j
+    ks = sorted([k for k in YUANWEN_DATA if k.isdigit()], key=int)
+    return "window.YW=" + _j.dumps({k: YUANWEN_DATA[k] for k in ks}, ensure_ascii=False, separators=(",", ":")) + ";\n"
+
 def sitemap_xml():
     """生成 sitemap.xml：站點全部頁面（根頁＋副頁＋120 回卡），保持與生成頁同步。"""
     import datetime
     today = datetime.date.today().isoformat()
     urls = ["404.html", "index.html", "framework.html", "characters.html", "mapping.html",
-            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "poems.html", "jilu.html", "jinghua.html", "funding.html"]
+            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "poems.html", "yuanwen.html", "jilu.html", "jinghua.html", "funding.html"]
     urls += [f"chapters/{n:03d}.html" for n in range(1, 121)]
     items = "\n".join(
         f'  <url><loc>https://judickzhu.github.io/guhai-honglou/{u}</loc><lastmod>{today}</lastmod></url>'
@@ -1474,6 +1535,7 @@ def main():
     open(os.path.join(OUT, "funding.html"), "w", encoding="utf-8").write(page("資助本站", "資助用於網站維護", funding_body(), ""))
     open(os.path.join(OUT, "zikao.html"), "w", encoding="utf-8").write(page("生僻字考證·古文白話解讀法", "以粵語白話讀音解讀古文生僻字的方法論——窾／贔屭／罘罳／祿蠢／虢礫𡃈嘞／埞／崖广／鬄匸", zikao_body(), "字考"))
     open(os.path.join(OUT, "poems.html"), "w", encoding="utf-8").write(page("詩詞總覽", "全書詩詞曲戲索引——逐回列出原詩與三足解讀，可點回目核對抄本原文", poems_body(), "詩詞總覽"))
+    open(os.path.join(OUT, "yuanwen.html"), "w", encoding="utf-8").write(page("抄本原文全文檢索", "直接搜尋抄本原文 120 回 989,322 字——查字查句查異文，命中即回該回核對區", yuanwen_body(), "原文檢索"))
     open(os.path.join(OUT, "chapters", "000.html"), "w", encoding="utf-8").write(page("逐回目錄", "120 回總表", catalog_body(), "逐回目錄", sub=True))
     for n, *_ in CH:
         open(os.path.join(OUT, "chapters", f"{n:03d}.html"), "w", encoding="utf-8").write(
@@ -1485,6 +1547,7 @@ def main():
     zh = "window.ZiHaoKB=" + json.dumps(zi_hao_data(), ensure_ascii=False) + ";"
     open(os.path.join(OUT, "zi-hao-data.js"), "w", encoding="utf-8").write(zh)
     print(f"ok: {OUT}")
+    open(os.path.join(OUT, "yuanwen.js"), "w", encoding="utf-8").write(yuanwen_js())
     open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8").write(sitemap_xml())
     print("pages: index+framework+characters+mapping+pingyu+shixi+qa+liuyan+zikao+poems+funding + 121 chapter + search-data + zi-hao-data + sitemap")
 
