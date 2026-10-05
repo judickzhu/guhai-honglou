@@ -424,7 +424,7 @@ def auto_snippets(n, limit=3, maxlen=120):
 
 # ---------------- 页面框架（参照 guhai：header 导航/检索/字号/主题） ----------------
 NAV = [("index.html","首頁"),("chapters/000.html","逐回目錄"),("framework.html","解讀框架"),
-       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("liuyan.html","留言區"),("zikao.html","字考"),("poems.html","詩詞總覽"),("yuanwen.html","原文檢索"),("jilu.html","記錄"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
+       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("liuyan.html","留言區"),("zikao.html","字考"),("poems.html","詩詞總覽"),("nianbiao.html","年表"),("yuanwen.html","原文檢索"),("jilu.html","記錄"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
 def nav_html(active, sub):
     pre = "../" if sub else ""
     items = []
@@ -1062,6 +1062,60 @@ def poem_q(nm):
         if sep in t: t = t.split(sep)[-1]
     return t.strip()[:6] or "紅樓夢"
 
+NIANBIAO = [
+    ("清帝與后妃", [
+        ("努爾哈赤", "1559–1626", "天命：關外奠基"),
+        ("皇太極", "1592–1643", "崇德：1636稱帝；1643崩"),
+        ("多爾袞", "1612–1650", "皇父攝政王；1650卒、死後削爵掘墳"),
+        ("孝莊文皇后", "1613–1688", "康熙二十六年卒（九子奪嫡前已逝）"),
+        ("順治（福臨）", "1638–1661", "1643即位（6歲）·1644入關·1661「崩」（23歲）／出家說"),
+        ("康熙（玄燁）", "1654–1722", "1661即位（8歲）·1722崩（69虛歲）"),
+        ("雍正（胤禛）", "1678.12.13–1735", "1722繼位（45虛歲）·1735崩（58虛歲）"),
+        ("乾隆（弘曆）", "1711–1799", "1735即位（25虛歲）"),
+    ]),
+    ("康熙諸子（奪嫡關鍵）", [
+        ("胤褆（大阿哥）", "1672–1735", "1708被圈禁"),
+        ("胤礽（太子）", "1674–1725", "1708一廢（35虛歲）·1712二廢（39虛歲）·1725卒（52虛歲）"),
+        ("胤祉（三）", "1677–1732", "雍正朝被禁"),
+        ("胤禛（四·雍正）", "1678–1735", "1708時29實歲·1722繼位"),
+        ("胤禩（八）", "1681–1726", "雍正朝被清算（阿其那）"),
+        ("胤禟（九）", "1683–1726", "與老十同年生；雍正朝被清算（塞思黑）"),
+        ("胤䄉（十）", "1683–1741", "與老九同年生"),
+        ("胤祥（十三）", "1686–1730", "雍正八年卒（45虛歲）·累死"),
+        ("胤禵（十四）", "1688–1755", "雍正朝圈禁·乾隆釋放"),
+    ]),
+    ("脂批相關", [
+        ("弘曉（胤祥之子）", "1712–1778", "⚠️「畸笏叟＝弘曉」說待裁定（丁亥若1707則未生）"),
+        ("杏齋（胤礽之子）", "待考", "提問者定案：皇族批者＝胤礽之子"),
+    ]),
+    ("關鍵事件", [
+        ("1643", "皇太極崩·順治即位（6歲）"),
+        ("1644", "清入關·定鼎北京"),
+        ("1661", "順治「崩」／出家（23歲）·康熙即位（8歲）"),
+        ("1688", "孝莊卒（康熙二十六年·九子奪嫡前）"),
+        ("1707", "丁亥（提問者更正：脂批「知者聊聊」之丁亥＝1707·太子被廢前一年）"),
+        ("1708", "一廢太子（胤礽35虛歲·雍正31虛歲）"),
+        ("1712", "二廢太子（胤礽39虛歲）"),
+        ("1722", "康熙崩·雍正繼位（45虛歲）"),
+        ("1725", "胤礽卒（52虛歲）"),
+        ("1726", "胤禩、胤禟被清算卒"),
+        ("1730", "胤祥卒（雍正八年·45虛歲）"),
+        ("1735", "雍正崩·乾隆繼位"),
+    ]),
+]
+
+def nianbiao_body():
+    secs=[]
+    for title, rows in NIANBIAO:
+        trs="".join(f'<tr><td><b>{esc(a)}</b></td><td>{esc(b)}</td><td>{esc(c)}</td></tr>'
+                    for a, b, c in ((r if len(r)==3 else ("", r[0], r[1])) for r in rows))
+        secs.append(f'<section><h2>{esc(title)}</h2><table class="acts">'
+                    f'<tr><th>人物／事件</th><th>年份</th><th>說明</th></tr>{trs}</table></section>')
+    return (f'<h1>關鍵人物年表</h1>' + eco_nav("年表")
+            + '<p class="lead">核實解碼之用的<b>硬年份</b>：生卒、被廢、繼位、卒年——任何「年齡／時序」之推，皆以此表<b>即時驗齡</b>。</p>'
+            + '<p class="note">虛歲＝年份差＋1（傳統計法）；表中同時標明關鍵事件之年齡。凡解碼涉年齡／時序，先查此表，<b>不以想當然推算</b>。</p>'
+            + "".join(secs))
+
 def poems_body():
     """詩詞總覽：逐回列出詩詞條目（原詩＋三足解讀），接入生態鏈。"""
     rows=[]; tot=0; raw_all=0
@@ -1261,7 +1315,7 @@ def hui_links(s):
 def eco_nav(active="", pre=""):
     """生態鏈導航：九幕 ↔ 逐回目錄 ↔ 三層映射 ↔ 解讀框架（同源生成，重跑即同步）。"""
     items = [("index.html#acts", "九幕"), ("chapters/000.html", "逐回目錄"),
-             ("poems.html", "詩詞總覽"), ("yuanwen.html", "原文檢索"), ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
+             ("poems.html", "詩詞總覽"), ("yuanwen.html", "原文檢索"), ("nianbiao.html", "年表"), ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
     lis = "".join(
         (f'<a class="act" href="{pre}{u}">{t}</a>' if t == active else f'<a href="{pre}{u}">{t}</a>')
         for u, t in items)
@@ -1418,6 +1472,7 @@ def zi_hao_data():
             {"q": "點解通識本讀歪", "a": "提問者（2026-10-02）：通識本一直沒有直說此書係九子奪嫡，即係讀歪咗——此書真身係九子奪嫡嘅加密史（理治之書），通識本讀成閨閣閒情／曹家家史／明史，中心思想整個漏掉。因文本被後人修改過，讀「明末清初」要<b>偏清這邊</b>：書主體係清初（九子奪嫡·康熙雍正朝）之事，「明」係掩體／借代。", "keywords": ["通識本", "讀歪", "九子奪嫡", "明末清初", "偏清", "掩體", "理治之書"], "ref": "framework.html"},
             {"q": "全書寫咩 內容分佈", "a": "提問者（2026-10-03）全書內容分佈三層：① 清初段＝交代<b>順治繼位到出家</b>；② 後面大部分＝交代<b>康熙後期九子奪嫡</b>；③ <b>詩詞歌賦＝寫康熙諸子（兒子們）嘅政治抱負</b>——詩詞非閒情吟詠，係諸皇子政治志向之密寫。", "keywords": ["全書內容", "內容分佈", "清初", "順治繼位", "九子奪嫡", "詩詞歌賦", "政治抱負"], "ref": "framework.html"},
             {"q": "詩詞總覽 喺邊", "a": "本站新增「詩詞總覽」頁（poems.html）：全書詩詞曲戲索引 183 條，其中<b>原詩 115 首</b>直接取自抄本原文（標「原詩」），其餘為三足解讀條目（標「解讀」）；逐回列出、可點回目核對抄本原文。原詩解讀留待提問者逐首補。", "keywords": ["詩詞總覽", "詩詞", "原詩", "索引", "三足解讀"], "ref": "poems.html"},
+            {"q": "年表 喺邊", "a": "本站設「關鍵人物年表」（nianbiao.html）：順治、康熙、雍正、胤礽、胤祥、胤禩、胤禟、胤䄉、胤禵、弘曉、孝莊、多爾袞、乾隆等<b>生卒與關鍵事件</b>（1708一廢、1712二廢、1722繼位、1730胤祥卒、1735雍正崩…）；凡解碼涉年齡／時序，以此表<b>即時驗齡</b>，不以想當然推算。", "keywords": ["年表", "生卒", "驗齡", "胤礽", "雍正", "時序"], "ref": "nianbiao.html"},
         ]},
     ]
     for m in manual:
@@ -1500,6 +1555,7 @@ def search_entries():
     ents.append({"url":"qa.html","title":"問答區","text":"問答 互動 子嗥 知識庫 補充 糾錯 迭代更新 九子奪嫡 判詞 字音字形"})
     ents.append({"url":"zikao.html","title":"生僻字考證·古文白話解讀法","text":"生僻字 考證 窾 贔屭 罘罳 祿蠢 虢礫𡃈嘞 埞 崖广 鬄匸 偶 三五 粵語 白話 古文 解讀法 字音字形 方法論"})
     ents.append({"url":"jilu.html","title":"記錄·昨日對話留底","text":"記錄 對話留底 2026-09-26 三國對位 曹魏 蜀漢 東吳 吳玉峰 無冕之王 寶釵夜出嫁 冷月葬屍魂 揚州城 瀋陽"})
+    ents.append({"url":"nianbiao.html","title":"關鍵人物年表","text":"年表 關鍵人物 生卒 年份 順治 康熙 雍正 胤礽 胤祥 胤禩 胤禟 胤䄉 胤禵 弘曉 孝莊 多爾袞 乾隆 驗齡 1708 一廢 1712 二廢 1722 繼位 1730 1735"})
     ents.append({"url":"yuanwen.html","title":"抄本原文全文檢索","text":"原文檢索 抄本原文 全文檢索 120回 989322字 混合底本 異文 風⻛ 長⻓ 鳥⻦ 核對"})
     ents.append({"url":"poems.html","title":"詩詞總覽·全書詩詞曲戲索引","text":"詩詞總覽 詩詞曲戲 原詩 三足解讀 葬花吟 菊花詩 詠白海棠 懷古絕句 五美吟 桃花行 柳絮詞 中秋聯句 芙蓉女兒誄 題帕三絕 春燈謎 花名籤 酒令 大觀園題詠"})
     ents.append({"url":"liuyan.html","title":"留言區·集思優化","text":"留言 集思優化 改進解讀正確性 GitHub Issues 補充 糾錯 更正 開放核對 非權威共識 審核入卡"})
@@ -1567,7 +1623,7 @@ def sitemap_xml():
     import datetime
     today = datetime.date.today().isoformat()
     urls = ["404.html", "index.html", "framework.html", "characters.html", "mapping.html",
-            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "poems.html", "yuanwen.html", "jilu.html", "jinghua.html", "funding.html"]
+            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "poems.html", "yuanwen.html", "nianbiao.html", "jilu.html", "jinghua.html", "funding.html"]
     urls += [f"chapters/{n:03d}.html" for n in range(1, 121)]
     items = "\n".join(
         f'  <url><loc>https://judickzhu.github.io/guhai-honglou/{u}</loc><lastmod>{today}</lastmod></url>'
@@ -1606,6 +1662,7 @@ def main():
     open(os.path.join(OUT, "funding.html"), "w", encoding="utf-8").write(page("資助本站", "資助用於網站維護", funding_body(), ""))
     open(os.path.join(OUT, "zikao.html"), "w", encoding="utf-8").write(page("生僻字考證·古文白話解讀法", "以粵語白話讀音解讀古文生僻字的方法論——窾／贔屭／罘罳／祿蠢／虢礫𡃈嘞／埞／崖广／鬄匸", zikao_body(), "字考"))
     open(os.path.join(OUT, "poems.html"), "w", encoding="utf-8").write(page("詩詞總覽", "全書詩詞曲戲索引——逐回列出原詩與三足解讀，可點回目核對抄本原文", poems_body(), "詩詞總覽"))
+    open(os.path.join(OUT, "nianbiao.html"), "w", encoding="utf-8").write(page("關鍵人物年表", "順治康熙雍正胤礽胤祥等關鍵人物生卒與事件年表——核實解碼用的硬年份", nianbiao_body(), "年表"))
     open(os.path.join(OUT, "yuanwen.html"), "w", encoding="utf-8").write(page("抄本原文全文檢索", "直接搜尋抄本原文 120 回 989,322 字——查字查句查異文，命中即回該回核對區", yuanwen_body(), "原文檢索"))
     open(os.path.join(OUT, "chapters", "000.html"), "w", encoding="utf-8").write(page("逐回目錄", "120 回總表", catalog_body(), "逐回目錄", sub=True))
     for n, *_ in CH:
