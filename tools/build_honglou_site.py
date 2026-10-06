@@ -1195,6 +1195,36 @@ def nianbiao_body():
             + '<p class="note">虛歲＝年份差＋1（傳統計法）；表中同時標明關鍵事件之年齡。凡解碼涉年齡／時序，先查此表，<b>不以想當然推算</b>。</p>'
             + "".join(secs))
 
+def caoxue_body():
+    """曹學之辨：以檔案／原文／脂批核對紅學證據——找出不實證據鏈（非反紅學）。"""
+    return f'''<h1>曹學之辨</h1>{eco_nav("曹學之辨")}
+<p class="lead"><b>本站非「反紅學」——係「找出不實證據鏈」</b>：以檔案／原文／脂批核對，凡不實者指出，非為反對而反對。</p>
+<section><h2>一、「曹雪芹」＝密碼（非人名）</h2>
+<p class="note"><b>曹＝兄弟</b>（胤礽×胤祥合作·披閱增刪）＋<b>雪芹＝胤礽</b>；<b>悼紅軒＝悼胤礽</b>（十年悼念式修訂）；「余睹」＝後來的批書者。</p></section>
+<section><h2>二、四重檔案空白（此人非官方存在）</h2>
+<table class="acts"><tr><th>檔案</th><th>記載</th><th>曹雪芹</th></tr>
+<tr><td>雍正七年曹頫抄家檔案（刑部移會）</td><td>曹頫·曹寅之妻·家口</td><td><b>無</b>（若十三四歲理應記作家口）</td></tr>
+<tr><td>曹氏族譜（五慶堂·三修）</td><td>孫輩僅曹天佑</td><td><b>無</b></td></tr>
+<tr><td>《八旗滿洲氏族通譜》（乾隆敕修）</td><td>曹家六代十一人</td><td><b>無</b>（曹頫名下空空）</td></tr>
+<tr><td>《清史稿·文苑傳》</td><td>曹寅·高鶚</td><td><b>無</b></td></tr></table>
+<p class="note">官方檔案、家族宗譜、正史——<b>四重空白</b>；而真正握稿本、組織批書、被乾隆直接干預嘅<b>弘曉（怡親王）反被邊緣化為「收藏者」</b>。</p></section>
+<section><h2>三、紅學考證＝封閉循環</h2>
+<table class="acts"><tr><th>人物</th><th>問題</th></tr>
+<tr><td>胡適</td><td>開錯方向——假設「曹雪芹＝真人」未證實·循環論證·西方傳記框架</td></tr>
+<tr><td>周汝昌</td><td>越走越遠——曹頫之子·大觀園＝曹家花園</td></tr>
+<tr><td>俞平伯</td><td>哲學稀釋——色空說·國運史讀成哲學寓言</td></tr>
+<tr><td>馮其庸</td><td>版本迷宮——版本係載體唔係內容，方向錯功夫越深越遠</td></tr></table>
+<p class="note"><b>四層錯誤疊加</b>：假設真人→自傳說→西方框架→互相引用封閉循環；<b>文人多狡辯</b>：孤證當鐵證·檔案空白話「漏記」·封閉圈子互相認證。</p></section>
+<section><h2>四、證據等級（檔案＞詩集）</h2>
+<p class="note"><b>官方檔案（行政文書·雍正硃批·當場記錄）＞個人詩集</b>——敦誠詩＝文學裝飾非證據（孤證·化名·未證實與曹寅家族關係）；用詩集補曹學＝<b>用文學證史料·本末倒置</b>。</p></section>
+<section><h2>五、兩件「怡親王」之事（不可混）</h2>
+<table class="acts"><tr><th>事</th><th>性質</th><th>記載</th></tr>
+<tr><td>怡親王（胤祥）抄曹家</td><td>抄曹頫<b>罪產</b>（雍正初·官方）</td><td>有官方檔案</td></tr>
+<tr><td>弘曉抄《石頭記》</td><td>私下過錄<b>「谤書」</b>（乾隆·避禍）</td><td>《怡府書目》<b>未著錄</b></td></tr></table></section>
+<section><h2>六、資訊可及性（密室層）</h2>
+<p class="note">書含<b>密室層</b>資訊（孝莊順治私下對話·康熙胤礽密室對話·繼承安排真實決策）——<b>曹家包衣外圍不可能接觸</b>；且寫此書＝<b>誅九族</b>之罪，曹家<b>無免死金牌</b>；唯皇室核心（胤礽·胤祥·弘曉）方有政治保護。</p>
+<p>詳見：<a href="xiezi.html">楔子細讀</a> · <a href="framework.html">解讀框架</a> · <a href="nianbiao.html">關鍵人物年表</a></p></section>'''
+
 def xiezi_body():
     """楔子細讀（甲戌本開卷）：題名鏈＋曹雪芹密碼＋修改目的——一頁看全開卷密碼。"""
     return f'''<h1>楔子細讀（甲戌本開卷）</h1>{eco_nav("楔子細讀")}
@@ -1421,7 +1451,7 @@ def hui_links(s):
 def eco_nav(active="", pre=""):
     """生態鏈導航：九幕 ↔ 逐回目錄 ↔ 三層映射 ↔ 解讀框架（同源生成，重跑即同步）。"""
     items = [("index.html#acts", "九幕"), ("chapters/000.html", "逐回目錄"),
-             ("poems.html", "詩詞總覽"), ("yuanwen.html", "原文檢索"), ("xiezi.html", "楔子細讀"), ("nianbiao.html", "年表"), ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
+             ("poems.html", "詩詞總覽"), ("yuanwen.html", "原文檢索"), ("xiezi.html", "楔子細讀"), ("caoxue.html", "曹學之辨"), ("nianbiao.html", "年表"), ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
     lis = "".join(
         (f'<a class="act" href="{pre}{u}">{t}</a>' if t == active else f'<a href="{pre}{u}">{t}</a>')
         for u, t in items)
@@ -1580,6 +1610,7 @@ def zi_hao_data():
             {"q": "詩詞總覽 喺邊", "a": "本站新增「詩詞總覽」頁（poems.html）：全書詩詞曲戲索引 183 條，其中<b>原詩 115 首</b>直接取自抄本原文（標「原詩」），其餘為三足解讀條目（標「解讀」）；逐回列出、可點回目核對抄本原文。原詩解讀留待提問者逐首補。", "keywords": ["詩詞總覽", "詩詞", "原詩", "索引", "三足解讀"], "ref": "poems.html"},
             {"q": "年表 喺邊", "a": "本站設「關鍵人物年表」（nianbiao.html）：順治、康熙、雍正、胤礽、胤祥、胤禩、胤禟、胤䄉、胤禵、弘曉、孝莊、多爾袞、乾隆等<b>生卒與關鍵事件</b>（1708一廢、1712二廢、1722繼位、1730胤祥卒、1735雍正崩…）；凡解碼涉年齡／時序，以此表<b>即時驗齡</b>，不以想當然推算。", "keywords": ["年表", "生卒", "驗齡", "胤礽", "雍正", "時序"], "ref": "nianbiao.html"},
             {"q": "曹雪芹係邊個", "a": "<b>「曹雪芹」唔係人名，係密碼</b>——<b>曹＝兄弟</b>（胤礽×胤祥合作）＋<b>雪芹＝胤礽</b>；通識本將密碼當人名，遂成曹家曹學（誤讀之根）。悼紅軒＝悼胤礽（披閱十載增刪五次＝十年悼念式修訂）；楔子題名鏈：空空道人＝順治、吳玉峰＝胤祥、孔梅溪＝胤礽、棠村＝胤祥（詳見楔子細讀頁）。", "keywords": ["曹雪芹", "悼紅軒", "楔子", "題名鏈", "曹學"], "ref": "xiezi.html"},
+            {"q": "曹雪芹係咪真人", "a": "<b>四重檔案空白</b>——①雍正七年曹頫抄家檔案（記曹頫·曹寅之妻·家口，<b>無曹雪芹</b>）；②曹氏族譜（孫輩僅曹天佑）；③《八旗滿洲氏族通譜》（曹頫名下空空）；④《清史稿·文苑傳》（記曹寅高鶚）。官方檔案、宗譜、正史皆無此人；而真正握稿本、組織批書、被乾隆拿走一冊嘅<b>弘曉（怡親王）反被邊緣化為「收藏者」</b>。本站非反紅學，係<b>找出不實證據鏈</b>（詳見曹學之辨頁）。", "keywords": ["曹雪芹", "四重檔案空白", "曹學", "弘曉", "紅學考證"], "ref": "caoxue.html"},
         ]},
     ]
     for m in manual:
@@ -1662,6 +1693,7 @@ def search_entries():
     ents.append({"url":"qa.html","title":"問答區","text":"問答 互動 子嗥 知識庫 補充 糾錯 迭代更新 九子奪嫡 判詞 字音字形"})
     ents.append({"url":"zikao.html","title":"生僻字考證·古文白話解讀法","text":"生僻字 考證 窾 贔屭 罘罳 祿蠢 虢礫𡃈嘞 埞 崖广 鬄匸 偶 三五 粵語 白話 古文 解讀法 字音字形 方法論"})
     ents.append({"url":"jilu.html","title":"記錄·昨日對話留底","text":"記錄 對話留底 2026-09-26 三國對位 曹魏 蜀漢 東吳 吳玉峰 無冕之王 寶釵夜出嫁 冷月葬屍魂 揚州城 瀋陽"})
+    ents.append({"url":"caoxue.html","title":"曹學之辨（找出不實證據鏈）","text":"曹學之辨 曹雪芹 密碼 曹家曹學 四重檔案空白 抄家檔案 曹氏族譜 八旗滿洲氏族通譜 清史稿 胡適 周汝昌 俞平伯 馮其庸 封閉循環 證據等級 敦誠詩 怡親王 弘曉 資訊可及性 免死金牌 誅九族"})
     ents.append({"url":"xiezi.html","title":"楔子細讀（甲戌本開卷）","text":"楔子細讀 甲戌本 開卷 題名鏈 編輯部名單 空空道人 順治 吳玉峰 棠村 曹雪芹 孔梅溪 脂硯 畸笏叟 悼紅軒 悼胤礽 曹=兄弟 修改目的 理治之書 執政史警醒 風月寶鑑 贔屭罘罳 余睹"})
     ents.append({"url":"nianbiao.html","title":"關鍵人物年表","text":"年表 關鍵人物 生卒 年份 順治 康熙 雍正 胤礽 胤祥 胤禩 胤禟 胤䄉 胤禵 弘曉 孝莊 多爾袞 乾隆 驗齡 1708 一廢 1712 二廢 1722 繼位 1730 1735"})
     ents.append({"url":"yuanwen.html","title":"抄本原文全文檢索","text":"原文檢索 抄本原文 全文檢索 120回 989322字 混合底本 異文 風⻛ 長⻓ 鳥⻦ 核對"})
@@ -1731,7 +1763,7 @@ def sitemap_xml():
     import datetime
     today = datetime.date.today().isoformat()
     urls = ["404.html", "index.html", "framework.html", "characters.html", "mapping.html",
-            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "poems.html", "yuanwen.html", "xiezi.html", "nianbiao.html", "jilu.html", "jinghua.html", "funding.html"]
+            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "poems.html", "yuanwen.html", "xiezi.html", "caoxue.html", "nianbiao.html", "jilu.html", "jinghua.html", "funding.html"]
     urls += [f"chapters/{n:03d}.html" for n in range(1, 121)]
     items = "\n".join(
         f'  <url><loc>https://judickzhu.github.io/guhai-honglou/{u}</loc><lastmod>{today}</lastmod></url>'
@@ -1772,6 +1804,7 @@ def main():
     open(os.path.join(OUT, "poems.html"), "w", encoding="utf-8").write(page("詩詞總覽", "全書詩詞曲戲索引——逐回列出原詩與三足解讀，可點回目核對抄本原文", poems_body(), "詩詞總覽"))
     open(os.path.join(OUT, "nianbiao.html"), "w", encoding="utf-8").write(page("關鍵人物年表", "順治康熙雍正胤礽胤祥等關鍵人物生卒與事件年表——核實解碼用的硬年份", nianbiao_body(), "年表"))
     open(os.path.join(OUT, "xiezi.html"), "w", encoding="utf-8").write(page("楔子細讀（甲戌本開卷）", "題名鏈＋曹雪芹密碼＋修改目的——開卷密碼總開關", xiezi_body(), "楔子細讀"))
+    open(os.path.join(OUT, "caoxue.html"), "w", encoding="utf-8").write(page("曹學之辨", "四重檔案空白·封閉循環·證據等級·資訊可及性——找出不實證據鏈（非反紅學）", caoxue_body(), "曹學之辨"))
     open(os.path.join(OUT, "yuanwen.html"), "w", encoding="utf-8").write(page("抄本原文全文檢索", "直接搜尋抄本原文 120 回 989,322 字——查字查句查異文，命中即回該回核對區", yuanwen_body(), "原文檢索"))
     open(os.path.join(OUT, "chapters", "000.html"), "w", encoding="utf-8").write(page("逐回目錄", "120 回總表", catalog_body(), "逐回目錄", sub=True))
     for n, *_ in CH:
