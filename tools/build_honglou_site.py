@@ -1195,6 +1195,62 @@ def nianbiao_body():
             + '<p class="note">虛歲＝年份差＋1（傳統計法）；表中同時標明關鍵事件之年齡。凡解碼涉年齡／時序，先查此表，<b>不以想當然推算</b>。</p>'
             + "".join(secs))
 
+DUODI_SONS = [
+ ("1 胤褆（大）","1672–1735","最早出局·1708圈禁"),
+ ("2 胤礽（太子）","1674–1725","兩廢（1708·1712）·1725幽死"),
+ ("3 胤祉","1677–1732","文人型·雍正朝被禁"),
+ ("4 胤禛（雍正）","1678–1735","最終勝出（1722繼位）"),
+ ("8 胤禩（老八）","1681–1726","賢王·暗貪·被清算（阿其那）"),
+ ("9 胤禟","1683–1726","老八黨·被清算（塞思黑）"),
+ ("10 胤䄉","1683–1741","老八黨（與老九同年）"),
+ ("13 胤祥","1686–1730","輔雍正·累死（諡賢）"),
+ ("14 胤禵","1688–1755","大將軍王·被圈禁"),
+]
+
+def duodi_body():
+    """九子奪嫡總覽：名單·時間軸·書中場景·判詞·中心思想。"""
+    rows = "".join(f'<tr><td><b>{esc(a)}</b></td><td>{esc(b)}</td><td>{esc(c)}</td></tr>' for a,b,c in DUODI_SONS)
+    scenes = [
+        ("第2回","冷子興演說榮國府","交代康熙上至努爾哈赤、下至胤礽之關係圖"),
+        ("第4回","葫蘆案","順治建議廢太子·康熙執行（一徔＝知）"),
+        ("第13回","秦可卿託夢·死封龍禁尉","孝莊告誡（樹倒猢猻散）·胤礽被廢"),
+        ("第19回","鳳姐任重·襲人回家·演戲四齣","老八輔康熙·雍正脫太子黨·奪嫡全景"),
+        ("第22回","點戲四齣·制燈謎","雍正愛奉承·胤礽被廢·圈禁裝瘋·繼位後相殘"),
+        ("第23回","老爺叫寶玉·賈珠","三層父子恐懼·又愛又恨之根源"),
+        ("第37回","探春起詩社·李紈評詩","康熙選雍正（順治推動廢太子）"),
+        ("第63回","賈敬吞丹暴斃","後人補寫（混雍正丹藥中毒）——非順治死"),
+        ("第76回","中秋聯句·妙玉續韻","<b>中心思想</b>「贔屭朝光透，罘罳曉露屯」"),
+        ("第77回","逐晴雯·晴雯死","康熙清除太子黨羽·康熙死＝太子繼位無望"),
+        ("第78回","芙蓉女兒誄","胤礽悼亡康熙（前八十回終結定調）"),
+    ]
+    srows = "".join(f'<tr><td><b>{esc(a)}</b></td><td>{esc(b)}</td><td>{esc(c)}</td></tr>' for a,b,c in scenes)
+    return (f'<h1>九子奪嫡 · 主題地圖</h1>' + eco_nav("九子奪嫡")
+        + '<p class="lead">全書主體＝<b>康熙執政晚期九子奪嫡之還原</b>（交合時間段：太子被廢1708 → 康熙死前1722）；'
+          '上溯順治（根）、下接雍正（繼位）。</p>'
+        + f'<section><h2>一、九子名單（核實）</h2><table class="acts">'
+          f'<tr><th>序·名</th><th>生卒</th><th>奪嫡角色</th></tr>{rows}</table>'
+          '<p class="note">參與＝1·2·3·4·8·9·10·13·14；5（胤祺）12（胤祹）冇參與；6（胤祚）11（胤禌）早逝；7（胤祐）殘疾。</p></section>'
+        + '<section><h2>二、時間軸</h2><table class="acts"><tr><th>年</th><th>事件</th></tr>'
+          '<tr><td>1661</td><td>順治「崩」／出家（<b>根</b>·正史記載病逝）</td></tr>'
+          '<tr><td>1707</td><td>丁亥（脂批「知者聊聊」＝太子被廢前一年）</td></tr>'
+          '<tr><td><b>1708</b></td><td>一廢太子（胤礽35虛歲·雍正31虛歲）</td></tr>'
+          '<tr><td>1712</td><td>二廢太子（胤礽39虛歲）</td></tr>'
+          '<tr><td><b>1722</b></td><td>康熙崩（暢春園）·雍正繼位 → 諸芳盡</td></tr>'
+          '<tr><td>1725·1726</td><td>胤礽卒·胤禩胤禟被清算</td></tr>'
+          '<tr><td>1730·1735</td><td>胤祥累死·雍正崩</td></tr></table></section>'
+        + f'<section><h2>三、書中對應場景</h2><table class="acts">'
+          f'<tr><th>回</th><th>場景</th><th>史事</th></tr>{srows}</table></section>'
+        + '<section><h2>四、判詞「一徔二令三人木」</h2>'
+          '<p class="note"><b>一徔</b>（徔＝彳＋芝·讀知）＝順治出家（根源·棄江山令繼承體系失根）；'
+          '<b>二令</b>＝二次廢太子（繼承體系崩壞）；<b>三人木</b>（三人＝众·人木＝休）＝眾兄弟傻了／一齊完蛋（九子奪嫡）。'
+          '判詞係<b>說理治之道</b>，唔係說人。</p></section>'
+        + '<section><h2>五、中心思想</h2>'
+          '<p class="zx-quote">「贔屭朝光透，罘罳曉露屯」</p>'
+          '<p class="note"><b>上句</b>＝朝廷透著微弱的光（走下坡·國運之衰）；<b>下句</b>＝迎接朝陽與露水嘅家園（走生坡·救亡之志）；'
+          '另一層＝康熙朝財政危機 × 雍正胤祥改革；化用《岳陽樓記》「先天下之憂而贔屭，後天下之樂而罘罳」。</p>'
+          '<p>詳見：<a href="framework.html">解讀框架</a> · <a href="chapters/076.html">第76回</a> · '
+          '<a href="nianbiao.html">年表</a> · <a href="caoxue.html">曹學之辨</a></p></section>')
+
 def caoxue_body():
     """曹學之辨：以檔案／原文／脂批核對紅學證據——找出不實證據鏈（非反紅學）。"""
     return f'''<h1>曹學之辨</h1>{eco_nav("曹學之辨")}
@@ -1451,7 +1507,7 @@ def hui_links(s):
 def eco_nav(active="", pre=""):
     """生態鏈導航：九幕 ↔ 逐回目錄 ↔ 三層映射 ↔ 解讀框架（同源生成，重跑即同步）。"""
     items = [("index.html#acts", "九幕"), ("chapters/000.html", "逐回目錄"),
-             ("poems.html", "詩詞總覽"), ("yuanwen.html", "原文檢索"), ("xiezi.html", "楔子細讀"), ("caoxue.html", "曹學之辨"), ("nianbiao.html", "年表"), ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
+             ("poems.html", "詩詞總覽"), ("yuanwen.html", "原文檢索"), ("xiezi.html", "楔子細讀"), ("caoxue.html", "曹學之辨"), ("duodi.html", "九子奪嫡"), ("nianbiao.html", "年表"), ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
     lis = "".join(
         (f'<a class="act" href="{pre}{u}">{t}</a>' if t == active else f'<a href="{pre}{u}">{t}</a>')
         for u, t in items)
@@ -1611,6 +1667,7 @@ def zi_hao_data():
             {"q": "年表 喺邊", "a": "本站設「關鍵人物年表」（nianbiao.html）：順治、康熙、雍正、胤礽、胤祥、胤禩、胤禟、胤䄉、胤禵、弘曉、孝莊、多爾袞、乾隆等<b>生卒與關鍵事件</b>（1708一廢、1712二廢、1722繼位、1730胤祥卒、1735雍正崩…）；凡解碼涉年齡／時序，以此表<b>即時驗齡</b>，不以想當然推算。", "keywords": ["年表", "生卒", "驗齡", "胤礽", "雍正", "時序"], "ref": "nianbiao.html"},
             {"q": "曹雪芹係邊個", "a": "<b>「曹雪芹」唔係人名，係密碼</b>——<b>曹＝兄弟</b>（胤礽×胤祥合作）＋<b>雪芹＝胤礽</b>；通識本將密碼當人名，遂成曹家曹學（誤讀之根）。悼紅軒＝悼胤礽（披閱十載增刪五次＝十年悼念式修訂）；楔子題名鏈：空空道人＝順治、吳玉峰＝胤祥、孔梅溪＝胤礽、棠村＝胤祥（詳見楔子細讀頁）。", "keywords": ["曹雪芹", "悼紅軒", "楔子", "題名鏈", "曹學"], "ref": "xiezi.html"},
             {"q": "曹雪芹係咪真人", "a": "<b>四重檔案空白</b>——①雍正七年曹頫抄家檔案（記曹頫·曹寅之妻·家口，<b>無曹雪芹</b>）；②曹氏族譜（孫輩僅曹天佑）；③《八旗滿洲氏族通譜》（曹頫名下空空）；④《清史稿·文苑傳》（記曹寅高鶚）。官方檔案、宗譜、正史皆無此人；而真正握稿本、組織批書、被乾隆拿走一冊嘅<b>弘曉（怡親王）反被邊緣化為「收藏者」</b>。本站非反紅學，係<b>找出不實證據鏈</b>（詳見曹學之辨頁）。", "keywords": ["曹雪芹", "四重檔案空白", "曹學", "弘曉", "紅學考證"], "ref": "caoxue.html"},
+            {"q": "九子奪嫡 係邊幾個", "a": "參與奪嫡九位：<b>1胤褆·2胤礽·3胤祉·4胤禛(雍正)·8胤禩·9胤禟·10胤䄉·13胤祥·14胤禵</b>；5胤祺、12胤祹冇參與；6胤祚、11胤禌早逝；7胤祐殘疾。全書主體＝康熙晚期九子奪嫡之還原（1708太子被廢→1722康熙崩）。詳見「九子奪嫡·主題地圖」頁。", "keywords": ["九子奪嫡", "奪嫡名單", "主題地圖", "一徔二令三人木"], "ref": "duodi.html"},
         ]},
     ]
     for m in manual:
@@ -1693,6 +1750,7 @@ def search_entries():
     ents.append({"url":"qa.html","title":"問答區","text":"問答 互動 子嗥 知識庫 補充 糾錯 迭代更新 九子奪嫡 判詞 字音字形"})
     ents.append({"url":"zikao.html","title":"生僻字考證·古文白話解讀法","text":"生僻字 考證 窾 贔屭 罘罳 祿蠢 虢礫𡃈嘞 埞 崖广 鬄匸 偶 三五 粵語 白話 古文 解讀法 字音字形 方法論"})
     ents.append({"url":"jilu.html","title":"記錄·昨日對話留底","text":"記錄 對話留底 2026-09-26 三國對位 曹魏 蜀漢 東吳 吳玉峰 無冕之王 寶釵夜出嫁 冷月葬屍魂 揚州城 瀋陽"})
+    ents.append({"url":"duodi.html","title":"九子奪嫡·主題地圖","text":"九子奪嫡 主題地圖 名單 時間軸 1708 一廢 1712 二廢 1722 康熙崩 諸芳盡 一徔二令三人木 判詞 中心思想 贔屭罘罳 書中場景 交合時間段"})
     ents.append({"url":"caoxue.html","title":"曹學之辨（找出不實證據鏈）","text":"曹學之辨 曹雪芹 密碼 曹家曹學 四重檔案空白 抄家檔案 曹氏族譜 八旗滿洲氏族通譜 清史稿 胡適 周汝昌 俞平伯 馮其庸 封閉循環 證據等級 敦誠詩 怡親王 弘曉 資訊可及性 免死金牌 誅九族"})
     ents.append({"url":"xiezi.html","title":"楔子細讀（甲戌本開卷）","text":"楔子細讀 甲戌本 開卷 題名鏈 編輯部名單 空空道人 順治 吳玉峰 棠村 曹雪芹 孔梅溪 脂硯 畸笏叟 悼紅軒 悼胤礽 曹=兄弟 修改目的 理治之書 執政史警醒 風月寶鑑 贔屭罘罳 余睹"})
     ents.append({"url":"nianbiao.html","title":"關鍵人物年表","text":"年表 關鍵人物 生卒 年份 順治 康熙 雍正 胤礽 胤祥 胤禩 胤禟 胤䄉 胤禵 弘曉 孝莊 多爾袞 乾隆 驗齡 1708 一廢 1712 二廢 1722 繼位 1730 1735"})
@@ -1763,7 +1821,7 @@ def sitemap_xml():
     import datetime
     today = datetime.date.today().isoformat()
     urls = ["404.html", "index.html", "framework.html", "characters.html", "mapping.html",
-            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "poems.html", "yuanwen.html", "xiezi.html", "caoxue.html", "nianbiao.html", "jilu.html", "jinghua.html", "funding.html"]
+            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "poems.html", "yuanwen.html", "xiezi.html", "caoxue.html", "duodi.html", "nianbiao.html", "jilu.html", "jinghua.html", "funding.html"]
     urls += [f"chapters/{n:03d}.html" for n in range(1, 121)]
     items = "\n".join(
         f'  <url><loc>https://judickzhu.github.io/guhai-honglou/{u}</loc><lastmod>{today}</lastmod></url>'
@@ -1805,6 +1863,7 @@ def main():
     open(os.path.join(OUT, "nianbiao.html"), "w", encoding="utf-8").write(page("關鍵人物年表", "順治康熙雍正胤礽胤祥等關鍵人物生卒與事件年表——核實解碼用的硬年份", nianbiao_body(), "年表"))
     open(os.path.join(OUT, "xiezi.html"), "w", encoding="utf-8").write(page("楔子細讀（甲戌本開卷）", "題名鏈＋曹雪芹密碼＋修改目的——開卷密碼總開關", xiezi_body(), "楔子細讀"))
     open(os.path.join(OUT, "caoxue.html"), "w", encoding="utf-8").write(page("曹學之辨", "四重檔案空白·封閉循環·證據等級·資訊可及性——找出不實證據鏈（非反紅學）", caoxue_body(), "曹學之辨"))
+    open(os.path.join(OUT, "duodi.html"), "w", encoding="utf-8").write(page("九子奪嫡·主題地圖", "九子名單·時間軸·書中場景·判詞·中心思想——全書主體之總覽", duodi_body(), "九子奪嫡"))
     open(os.path.join(OUT, "yuanwen.html"), "w", encoding="utf-8").write(page("抄本原文全文檢索", "直接搜尋抄本原文 120 回 989,322 字——查字查句查異文，命中即回該回核對區", yuanwen_body(), "原文檢索"))
     open(os.path.join(OUT, "chapters", "000.html"), "w", encoding="utf-8").write(page("逐回目錄", "120 回總表", catalog_body(), "逐回目錄", sub=True))
     for n, *_ in CH:
