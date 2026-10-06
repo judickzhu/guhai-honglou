@@ -197,3 +197,6 @@ details summary{cursor:pointer;color:var(--accent);font-weight:600}
 .zx-quote{font-size:1.5em;font-weight:700;color:var(--accent2);letter-spacing:2px;margin:6px 0}
 /* 甲戌本異文嬴（嬴政之嬴）標色 */
 .yi{color:#c62828;font-weight:700}
+
+/* 綠標：注記/更正/待核/推斷標記 */
+.mk{color:#2e7d32;font-weight:700}

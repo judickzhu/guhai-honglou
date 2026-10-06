@@ -484,7 +484,7 @@ FOOT = ('<footer><p>一起讀紅樓白話 · 白話文解讀書中白話。站�
 def page(title, desc, body, active="", sub=False, prefix=""):
     pre = "../" if sub else ""
     if not prefix: prefix = pre  # 站点根前缀:根页="" 章节页="../"
-    return f'''<!DOCTYPE html>
+    _h = f'''<!DOCTYPE html>
 <html lang="zh-Hant"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)}｜一起讀紅樓白話</title>
@@ -505,6 +505,7 @@ def page(title, desc, body, active="", sub=False, prefix=""):
 <script src="{pre}zi-hao-data.js"></script>
 <script src="{pre}zi-hao.js"></script>
 </body></html>'''
+    return _h.replace('※', '<span class="mk">※</span>')
 
 def esc(s): return html.escape(s, quote=False)
 
