@@ -1161,6 +1161,33 @@ def nianbiao_body():
             + '<p class="note">虛歲＝年份差＋1（傳統計法）；表中同時標明關鍵事件之年齡。凡解碼涉年齡／時序，先查此表，<b>不以想當然推算</b>。</p>'
             + "".join(secs))
 
+def xiezi_body():
+    """楔子細讀（甲戌本開卷）：題名鏈＋曹雪芹密碼＋修改目的——一頁看全開卷密碼。"""
+    return f'''<h1>楔子細讀（甲戌本開卷）</h1>{eco_nav("楔子細讀")}
+<p class="lead">第1回楔子（「此開卷第一回也」至「滿紙荒唐言」）＝<b>全書密碼總開關</b>——題名鏈、作者密碼、修改目的，開卷即明。</p>
+<section><h2>一、題名鏈（編輯部名單）</h2>
+<table class="acts"><tr><th>假名</th><th>真實</th><th>動作</th></tr>
+<tr><td>空空道人</td><td><b>順治</b></td><td>改《石頭記》為《情僧錄》（因董鄂妃出家·由道入僧易名情僧）</td></tr>
+<tr><td>吳玉峰</td><td><b>胤祥</b></td><td>題曰《紅樓夢》</td></tr>
+<tr><td>孔梅溪</td><td><b>胤礽</b></td><td>題曰《風月寶鑑》（＝戒妄動風月之情）</td></tr>
+<tr><td>棠村</td><td><b>胤祥</b></td><td>作序（開卷凡例）</td></tr>
+<tr><td>曹雪芹</td><td><b>胤礽</b></td><td>披閱增刪（曹＝兄弟·悼紅軒＝悼胤礽）</td></tr>
+<tr><td>脂硯齋</td><td><b>胤祥</b></td><td>批（避戲注音·路標）</td></tr>
+<tr><td>畸笏叟</td><td>⚠️未定</td><td>命芹溪刪去（原暫定弘曉·待裁定）</td></tr></table></section>
+<section><h2>二、曹雪芹＝密碼（非人名）</h2>
+<p class="note"><b>✅更正：通識本把「曹雪芹」當真人姓名</b>——<b>曹＝兄弟</b>（胤礽×胤祥合作）＋<b>雪芹＝胤礽</b>；曹家曹學（胡適／周汝昌系）之根，即此誤讀（把密碼當人名）。</p>
+<ul class="plain"><li><b>悼紅軒＝悼胤礽</b>：披閱十載·增刪五次＝十年悼念式修訂（把被廢一生反覆改寫成書·還淚閉合）</li>
+<li><b>「余睹」＝後來的批書者</b>（睹新懷舊之「余」）</li>
+<li><b>曹＝兄弟之書內對應</b>：第76回黛玉（胤礽）×湘雲（胤祥）凹晶館聯詩（寒塘渡鶴影＝胤祥·冷月葬花魂＝胤礽）</li></ul></section>
+<section><h2>三、修改目的（石頭×空空道人對話）</h2>
+<ol><li><b>去掉捏造不實之故事</b>（還原本來面目）</li>
+<li><b>改為理治之書</b>（以理治國）</li>
+<li><b>＝佢哋執政史嘅警醒</b>（順治康熙雍正執政史為鑑·警醒後人）</li></ol>
+<p class="note">核心對照＝<b>贔屭罘罳</b>（先天下之憂而贔屭＝憂·朝光透·走下坡／後天下之樂而罘罳＝樂·曉露屯·走生坡）——執政史警醒即此憂樂對照之展開。</p></section>
+<section><h2>四、脂批路標</h2>
+<p class="note">「<b>觀者萬不可被作者瞞蔽了去，方是巨眼</b>」——作者狡猾之甚·煙雲模糊·勿被假名瞞蔽；「滿紙荒唐言，一把辛酸淚·誰解其中味」＝教讀者點讀。</p>
+<p>詳見：<a href="chapters/001.html">第1回卡</a> · <a href="framework.html">解讀框架</a> · <a href="yuanwen.html?q=楔子">原文搜</a></p></section>'''
+
 def poems_body():
     """詩詞總覽：逐回列出詩詞條目（原詩＋三足解讀），接入生態鏈。"""
     rows=[]; tot=0; raw_all=0
@@ -1360,7 +1387,7 @@ def hui_links(s):
 def eco_nav(active="", pre=""):
     """生態鏈導航：九幕 ↔ 逐回目錄 ↔ 三層映射 ↔ 解讀框架（同源生成，重跑即同步）。"""
     items = [("index.html#acts", "九幕"), ("chapters/000.html", "逐回目錄"),
-             ("poems.html", "詩詞總覽"), ("yuanwen.html", "原文檢索"), ("nianbiao.html", "年表"), ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
+             ("poems.html", "詩詞總覽"), ("yuanwen.html", "原文檢索"), ("xiezi.html", "楔子細讀"), ("nianbiao.html", "年表"), ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
     lis = "".join(
         (f'<a class="act" href="{pre}{u}">{t}</a>' if t == active else f'<a href="{pre}{u}">{t}</a>')
         for u, t in items)
@@ -1518,6 +1545,7 @@ def zi_hao_data():
             {"q": "全書寫咩 內容分佈", "a": "提問者（2026-10-03）全書內容分佈三層：① 清初段＝交代<b>順治繼位到出家</b>；② 後面大部分＝交代<b>康熙後期九子奪嫡</b>；③ <b>詩詞歌賦＝寫康熙諸子（兒子們）嘅政治抱負</b>——詩詞非閒情吟詠，係諸皇子政治志向之密寫。", "keywords": ["全書內容", "內容分佈", "清初", "順治繼位", "九子奪嫡", "詩詞歌賦", "政治抱負"], "ref": "framework.html"},
             {"q": "詩詞總覽 喺邊", "a": "本站新增「詩詞總覽」頁（poems.html）：全書詩詞曲戲索引 183 條，其中<b>原詩 115 首</b>直接取自抄本原文（標「原詩」），其餘為三足解讀條目（標「解讀」）；逐回列出、可點回目核對抄本原文。原詩解讀留待提問者逐首補。", "keywords": ["詩詞總覽", "詩詞", "原詩", "索引", "三足解讀"], "ref": "poems.html"},
             {"q": "年表 喺邊", "a": "本站設「關鍵人物年表」（nianbiao.html）：順治、康熙、雍正、胤礽、胤祥、胤禩、胤禟、胤䄉、胤禵、弘曉、孝莊、多爾袞、乾隆等<b>生卒與關鍵事件</b>（1708一廢、1712二廢、1722繼位、1730胤祥卒、1735雍正崩…）；凡解碼涉年齡／時序，以此表<b>即時驗齡</b>，不以想當然推算。", "keywords": ["年表", "生卒", "驗齡", "胤礽", "雍正", "時序"], "ref": "nianbiao.html"},
+            {"q": "曹雪芹係邊個", "a": "<b>「曹雪芹」唔係人名，係密碼</b>——<b>曹＝兄弟</b>（胤礽×胤祥合作）＋<b>雪芹＝胤礽</b>；通識本將密碼當人名，遂成曹家曹學（誤讀之根）。悼紅軒＝悼胤礽（披閱十載增刪五次＝十年悼念式修訂）；楔子題名鏈：空空道人＝順治、吳玉峰＝胤祥、孔梅溪＝胤礽、棠村＝胤祥（詳見楔子細讀頁）。", "keywords": ["曹雪芹", "悼紅軒", "楔子", "題名鏈", "曹學"], "ref": "xiezi.html"},
         ]},
     ]
     for m in manual:
@@ -1600,6 +1628,7 @@ def search_entries():
     ents.append({"url":"qa.html","title":"問答區","text":"問答 互動 子嗥 知識庫 補充 糾錯 迭代更新 九子奪嫡 判詞 字音字形"})
     ents.append({"url":"zikao.html","title":"生僻字考證·古文白話解讀法","text":"生僻字 考證 窾 贔屭 罘罳 祿蠢 虢礫𡃈嘞 埞 崖广 鬄匸 偶 三五 粵語 白話 古文 解讀法 字音字形 方法論"})
     ents.append({"url":"jilu.html","title":"記錄·昨日對話留底","text":"記錄 對話留底 2026-09-26 三國對位 曹魏 蜀漢 東吳 吳玉峰 無冕之王 寶釵夜出嫁 冷月葬屍魂 揚州城 瀋陽"})
+    ents.append({"url":"xiezi.html","title":"楔子細讀（甲戌本開卷）","text":"楔子細讀 甲戌本 開卷 題名鏈 編輯部名單 空空道人 順治 吳玉峰 棠村 曹雪芹 孔梅溪 脂硯 畸笏叟 悼紅軒 悼胤礽 曹=兄弟 修改目的 理治之書 執政史警醒 風月寶鑑 贔屭罘罳 余睹"})
     ents.append({"url":"nianbiao.html","title":"關鍵人物年表","text":"年表 關鍵人物 生卒 年份 順治 康熙 雍正 胤礽 胤祥 胤禩 胤禟 胤䄉 胤禵 弘曉 孝莊 多爾袞 乾隆 驗齡 1708 一廢 1712 二廢 1722 繼位 1730 1735"})
     ents.append({"url":"yuanwen.html","title":"抄本原文全文檢索","text":"原文檢索 抄本原文 全文檢索 120回 989322字 混合底本 異文 風⻛ 長⻓ 鳥⻦ 核對"})
     ents.append({"url":"poems.html","title":"詩詞總覽·全書詩詞曲戲索引","text":"詩詞總覽 詩詞曲戲 原詩 三足解讀 葬花吟 菊花詩 詠白海棠 懷古絕句 五美吟 桃花行 柳絮詞 中秋聯句 芙蓉女兒誄 題帕三絕 春燈謎 花名籤 酒令 大觀園題詠"})
@@ -1668,7 +1697,7 @@ def sitemap_xml():
     import datetime
     today = datetime.date.today().isoformat()
     urls = ["404.html", "index.html", "framework.html", "characters.html", "mapping.html",
-            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "poems.html", "yuanwen.html", "nianbiao.html", "jilu.html", "jinghua.html", "funding.html"]
+            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "poems.html", "yuanwen.html", "xiezi.html", "nianbiao.html", "jilu.html", "jinghua.html", "funding.html"]
     urls += [f"chapters/{n:03d}.html" for n in range(1, 121)]
     items = "\n".join(
         f'  <url><loc>https://judickzhu.github.io/guhai-honglou/{u}</loc><lastmod>{today}</lastmod></url>'
@@ -1708,6 +1737,7 @@ def main():
     open(os.path.join(OUT, "zikao.html"), "w", encoding="utf-8").write(page("生僻字考證·古文白話解讀法", "以粵語白話讀音解讀古文生僻字的方法論——窾／贔屭／罘罳／祿蠢／虢礫𡃈嘞／埞／崖广／鬄匸", zikao_body(), "字考"))
     open(os.path.join(OUT, "poems.html"), "w", encoding="utf-8").write(page("詩詞總覽", "全書詩詞曲戲索引——逐回列出原詩與三足解讀，可點回目核對抄本原文", poems_body(), "詩詞總覽"))
     open(os.path.join(OUT, "nianbiao.html"), "w", encoding="utf-8").write(page("關鍵人物年表", "順治康熙雍正胤礽胤祥等關鍵人物生卒與事件年表——核實解碼用的硬年份", nianbiao_body(), "年表"))
+    open(os.path.join(OUT, "xiezi.html"), "w", encoding="utf-8").write(page("楔子細讀（甲戌本開卷）", "題名鏈＋曹雪芹密碼＋修改目的——開卷密碼總開關", xiezi_body(), "楔子細讀"))
     open(os.path.join(OUT, "yuanwen.html"), "w", encoding="utf-8").write(page("抄本原文全文檢索", "直接搜尋抄本原文 120 回 989,322 字——查字查句查異文，命中即回該回核對區", yuanwen_body(), "原文檢索"))
     open(os.path.join(OUT, "chapters", "000.html"), "w", encoding="utf-8").write(page("逐回目錄", "120 回總表", catalog_body(), "逐回目錄", sub=True))
     for n, *_ in CH:
