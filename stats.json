@@ -1,15 +1,10 @@
 {
- "updated_at": "2026-10-09T10:38:51.298627+00:00",
- "views_total": 2,
+ "updated_at": "2026-10-10T09:54:55.216040+00:00",
+ "views_total": 1,
  "views_uniques": 1,
  "cumulative_visitors": 2,
- "last_counted_date": "2026-10-09",
+ "last_counted_date": "2026-10-10",
  "daily": [
-  {
-   "date": "2026-09-25",
-   "views": 1,
-   "uniques": 1
-  },
   {
    "date": "2026-09-26",
    "views": 0,
@@ -72,6 +67,11 @@
   },
   {
    "date": "2026-10-08",
+   "views": 0,
+   "uniques": 0
+  },
+  {
+   "date": "2026-10-09",
    "views": 0,
    "uniques": 0
   }
