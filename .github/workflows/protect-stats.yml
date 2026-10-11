@@ -1,0 +1,30 @@
+name: 保護瀏覽統計（stats.json）
+on:
+  push:
+    branches: [main]
+    paths: ['stats.json']
+permissions:
+  contents: write
+jobs:
+  restore:
+    # 只攔「非統計工作流」的提交；統計工作流自己(github-actions[bot])放行，避免迴圈
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: 還原被內容提交覆蓋的統計檔
+        run: |
+          set -e
+          git show HEAD~1:stats.json > /tmp/prev-stats.json || { echo "上一版沒有 stats.json，略過"; exit 0; }
+          cp /tmp/prev-stats.json stats.json
+          if git diff --quiet -- stats.json; then
+            echo "stats.json 內容與上一版相同，無需還原"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add stats.json
+          git commit -m "保護統計檔：還原被內容提交覆蓋的 stats.json"
+          git push
