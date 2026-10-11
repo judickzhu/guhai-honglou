@@ -1273,6 +1273,27 @@ DUODI_SONS = [
 
 def duodi_body():
     """九子奪嫡總覽：名單·時間軸·書中場景·判詞·中心思想。"""
+    causal = ('<section><h2>〇、奪嫡之因果結構（提問者定案·2026-10-05）</h2>'
+              '<p class="lead" style="font-size:1.15em"><b>「太子被廢，誰繼位就是奪嫡之爭。」</b></p>'
+              '<p>此一句為全書主體之<b>因果起點</b>——<b>「奪嫡」非原因，乃結果</b>：'
+              '<b>因太子位空懸，方有得爭</b>；若儲位有定，則無奪嫡可言。</p>'
+              '<div class="genline"><div class="gen"><div class="gen-head">因果鏈</div>'
+              '<div class="gen-pair"><span class="book">太子被廢</span><i>→</i><span class="hist">儲位空懸</span></div>'
+              '<p class="dim">康熙四十七年（1708）九月初四·布爾哈蘇台當眾宣廢（一廢）；四十八年復立；五十一年再廢（二廢）——<b>兩廢兩立</b>。</p>'
+              '<div class="gen-pair"><span class="book">誰繼位？</span><i>→</i><span class="hist">諸皇子各懷覬覦</span></div>'
+              '<p class="dim">儲位既空而無定，<b>「誰繼位」遂成公開之問</b>——諸皇子由「臣」變「競爭者」。</p>'
+              '<div class="gen-pair"><span class="book">奪嫡之爭</span><i>→</i><span class="hist">九子各結黨羽</span></div>'
+              '<p class="dim">大阿哥·太子·三阿哥·四阿哥·八阿哥·九阿哥·十阿哥·十三阿哥·十四阿哥——<b>九子</b>皆入局（詳見下方名單）。</p>'
+              '</div></div>'
+              '<p class="note"><b>與判詞互證</b>：王熙鳳判詞「<b>一徔二令三人木</b>」——'
+              '一徔（知）＝順治出家（根源·棄江山令繼承體系失根基）→ 二令＝<b>二次廢太子</b>（核心·儲位空懸）→ '
+              '三人木＝<b>眾兄弟傻咗（九子奪嫡）</b>。'
+              '即：<b>順治棄江山（根源）→ 太子被廢·儲位空（核心）→ 誰繼位·奪嫡之爭（結果）</b>——'
+              '此即全書「理治之道」之鏈條。</p>'
+              '<p class="note"><b>另一面·「爭」之兩種收場</b>：奪嫡者眾，而收場唯二——'
+              '<b>一為勝出（雍正繼位）</b>、<b>一為見棄（胤礽被廢·圈禁；胤禩胤禟被清算，改名阿其那·塞思黑）</b>。'
+              '書中以「<b>白茫茫大地真乾淨</b>」收束：<b>爭到最後，無一贏家</b>。</p></section>')
+    
     rows = "".join(f'<tr><td><b>{esc(a)}</b></td><td>{esc(b)}</td><td>{esc(c)}</td></tr>' for a,b,c in DUODI_SONS)
     scenes = [
         ("第2回","冷子興演說榮國府","交代康熙上至努爾哈赤、下至胤礽之關係圖"),
@@ -1288,7 +1309,7 @@ def duodi_body():
         ("第78回","芙蓉女兒誄","胤礽悼亡康熙（前八十回終結定調）"),
     ]
     srows = "".join(f'<tr><td><b>{esc(a)}</b></td><td>{esc(b)}</td><td>{esc(c)}</td></tr>' for a,b,c in scenes)
-    return (f'<h1>九子奪嫡 · 主題地圖</h1>' + eco_nav("九子奪嫡")
+    return (f'<h1>九子奪嫡 · 主題地圖</h1>' + eco_nav("九子奪嫡") + causal
         + '<p class="lead">全書主體＝<b>康熙執政晚期九子奪嫡之還原</b>（交合時間段：太子被廢1708 → 康熙死前1722）；'
           '上溯順治（根）、下接雍正（繼位）。</p>'
         + f'<section><h2>一、九子名單（核實）</h2><table class="acts">'
