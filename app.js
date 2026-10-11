@@ -47,3 +47,22 @@ applyPrefs();
     s("ftVis", d.cumulative_visitors);
   }).catch(function(){});
 })();
+
+/* 頁面訪問統計（不蒜子）：在頁尾注入即時「總瀏覽／訪客／本頁」。
+   與上面的 stats.json（GitHub 倉庫頁 Traffic·不含頁面訪問）互補。 */
+(function(){
+  try {
+    if (document.getElementById("busuanzi_value_site_pv")) return;
+    var line = document.createElement("p");
+    line.className = "foot-pagevisit";
+    line.innerHTML = "本站頁面訪問（即時·不蒜子）：總瀏覽 <span id=\"busuanzi_value_site_pv\">—</span>"
+      + " · 訪客 <span id=\"busuanzi_value_site_uv\">—</span>"
+      + " · 本頁 <span id=\"busuanzi_value_page_pv\">—</span>";
+    var f = document.querySelector("footer");
+    (f || document.body).appendChild(line);
+    var sc = document.createElement("script");
+    sc.async = true;
+    sc.src = "https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    document.body.appendChild(sc);
+  } catch (e) {}
+})();
