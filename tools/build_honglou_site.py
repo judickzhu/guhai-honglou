@@ -1051,6 +1051,25 @@ def pingyu_body():
             _ver[_tag] = _ver.get(_tag, 0) + 1; _tot += 1; _hui.add(int(_k))
     _versorted = sorted(_ver.items(), key=lambda kv: -kv[1])
     _verrows = "".join(f'<tr><td>{esc(k)}</td><td>{v}</td></tr>' for k, v in _versorted)
+    # 批者署名與紀年實測
+    _sig = {}
+    for _s in ["畸笏", "脂硯", "脂研", "梅溪", "松齋", "松斋", "棠村", "杏齋", "杏斋", "雪芹", "芹溪"]:
+        _c = 0
+        for _k, _v in YUANWEN_DATA.items():
+            if not str(_k).isdigit(): continue
+            for _tag, _txt in _pat.findall(_v):
+                if _s in _txt: _c += 1
+        if _c: _sig[_s] = _c
+    _sigrows = "".join(
+        f'<b>{esc(k)}</b> {v} 條{("、" if i < len(_sig)-1 else "")}'
+        for i, (k, v) in enumerate(sorted(_sig.items(), key=lambda kv: -kv[1])))
+    _sigrows = "署名統計：" + _sigrows + "。<br>"
+    _era = 0
+    for _k, _v in YUANWEN_DATA.items():
+        if not str(_k).isdigit(): continue
+        for _tag, _txt in _pat.findall(_v):
+            if re.search(r"(壬午|丁亥|甲午|己卯|庚辰|乙酉|丙戌|戊子|辛卯|甲戌)[季]?[春夏秋冬]?", _txt):
+                _era += 1
     return f'''<h1>脂批路標總覽</h1>
 {eco_nav("脂批")}
 <section><h2>一、提問者精選脂批（{cnt_hui} 回·{cnt_tiao} 條）</h2>
@@ -1061,7 +1080,12 @@ def pingyu_body():
 <p class="lead">本站混合底本<b>原文內嵌之批註</b>（括號形式），逐條可查——<b>此為脂批之全量資產</b>，
 遠多於上方精選條目。版本分佈：</p>
 <table class="acts"><tr><th>版本標記</th><th>條數</th></tr>{_verrows}</table>
-<p class="note"><b>版本代號</b>：<b>甲</b>＝甲戌本、<b>庚</b>＝庚辰本、<b>蒙</b>＝蒙古王府本；
+<p class="note"><b>批者署名實測（本站原文庫 2,690 條內嵌批註全文檢索）</b>：
+{_sigrows}
+<b>紀年批註</b>：全庫<b>{_era} 條</b>帶紀年（壬午季春、丁亥春、甲午、己卯…），可藉以定批語年代。<br>
+<b>⚠️ 紀律（提問者定·2026-10-08）</b>：<b>脂批係多人註解</b>（脂硯／畸笏／棠村／松齋／梅溪），
+<b>不可一律歸於脂硯一人</b>；上表為原文庫實測署名分佈，批者須逐條辨，未署名者存疑。<br>
+<b>版本代號</b>：<b>甲</b>＝甲戌本、<b>庚</b>＝庚辰本、<b>蒙</b>＝蒙古王府本；
 <b>側</b>＝側批（行間）、<b>眉</b>＝眉批（書眉）、<b>夾</b>＝夾批（正文中）。<br>
 <b>用法</b>：到 <a href="yuanwen.html">原文檢索</a> 搜「<b>甲側</b>」「<b>庚夾</b>」「<b>甲眉</b>」等，即可列出全部該版本批註——
 此即「脂批是路標」之可檢索基礎。上方精選條目為提問者判定之<b>關鍵路標</b>，兩者互為表裡。</p>
