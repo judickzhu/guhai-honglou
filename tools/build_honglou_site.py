@@ -1040,11 +1040,30 @@ def pingyu_body():
                     f'<ul class="dec">{lis}</ul></section>')
     cnt_hui = sum(1 for h in range(1,121) if PINGYU_DATA.get(str(h)))
     cnt_tiao = sum(len(PINGYU_DATA.get(str(h),[])) for h in range(1,121))
+    # 原文內嵌脂批（甲側／庚夾／蒙側…）全庫統計
+    _pat = re.compile(r"\((甲側|甲眉|甲夾|庚側|庚眉|庚夾|蒙側|蒙眉|靖藏|戚序)[:：]([^)]{0,300})")
+    _ver = {}; _hui = set(); _tot = 0
+    for _k, _v in YUANWEN_DATA.items():
+        if not str(_k).isdigit(): continue
+        for _tag, _txt in _pat.findall(_v):
+            _ver[_tag] = _ver.get(_tag, 0) + 1; _tot += 1; _hui.add(int(_k))
+    _versorted = sorted(_ver.items(), key=lambda kv: -kv[1])
+    _verrows = "".join(f'<tr><td>{esc(k)}</td><td>{v}</td></tr>' for k, v in _versorted)
     return f'''<h1>脂批路標總覽</h1>
 {eco_nav("脂批")}
-<p class="lead">脂批是路標——全部批語逐回匯總（帶出處），點回目入回卡。共 {cnt_hui} 回、{cnt_tiao} 條。
-無批語回顯示【未及】待補，不臆造批語（總綱紀律：AI 不可偽造脂批）。</p>
-{''.join(rows)}'''
+<section><h2>一、提問者精選脂批（{cnt_hui} 回·{cnt_tiao} 條）</h2>
+<p class="lead">脂批是路標——<b>提問者逐條自填</b>之關鍵批語（帶出處），點回目入回卡。
+無批語回顯示【未及】待補，<b>不臆造批語</b>（總綱紀律：AI 不可偽造脂批）。</p>
+{''.join(rows)}</section>
+<section><h2>二、原文內嵌脂批全文（全庫 {_tot:,} 條·{len(_hui)} 回）</h2>
+<p class="lead">本站混合底本<b>原文內嵌之批註</b>（括號形式），逐條可查——<b>此為脂批之全量資產</b>，
+遠多於上方精選條目。版本分佈：</p>
+<table class="acts"><tr><th>版本標記</th><th>條數</th></tr>{_verrows}</table>
+<p class="note"><b>版本代號</b>：<b>甲</b>＝甲戌本、<b>庚</b>＝庚辰本、<b>蒙</b>＝蒙古王府本；
+<b>側</b>＝側批（行間）、<b>眉</b>＝眉批（書眉）、<b>夾</b>＝夾批（正文中）。<br>
+<b>用法</b>：到 <a href="yuanwen.html">原文檢索</a> 搜「<b>甲側</b>」「<b>庚夾</b>」「<b>甲眉</b>」等，即可列出全部該版本批註——
+此即「脂批是路標」之可檢索基礎。上方精選條目為提問者判定之<b>關鍵路標</b>，兩者互為表裡。</p>
+</section>'''
 
 # ---------------- 問答區页 ----------------
 def qa_body():
