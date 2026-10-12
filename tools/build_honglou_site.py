@@ -465,7 +465,7 @@ def auto_snippets(n, limit=3, maxlen=120):
 
 # ---------------- 页面框架（参照 guhai：header 导航/检索/字号/主题） ----------------
 NAV = [("index.html","首頁"),("chapters/000.html","逐回目錄"),("framework.html","解讀框架"),
-       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("liuyan.html","留言區"),("zikao.html","字考"),("poems.html","詩詞總覽"),("nianbiao.html","年表"),("yuanwen.html","原文檢索"),("jilu.html","記錄"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
+       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("liuyan.html","留言區"),("zikao.html","字考"),("poems.html","詩詞總覽"),("nianbiao.html","年表"),("yuanwen.html","原文檢索"),("xiezi.html","楔子細讀"),("duodi.html","九子奪嫡"),("caoxue.html","曹學之辨"),("jilu.html","記錄"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
 def nav_html(active, sub):
     pre = "../" if sub else ""
     items = []
