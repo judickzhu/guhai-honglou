@@ -604,7 +604,7 @@ def hui_card(n):
     # 脂批路標（独立区块：脂批是路標）
     py = PINGYU_DATA.get(str(n))
     if py:
-        items = "".join(f'<li><span class="tag">{esc(it.get("src","总纲"))}</span> {esc(it.get("text",""))}</li>' for it in py)
+        items = "".join(f'<li><span class="tag">{esc(it.get("src","总纲"))}</span> {it.get("text","")}</li>' for it in py)
         rows.append(f'<section><h2>脂批路標</h2><ul class="dec">{items}</ul>'
                     '<p class="note">脂批是路標——以上批語引自《紅樓夢解讀總綱》（帶行號），提問者可增改（「脂批檔」）。</p></section>')
     else:
@@ -624,7 +624,7 @@ def hui_card(n):
     # 诗词解读（提问者自填位）
     pms = POEM_DATA.get(str(n))
     if pms:
-        items = "".join(f'<li><b>{mark_poem_yi(esc(p), n)}</b> — {mark_poem_yi(esc(c), n)}</li>' for p, c in pms)
+        items = "".join(f'<li><b>{mark_poem_yi(esc(p), n)}</b> — {mark_poem_yi(c, n)}</li>' for p, c in pms)
         rows.append(f'<section><h2>詩詞曲戲解讀</h2><ul class="chars">{items}</ul>'
                     '<p class="note">解讀為提問者自填（「詩詞曲戲解讀檔」），非 AI 代筆；<b>提問者個人讀法</b>，可能顛覆通識本，<b>非權威共識</b>。</p></section>')
     else:
@@ -901,7 +901,7 @@ CHAR_ROWS = [
  ("甄士隱","順治（出家時）／胤礽（見雨村時）；<b>叮囑賈雨村＝順治對康熙繼位後嘅寄望</b>；石頭＝修改者胤礽","「禛事隱」雙身分"),
  ("甄寶玉", "<b>雍正</b>（真命繼位者）——真假層：甄（真）賈（假）不能共存，儲位只有一個，孤木（禛·雍正）獨存；「假作真時真亦假」＝繼位合法性迷霧；甄家系＝雍正系（甄士隱＝禎事隱）", "鏡像：甄寶玉（真）＝雍正／賈寶玉（假）＝胤礽；主僕身分互換之具象化"),
  ("賈雨村","<b>多重身分（場景決定）</b>：入京護送黛玉＝多爾袞；風塵懷閨秀＝雍正上位回顧；葫蘆案＝康熙（判決廢太子）；娶嬌杏＝雍正（選胤祥輔助）；不辭而別＝雍正脫離太子黨","「假語村言」回顧上位經歷"),
- ("嬌杏","多重層——<b>杏＝太子之位</b>（「<b>杏簾在望</b>」＝<b>太子之位在望</b>；✅更正2026-10-05：杏<u>不是</u>「姓」、亦<u>不是</u>「繼位」——「位」非「動作」）；<b>嬌＝胤礽</b>（人物層：不爭／被拋棄——<b>「嬌」之真義＝唔似雍正</b>（雍正做得出嘅事佢做唔出·等得到嘅時間佢等唔到·狠得下嘅心佢狠唔下；雍正＝成功版李世民）；與「寶玉走開」同一條線）；<b>場景分身（提問者·2026-10-05）</b>：<b>望賈雨村的嬌杏＝胤礽</b>——交代<b>胤礽看到雍正有機會輔助自己東山再起</b>；<b>賈雨村娶嬌杏＝雍正選了胤祥輔助自己</b>（娶之步，嬌杏＝胤祥）。<b>四步政治隱線</b>：回看＝胤礽（**修正**：非「少年結合／拉攏」——嬌杏回頭望雨村＝胤礽看到雍正有機會輔助自己東山再起）；下訂＝康熙最終選雍正線、廢胤礽、權力改向；娶＝雍正與胤祥組成核心政治組合；發跡／扶正＝雍正由隱位入局最終成帝（「一年生子＋半載扶正」＝雍正繼位後一年胤礽過世·後人修補層）","分工：<b>嬌杏負責「交代」（點）</b>、英蓮／香菱負責「貫穿」（線），不可混為一談。又：「<b>杏簾在望</b>」（稻香村匾額）＝<b>繼位在望</b>——杏非尋常之杏"),
+ ("嬌杏","多重層——<b>杏＝太子之位</b>（「<b>杏簾在望</b>」＝<b>太子之位在望</b>；✅更正2026-10-05：杏<u>不是</u>「姓」、亦<u>不是</u>「繼位」——「位」非「動作」）；<b>嬌＝胤礽</b>（人物層：不爭／被拋棄——<b>「嬌」之真義＝唔似雍正</b>（雍正做得出嘅事佢做唔出·等得到嘅時間佢等唔到·狠得下嘅心佢狠唔下；雍正＝成功版李世民）；與「寶玉走開」同一條線）；<b>場景分身（提問者·2026-10-05）</b>：<b>望賈雨村的嬌杏＝胤礽</b>——交代<b>胤礽看到雍正有機會輔助自己東山再起</b>；<b>賈雨村娶嬌杏＝雍正選了胤祥輔助自己</b>（娶之步，嬌杏＝胤祥）。<b>四步政治隱線</b>：回看＝胤礽（**修正**：非「少年結合／拉攏」——嬌杏回頭望雨村＝胤礽看到雍正有機會輔助自己東山再起）；下訂＝康熙最終選雍正線、廢胤礽、權力改向；娶＝雍正與胤祥組成核心政治組合；發跡／扶正＝雍正由隱位入局最終成帝（「一年生子＋半載扶正」＝雍正繼位後一年胤礽過世·後人修補層）","分工：<b>嬌杏負責「交代」（點）</b>、英蓮／香菱負責「貫穿」（線），不可混為一談。又：「<b>杏簾在望</b>」（稻香村匾額）＝<b>太子之位在望</b>——杏＝<b>太子之位</b>（非「姓」、非「繼位」·提問者更正2026-10-05）"),
  ("吳新登／趙國基","八爺黨殘餘（胤禩舊部）⚠️待核","「無新凳」=再無新主登基；趙國基=阿其那——網站體系延伸（四源無逐字錨；「阿其那＝胤禩」為史實 L9638）"),
  ("襲人","<b>大阿哥（胤褆）＋雍正</b>——<b>大丫環（服侍寶玉）時＝大阿哥</b>；<b>嫁蔣玉菡時＝雍正</b>；襲人回家吃年茶＝雍正脫離太子黨（見第19回）；「襲」＝龍＋衣（龍衣人）；名出陸游「花氣襲人知驟暖」（含「知」字）","主僕對照：襲人服侍寶玉（胤礽）＝雍正曾喺太子黨；後嫁蔣玉菡＝雍正接位。「<b>花氣襲人知驟暖</b>」＝說<b>雍正做人圓滑</b>（善迎合·隨勢而變——與寶釵點《西遊記》＝雍正愛奉承互證）"),
  ("蔣玉菡","<b>胤祥（另一身分）</b>——與襲人（雍正）成婚＝胤祥輔助雍正之又一化身","第28回情贈茜香羅（繫於襲人腰中）＝交代胤祥離開胤礽後輔助雍正。<b>反寫</b>：蔣玉菡之名字＝說<b>雍正最終繼位</b>（作者用反寫）；<b>襲人嫁蔣玉菡＝迷惑讀者之筆</b>（表面寫姻緣，實寫繼位）"),
@@ -942,11 +942,11 @@ def characters_body():
                       f'{hui_link_row(name)}</div>')
     shoufa = CHARS_ARCH_DATA.get('_手法', {})
     sf_rows = "".join(f'<li><b>{esc(k)}</b> — {esc(v)}</li>' for k, v in shoufa.items())
-    trs = "".join(f'<tr><td>{esc(a)}</td><td>{b}</td><td class="dim">{esc(c)}</td></tr>' for a,b,c in CHAR_ROWS)
+    trs = "".join(f'<tr><td>{esc(a)}</td><td>{b}</td><td class="dim">{c}</td></tr>' for a,b,c in CHAR_ROWS)
     trs2 = "".join(
         f'<tr><td><b>{esc(a.split("（")[0])}</b>{("（" + esc(a.split("（",1)[1])) if "（" in a else ""}'
         f'　<a class="s" href="yuanwen.html?q={esc(a.split("（")[0][:4])}">原文搜</a></td>'
-        f'<td>{b}</td><td class="dim">{esc(c)}</td><td class="dim">{hui_links_row_inline(a.split("（")[0])}</td></tr>'
+        f'<td>{b}</td><td class="dim">{c}</td><td class="dim">{hui_links_row_inline(a.split("（")[0])}</td></tr>'
         for a,b,c in CHAR_ROWS)
     return f'''
 <h1>人物對標速查</h1>
@@ -999,8 +999,8 @@ def mapping_body():
     rows = ""
     for a, b, c, d, e in MAPPING_ITEMS:
         rows += (f'<div class="mp-item"><div class="mp-head"><b>{esc(a)}</b><span class="r">代表回：{hui_links(e)}</span></div>'
-                 f'<table><tr><th>情節（現象）</th><td>{esc(b)}</td></tr>'
-                 f'<tr><th>解碼（歷史對位）</th><td>{esc(c)}</td></tr>'
+                 f'<table><tr><th>情節（現象）</th><td>{b}</td></tr>'
+                 f'<tr><th>解碼（歷史對位）</th><td>{c}</td></tr>'
                  f'<tr><th>讀法（方法）</th><td>{esc(d)}</td></tr></table></div>')
     return f'''<h1>三層映射（三生萬物）</h1>
 {eco_nav("三層映射")}
@@ -1040,7 +1040,7 @@ def pingyu_body():
         items = PINGYU_DATA.get(str(h))
         if not items: continue
         num, up, low, act = CH[h-1]
-        lis = ''.join(f'<li><span class="tag">{esc(it.get("src","总纲"))}</span> {esc(it.get("text",""))}</li>' for it in items)
+        lis = ''.join(f'<li><span class="tag">{esc(it.get("src","总纲"))}</span> {it.get("text","")}</li>' for it in items)
         rows.append(f'<section id="p{h}"><h2><a href="chapters/{h:03d}.html">第{h}回　{esc(up)}　{esc(low)}</a></h2>'
                     f'<ul class="dec">{lis}</ul></section>')
     cnt_hui = sum(1 for h in range(1,121) if PINGYU_DATA.get(str(h)))
@@ -1253,7 +1253,7 @@ NIANBIAO = [
 def nianbiao_body():
     secs=[]
     for title, rows in NIANBIAO:
-        trs="".join(f'<tr><td><b>{esc(a)}</b></td><td>{esc(b)}</td><td>{esc(c)}</td></tr>'
+        trs="".join(f'<tr><td><b>{esc(a)}</b></td><td>{esc(b)}</td><td>{c}</td></tr>'
                     for a, b, c in ((r if len(r)==3 else ("", r[0], r[1])) for r in rows))
         secs.append(f'<section><h2>{esc(title)}</h2><table class="acts">'
                     f'<tr><th>人物／事件</th><th>年份</th><th>說明</th></tr>{trs}</table></section>')
@@ -1303,7 +1303,7 @@ def duodi_body():
               '<b>一為勝出（雍正繼位）</b>、<b>一為見棄（胤礽被廢·圈禁；胤禩胤禟被清算，改名阿其那·塞思黑）</b>。'
               '書中以「<b>白茫茫大地真乾淨</b>」收束：<b>爭到最後，無一贏家</b>。</p></section>')
     
-    rows = "".join(f'<tr><td><b>{esc(a)}</b></td><td>{esc(b)}</td><td>{esc(c)}</td></tr>' for a,b,c in DUODI_SONS)
+    rows = "".join(f'<tr><td><b>{esc(a)}</b></td><td>{esc(b)}</td><td>{c}</td></tr>' for a,b,c in DUODI_SONS)
     scenes = [
         ("第2回","冷子興演說榮國府","交代康熙上至努爾哈赤、下至胤礽之關係圖"),
         ("第4回","葫蘆案","順治建議廢太子·康熙執行（一徔＝知）"),
@@ -1317,7 +1317,7 @@ def duodi_body():
         ("第77回","逐晴雯·晴雯死","康熙清除太子黨羽·康熙死＝太子繼位無望"),
         ("第78回","芙蓉女兒誄","胤礽悼亡康熙（前八十回終結定調）"),
     ]
-    srows = "".join(f'<tr><td><b>{esc(a)}</b></td><td>{esc(b)}</td><td>{esc(c)}</td></tr>' for a,b,c in scenes)
+    srows = "".join(f'<tr><td><b>{esc(a)}</b></td><td>{esc(b)}</td><td>{c}</td></tr>' for a,b,c in scenes)
     return (f'<h1>九子奪嫡 · 主題地圖</h1>' + eco_nav("九子奪嫡") + causal
         + '<p class="lead">全書主體＝<b>康熙執政晚期九子奪嫡之還原</b>（交合時間段：太子被廢1708 → 康熙死前1722）；'
           '上溯順治（根）、下接雍正（繼位）。</p>'
