@@ -201,6 +201,11 @@ details summary{cursor:pointer;color:var(--accent);font-weight:600}
 /* 綠標：注記/更正/待核/推斷標記 */
 .mk{color:#2e7d32;font-weight:700}
 
-/* 詩詞總覽：正詩全文顯示 */
-.poemtext{margin:4px 0 0;padding:6px 10px;background:var(--card);border-left:3px solid var(--accent);
-  border-radius:0 6px 6px 0;font-size:.95em;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+/* 詩詞總覽：逐條卡片（標題＋正文，單層框） */
+ul.poems{list-style:none;padding:0;margin:8px 0}
+ul.poems>li{background:var(--card);border:1px solid var(--line);border-radius:8px;
+  padding:10px 14px;margin:8px 0;line-height:1.75}
+ul.poems>li>span.tag{margin-left:6px}
+ul.poems .poemtitle{color:var(--accent);font-weight:700;margin-right:6px}
+ul.poems .poemtext{margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);
+  font-size:.97em;line-height:1.85;white-space:pre-wrap;word-break:break-word;color:var(--ink)}

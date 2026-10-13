@@ -1425,13 +1425,13 @@ def poems_body():
             body = body.split('　【解讀待補')[0]
             body = esc(body.strip())
             if len(body) > 700: body = body[:700] + "…"
-            return (f'<li><b>{title}</b>　{tag}'
+            return (f'<li><span class="poemtitle">{title}</span>{tag}'
                     f'　<a class="s" href="yuanwen.html?q={esc(poem_q(nm))}">原文搜</a>'
                     f'<div class="poemtext">{body}</div></li>')
         lis="".join(_li(nm, tx) for nm, tx in items)
         rows.append(f'<section><h2><a href="chapters/{n:03d}.html">第{n}回</a>　{esc(up)}</h2>'
                     f'<p class="dim">詩詞 {len(items)} 條（原詩 {len(raw)} · 解讀 {len(san)}）</p>'
-                    f'<ul class="chars">{lis}</ul></section>')
+                    f'<ul class="poems">{lis}</ul></section>')
     return (f'<h1>詩詞總覽</h1>' + eco_nav("詩詞總覽")
             + f'<p class="lead">全書詩詞曲戲：<b>{tot} 條</b>（其中<b>原詩 {raw_all} 首</b>取自抄本原文，'
               f'標「原詩」；標「解讀」為三足解讀條目）。<b>各條正文直接顯示</b>，可點回目或「原文搜」核對抄本。</p>'
