@@ -1407,7 +1407,7 @@ def xiezi_body():
 <p>詳見：<a href="chapters/001.html">第1回卡</a> · <a href="framework.html">解讀框架</a> · <a href="yuanwen.html?q=楔子">原文搜</a></p></section>'''
 
 def poems_body():
-    """詩詞總覽：逐回列出詩詞條目（原詩＋三足解讀），接入生態鏈。"""
+    """詩詞總覽：逐回列出詩詞（正詩全文顯示＋解讀），接入生態鏈。"""
     rows=[]; tot=0; raw_all=0
     for n, up, low, act in CH:
         items = POEM_DATA.get(str(n)) or []
@@ -1415,17 +1415,26 @@ def poems_body():
         raw=[x for x in items if "｜原詩" in x[0]]
         san=[x for x in items if "｜原詩" not in x[0]]
         tot+=len(items); raw_all+=len(raw)
-        lis="".join(
-            f'<li><b>{esc(nm.split("｜")[0][:60])}</b>'
-            + ('　<span class="tag">原詩</span>' if "｜原詩" in nm else '　<span class="tag">解讀</span>')
-            + f'　<a class="s" href="yuanwen.html?q={esc(poem_q(nm))}">原文搜</a>'
-            + '</li>' for nm,_tx in items)
+        def _li(nm, tx):
+            title = esc(nm.split("｜")[0][:80])
+            israw = "｜原詩" in nm
+            tag = '<span class="tag">原詩</span>' if israw else '<span class="tag">解讀</span>'
+            # 正文：原詩條目取「原詩：…」後之詩句；解讀條目取解讀文字
+            body = tx or ""
+            body = re.sub(r'^原詩[:：]', '', body)
+            body = body.split('　【解讀待補')[0]
+            body = esc(body.strip())
+            if len(body) > 700: body = body[:700] + "…"
+            return (f'<li><b>{title}</b>　{tag}'
+                    f'　<a class="s" href="yuanwen.html?q={esc(poem_q(nm))}">原文搜</a>'
+                    f'<div class="poemtext">{body}</div></li>')
+        lis="".join(_li(nm, tx) for nm, tx in items)
         rows.append(f'<section><h2><a href="chapters/{n:03d}.html">第{n}回</a>　{esc(up)}</h2>'
                     f'<p class="dim">詩詞 {len(items)} 條（原詩 {len(raw)} · 解讀 {len(san)}）</p>'
-                    f'<ul class="plain">{lis}</ul></section>')
+                    f'<ul class="chars">{lis}</ul></section>')
     return (f'<h1>詩詞總覽</h1>' + eco_nav("詩詞總覽")
-            + f'<p class="lead">全書詩詞曲戲索引：<b>{tot} 條</b>（其中<b>原詩 {raw_all} 首</b>取自抄本原文，'
-              f'標「原詩」；標「解讀」為三足解讀條目）。點回目進入該回卡核對原文。</p>'
+            + f'<p class="lead">全書詩詞曲戲：<b>{tot} 條</b>（其中<b>原詩 {raw_all} 首</b>取自抄本原文，'
+              f'標「原詩」；標「解讀」為三足解讀條目）。<b>各條正文直接顯示</b>，可點回目或「原文搜」核對抄本。</p>'
             + "".join(rows))
 
 def yuanwen_body():

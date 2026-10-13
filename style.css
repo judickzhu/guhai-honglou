@@ -200,3 +200,7 @@ details summary{cursor:pointer;color:var(--accent);font-weight:600}
 
 /* 綠標：注記/更正/待核/推斷標記 */
 .mk{color:#2e7d32;font-weight:700}
+
+/* 詩詞總覽：正詩全文顯示 */
+.poemtext{margin:4px 0 0;padding:6px 10px;background:var(--card);border-left:3px solid var(--accent);
+  border-radius:0 6px 6px 0;font-size:.95em;line-height:1.7;white-space:pre-wrap;word-break:break-word}
