@@ -531,7 +531,7 @@ def auto_snippets(n, limit=3, maxlen=120):
 
 # ---------------- 页面框架（参照 guhai：header 导航/检索/字号/主题） ----------------
 NAV = [("index.html","首頁"),("chapters/000.html","逐回目錄"),("framework.html","解讀框架"),
-       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("liuyan.html","留言區"),("zikao.html","字考"),("poems.html","詩詞總覽"),("nianbiao.html","年表"),("yuanwen.html","原文檢索"),("xiezi.html","楔子細讀"),("duodi.html","九子奪嫡"),("caoxue.html","曹學之辨"),("jilu.html","記錄"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
+       ("characters.html","人物對標"),("mapping.html","三層映射"),("pingyu.html","脂批"),("jiaxu.html","甲戌本"),("shixi.html","世系"),("qa.html","問答區"),("liuyan.html","留言區"),("zikao.html","字考"),("poems.html","詩詞總覽"),("nianbiao.html","年表"),("yuanwen.html","原文檢索"),("xiezi.html","楔子細讀"),("duodi.html","九子奪嫡"),("caoxue.html","曹學之辨"),("daijie.html","待解碼"),("jilu.html","記錄"),("jinghua.html","深度精華"),("index.html#acts","九幕")]
 def nav_html(active, sub):
     pre = "../" if sub else ""
     items = []
@@ -1420,6 +1420,31 @@ def duodi_body():
           '<p>詳見：<a href="framework.html">解讀框架</a> · <a href="chapters/076.html">第76回</a> · '
           '<a href="nianbiao.html">年表</a> · <a href="caoxue.html">曹學之辨</a></p></section>')
 
+def daijie_body():
+    """待解碼回目·材料總表：列出未解碼回之原文開頭與詩詞，供提問者解讀。"""
+    todo=[n for n,*_ in CH if not has_material(n)]
+    rows=[]
+    for n in todo:
+        up=[u for num,u,*_ in CH if num==n][0]
+        t=YUANWEN_DATA.get(str(n),"")
+        b=re.sub(r'[（(](?:庚|甲|蒙|戚|脂|蒙側|庚夾|庚側|蒙回前)[^（）()]{0,150}[）)]','',t)
+        b=re.sub(r'脂硯齋重評石頭記[^話]{0,40}','',b)
+        i=b.find('話說')
+        if i<0: i=b.find('卻說')
+        if i<0: i=0
+        opening=b[i:i+150]
+        opening=re.sub(r"^.{0,20}?話說,", "話說,", opening)
+        poems=POEM_DATA.get(str(n)) or []
+        ptxt=''
+        if poems:
+            ptxt='<div class="note"><b>詩詞：</b>'+'<br>'.join(
+                '〈'+esc(p[0].split('｜')[0][:30])+'〉' for p in poems[:3])+'</div>'
+        rows.append(f'<section><h2><a href="chapters/{n:03d}.html">第{n}回</a>　{esc(up)}</h2>'
+                    f'<p class="dim">原文開頭（去批語）：</p><p class="quote">{esc(opening)}…</p>{ptxt}</section>')
+    return (f'<h1>待解碼回目·材料總表</h1>'+eco_nav("待解碼")
+            +f'<p class="lead">下列 <b>{len(todo)} 回</b>尚未有解碼素材——此頁先備原文開頭與詩詞，'
+             f'供提問者逐回解讀。落地後即移入該回卡。</p>'+''.join(rows))
+
 def caoxue_body():
     """曹學之辨：以檔案／原文／脂批核對紅學證據——找出不實證據鏈（非反紅學）。"""
     return f'''<h1>曹學之辨</h1>{eco_nav("曹學之辨")}
@@ -1730,7 +1755,7 @@ def hui_links(s):
 def eco_nav(active="", pre=""):
     """生態鏈導航：九幕 ↔ 逐回目錄 ↔ 三層映射 ↔ 解讀框架（同源生成，重跑即同步）。"""
     items = [("index.html#acts", "九幕"), ("chapters/000.html", "逐回目錄"),
-             ("poems.html", "詩詞總覽"), ("yuanwen.html", "原文檢索"), ("xiezi.html", "楔子細讀"), ("caoxue.html", "曹學之辨"), ("duodi.html", "九子奪嫡"), ("nianbiao.html", "年表"), ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
+             ("poems.html", "詩詞總覽"), ("yuanwen.html", "原文檢索"), ("xiezi.html", "楔子細讀"), ("caoxue.html", "曹學之辨"), ("duodi.html", "九子奪嫡"), ("daijie.html", "待解碼"), ("nianbiao.html", "年表"), ("mapping.html", "三層映射"), ("framework.html", "解讀框架")]
     lis = "".join(
         (f'<a class="act" href="{pre}{u}">{t}</a>' if t == active else f'<a href="{pre}{u}">{t}</a>')
         for u, t in items)
@@ -2044,7 +2069,7 @@ def sitemap_xml():
     import datetime
     today = datetime.date.today().isoformat()
     urls = ["404.html", "index.html", "framework.html", "characters.html", "mapping.html",
-            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "poems.html", "yuanwen.html", "xiezi.html", "caoxue.html", "duodi.html", "nianbiao.html", "jilu.html", "jinghua.html", "funding.html"]
+            "pingyu.html", "shixi.html", "qa.html", "liuyan.html", "zikao.html", "poems.html", "yuanwen.html", "xiezi.html", "caoxue.html", "duodi.html", "daijie.html", "nianbiao.html", "jilu.html", "jinghua.html", "funding.html"]
     urls += [f"chapters/{n:03d}.html" for n in range(1, 121)]
     items = "\n".join(
         f'  <url><loc>https://judickzhu.github.io/guhai-honglou/{u}</loc><lastmod>{today}</lastmod></url>'
@@ -2086,6 +2111,7 @@ def main():
     open(os.path.join(OUT, "nianbiao.html"), "w", encoding="utf-8").write(page("關鍵人物年表", "順治康熙雍正胤礽胤祥等關鍵人物生卒與事件年表——核實解碼用的硬年份", nianbiao_body(), "年表"))
     open(os.path.join(OUT, "xiezi.html"), "w", encoding="utf-8").write(page("楔子細讀（甲戌本開卷）", "題名鏈＋曹雪芹密碼＋修改目的——開卷密碼總開關", xiezi_body(), "楔子細讀"))
     open(os.path.join(OUT, "caoxue.html"), "w", encoding="utf-8").write(page("曹學之辨", "四重檔案空白·封閉循環·證據等級·資訊可及性——找出不實證據鏈（非反紅學）", caoxue_body(), "曹學之辨"))
+    open(os.path.join(OUT, "daijie.html"), "w", encoding="utf-8").write(page("待解碼回目·材料總表", "未解碼回之原文開頭與詩詞——供提問者逐回解讀", daijie_body(), "待解碼"))
     open(os.path.join(OUT, "duodi.html"), "w", encoding="utf-8").write(page("九子奪嫡·主題地圖", "九子名單·時間軸·書中場景·判詞·中心思想——全書主體之總覽", duodi_body(), "九子奪嫡"))
     open(os.path.join(OUT, "yuanwen.html"), "w", encoding="utf-8").write(page("抄本原文全文檢索", "直接搜尋抄本原文 120 回 989,322 字——查字查句查異文，命中即回該回核對區", yuanwen_body(), "原文檢索"))
     open(os.path.join(OUT, "chapters", "000.html"), "w", encoding="utf-8").write(page("逐回目錄", "120 回總表", catalog_body(), "逐回目錄", sub=True))
