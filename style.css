@@ -234,8 +234,8 @@ ul.poems .poemtext{
   color:var(--ink);
   white-space:pre-wrap;
   word-break:break-word;
-  padding:22px 12px 26px;
-  margin:0 0 20px;
+  padding:16px 10px 18px;
+  margin:0 0 16px;
   background:#fdfaf2;
   border-radius:4px;
   border-top:1px solid var(--line);
@@ -259,7 +259,7 @@ ul.poems .poemnote b{color:var(--ink)}
 
 /* 格律字表：每字等寬對齊 */
 ul.poems .poemtext.grid{display:block;text-align:center;letter-spacing:0}
-ul.poems .poemtext.grid .pline{display:block;margin:0 0 .18em;line-height:1.85;white-space:nowrap}
-ul.poems .poemtext.grid i{display:inline-block;width:1.3em;text-align:center;font-style:normal}
-ul.poems .poemtext.grid i.pn{width:.95em;color:var(--sub)}
-ul.poems .poemtext.grid b.pgap{display:inline-block;width:1.6em}
+ul.poems .poemtext.grid .pline{display:block;margin:0;line-height:1.55;white-space:nowrap}
+ul.poems .poemtext.grid i{display:inline-block;width:1.12em;text-align:center;font-style:normal}
+ul.poems .poemtext.grid i.pn{width:.8em;color:var(--sub)}
+ul.poems .poemtext.grid b.pgap{display:inline-block;width:1.1em}
