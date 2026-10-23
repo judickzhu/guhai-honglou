@@ -259,7 +259,7 @@ ul.poems .poemnote b{color:var(--ink)}
 
 /* 格律字表：每字等寬對齊 */
 ul.poems .poemtext.grid{display:block;text-align:center;letter-spacing:0}
-ul.poems .poemtext.grid .pline{display:block;margin:0;line-height:1.55;white-space:nowrap}
+ul.poems .poemtext.grid .pline{display:block;margin:0;line-height:1.9;white-space:nowrap}
 ul.poems .poemtext.grid i{display:inline-block;width:1.12em;text-align:center;font-style:normal}
 ul.poems .poemtext.grid i.pn{width:.8em;color:var(--sub)}
 ul.poems .poemtext.grid b.pgap{display:inline-block;width:1.1em}
