@@ -1531,15 +1531,26 @@ def poems_body():
             title = esc(nm.split("｜")[0][:80])
             israw = "｜原詩" in nm
             tag = '<span class="tag">原詩</span>' if israw else '<span class="tag">解讀</span>'
-            # 正文：原詩條目取「原詩：…」後之詩句；解讀條目取解讀文字
             body = tx or ""
             body = re.sub(r'^原詩[:：]', '', body)
             body = body.split('　【解讀待補')[0]
-            body = esc(body.strip())
-            if len(body) > 700: body = body[:700] + "…"
-            return (f'<li><span class="poemtitle">{title}</span>{tag}'
-                    f'　<a class="s" href="yuanwen.html?q={esc(poem_q(nm))}">原文搜</a>'
-                    f'<div class="poemtext">{body}</div></li>')
+            if len(body) > 900: body = body[:900] + "…"
+            # 原詩：保留 HTML 標籤（esc 只對純文本），居中大字
+            # 解讀：允許 <b> 等標籤，獨立註解區
+            # 從標題抽出「」內之詩句，作 poemtext；解讀入 poemnote
+            raw_name = nm.split("｜")[0]
+            mq = re.search(r'「(.+?)」', raw_name)
+            verse = mq.group(1) if mq else ''
+            head = raw_name[:mq.start()] if mq else raw_name
+            body_html = body.strip()
+            body_html = re.sub(r'<(?!b>|/b>|br\\s*/?|em>|/em>)[^>]*>', '', body_html)
+            parts = [f'<span class="poemtitle">{esc(head.strip()[:80])}</span>{tag}',
+                     f'　<a class="s" href="yuanwen.html?q={esc(poem_q(nm))}">原文搜</a>']
+            if verse:
+                parts.append(f'<div class="poemtext">{esc(verse)}</div>')
+            if body_html:
+                parts.append(f'<div class="poemnote">{body_html}</div>')
+            return '<li>' + ''.join(parts) + '</li>'
         lis="".join(_li(nm, tx) for nm, tx in items)
         rows.append(f'<section><h2><a href="chapters/{n:03d}.html">第{n}回</a>　{esc(up)}</h2>'
                     f'<p class="dim">詩詞 {len(items)} 條（原詩 {len(raw)} · 解讀 {len(san)}）</p>'
