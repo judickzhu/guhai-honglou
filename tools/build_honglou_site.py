@@ -585,7 +585,7 @@ def page(title, desc, body, active="", sub=False, prefix=""):
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:type" content="website">
-<link rel="stylesheet" href="{pre}style.css">
+<link rel="stylesheet" href="{pre}style.css?v=c7849cd7">
 <script>var PREFIX="{prefix}";</script>
 </head><body>
 {nav_html(active, sub)}
@@ -1549,6 +1549,10 @@ def poems_body():
             if verse:
                 parts.append(f'<div class="poemtext">{esc(verse)}</div>')
             if body_html:
+                # 自動分段：關鍵標記前插換行
+                for kw in ['核心觀點','逐句','★','脂批路標','解碼軌','敘事前因後果','⚠️定案','⚠️更正']:
+                    body_html = body_html.replace(kw, '<br><br>' + kw, 1)
+                body_html = body_html.lstrip('<br>')
                 parts.append(f'<div class="poemnote">{body_html}</div>')
             return '<li>' + ''.join(parts) + '</li>'
         lis="".join(_li(nm, tx) for nm, tx in items)

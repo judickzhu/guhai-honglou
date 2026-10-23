@@ -240,12 +240,14 @@ ul.poems .poemtext{
 }
 ul.poems .poemnote{
   display:block;
-  font-size:.92em;
-  line-height:1.9;
-  color:var(--dim);
+  font-size:1em;
+  line-height:1.95;
+  color:var(--ink);
   border-top:1px dashed var(--line);
-  padding-top:12px;
-  margin-top:4px;
+  padding-top:14px;
+  margin-top:6px;
+  text-align:justify;
 }
+ul.poems .poemnote b{color:var(--accent);font-weight:700}
 ul.poems .poemnote b{color:var(--ink)}
 
