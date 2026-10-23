@@ -220,9 +220,6 @@ ul.poems .poemtitle{
   font-size:1.06em;
   font-weight:700;
   letter-spacing:.02em;
-  padding-bottom:12px;
-  margin-bottom:18px;
-  border-bottom:1px solid var(--line);
 }
 ul.poems .poemtext{
   display:block;
@@ -263,3 +260,11 @@ ul.poems .poemtext.grid .pline{display:block;margin:0;line-height:1.9;white-spac
 ul.poems .poemtext.grid i{display:inline-block;width:1.12em;text-align:center;font-style:normal}
 ul.poems .poemtext.grid i.pn{width:.8em;color:var(--sub)}
 ul.poems .poemtext.grid b.pgap{display:inline-block;width:1.1em}
+
+/* 詩詞卡片頭：左題右標籤 */
+ul.poems .poemhead{display:flex;justify-content:space-between;align-items:baseline;
+  gap:14px;padding-bottom:12px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+ul.poems .poemhead .poemtitle{padding-bottom:0;margin-bottom:0;border-bottom:none;flex:1}
+ul.poems .poemmeta{display:flex;align-items:center;gap:10px;flex-shrink:0;font-size:.85em}
+ul.poems .poemmeta .s{color:var(--sub);font-size:.9em}
+ul.poems .poemmeta .s:hover{color:var(--accent)}

@@ -1547,8 +1547,9 @@ def poems_body():
             head = raw_name[:mq.start()] if mq else raw_name
             body_html = body.strip()
             body_html = re.sub(r'<(?!b>|/b>|br\\s*/?|em>|/em>)[^>]*>', '', body_html)
-            parts = [f'<span class="poemtitle">{esc(head.strip()[:80])}</span>{tag}',
-                     f'　<a class="s" href="yuanwen.html?q={esc(poem_q(nm))}">原文搜</a>']
+            # 標籤與原文搜移到題目右側同一行
+            parts = [f'<div class="poemhead"><span class="poemtitle">{esc(head.strip()[:80])}</span>'
+                     f'<span class="poemmeta">{tag}<a class="s" href="yuanwen.html?q={esc(poem_q(nm))}">原文搜</a></span></div>']
             if verse:
                 # 格律字表：每句拆單字·等寬對齊
                 v = esc(verse)
