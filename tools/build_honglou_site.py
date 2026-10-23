@@ -1554,9 +1554,14 @@ def poems_body():
                 v = re.sub(r'([，。？！；])', r'\1\n', v)
                 vlines = [x.strip() for x in v.split('\n') if x.strip()]
                 cells = []
-                for ln in vlines:
-                    chs = list(ln)
-                    row = ''.join(f'<i>{c}</i>' if c not in '，。？！；' else f'<i class="pn">{c}</i>' for c in chs)
+                # 兩句一行（每聯一行）
+                for i in range(0, len(vlines), 2):
+                    grp = vlines[i:i+2]
+                    row = ''
+                    for ln in grp:
+                        for c in ln:
+                            row += f'<i>{c}</i>' if c not in '，。？！；' else f'<i class="pn">{c}</i>'
+                        row += '<b class="pgap"></b>'
                     cells.append(f'<span class="pline">{row}</span>')
                 verse_html = ''.join(cells)
                 parts.append(f'<div class="poemtext grid">{verse_html}</div>')
