@@ -256,3 +256,9 @@ ul.poems .poemnote b{color:var(--accent);font-weight:700}
 ul.poems .poemnote br{line-height:2.4}
 ul.poems .poemnote b{color:var(--ink)}
 
+
+/* 格律字表：每字等寬對齊 */
+ul.poems .poemtext.grid{display:block;text-align:center;letter-spacing:0}
+ul.poems .poemtext.grid .pline{display:block;margin:0;line-height:2.35;white-space:nowrap}
+ul.poems .poemtext.grid i{display:inline-block;width:1.42em;text-align:center;font-style:normal}
+ul.poems .poemtext.grid i.pn{width:1.05em;color:var(--sub)}
