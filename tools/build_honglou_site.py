@@ -1549,7 +1549,16 @@ def poems_body():
             parts = [f'<span class="poemtitle">{esc(head.strip()[:80])}</span>{tag}',
                      f'　<a class="s" href="yuanwen.html?q={esc(poem_q(nm))}">原文搜</a>']
             if verse:
-                parts.append(f'<div class="poemtext">{esc(verse)}</div>')
+                # 按句讀分行：每聯一行（五言/七言對齊）
+                v = esc(verse)
+                v = re.sub(r'([，。？！；])', r'\1\n', v)
+                vlines = [x.strip() for x in v.split('\n') if x.strip()]
+                # 兩句一聯（五言或七言）
+                pairs = []
+                for i in range(0, len(vlines), 2):
+                    pairs.append(''.join(vlines[i:i+2]))
+                verse_html = '<br>'.join(pairs) if pairs else v
+                parts.append(f'<div class="poemtext">{verse_html}</div>')
             if body_html:
                 # 自動分段：關鍵標記前插換行
                 for kw in ['核心觀點','逐句','★','脂批路標','解碼軌','敘事前因後果','⚠️定案','⚠️更正']:
