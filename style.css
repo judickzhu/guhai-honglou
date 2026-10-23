@@ -208,8 +208,8 @@ ul.poems>li{
   border:1px solid var(--line);
   border-left:3px solid var(--accent);
   border-radius:6px;
-  padding:18px 22px 16px;
-  margin:16px 0;
+  padding:26px 30px 22px;
+  margin:22px 0;
   box-shadow:0 1px 3px rgba(0,0,0,.04);
 }
 ul.poems .poemtitle{
@@ -219,8 +219,8 @@ ul.poems .poemtitle{
   font-size:1.06em;
   font-weight:700;
   letter-spacing:.02em;
-  padding-bottom:10px;
-  margin-bottom:12px;
+  padding-bottom:12px;
+  margin-bottom:18px;
   border-bottom:1px solid var(--line);
 }
 ul.poems .poemtext{
@@ -233,8 +233,8 @@ ul.poems .poemtext{
   color:var(--ink);
   white-space:pre-wrap;
   word-break:break-word;
-  padding:10px 8px 14px;
-  margin:0 0 10px;
+  padding:16px 8px 20px;
+  margin:0 0 18px;
   background:linear-gradient(180deg,transparent 0%,var(--tagbg) 100%);
   border-radius:4px;
 }
@@ -243,11 +243,12 @@ ul.poems .poemnote{
   font-size:1em;
   line-height:1.95;
   color:var(--ink);
-  border-top:1px dashed var(--line);
-  padding-top:14px;
-  margin-top:6px;
+  border-top:1px solid var(--line);
+  padding-top:18px;
+  margin-top:8px;
   text-align:justify;
 }
 ul.poems .poemnote b{color:var(--accent);font-weight:700}
+ul.poems .poemnote br{line-height:2.4}
 ul.poems .poemnote b{color:var(--ink)}
 

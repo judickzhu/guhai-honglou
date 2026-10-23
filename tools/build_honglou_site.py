@@ -11,7 +11,7 @@ build_honglou_site.py — 《红楼梦》逐回解读网站生成器
 依 CC BY-NC-SA 4.0 授權（© 2026 一起讀紅樓白話）：非商業使用、轉載須署名、
 未經授權不得用作 AI 模型訓練資料。詳見 LICENSE。
 """
-import json, os, re, html
+import json, os, re, html, hashlib
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 倉庫根（tools/ 的上一層）
 SRC  = os.path.join(ROOT, "tools", "content-source")  # 素材（honglou_*.json）
@@ -574,6 +574,8 @@ FOOT = ('<footer><p>一起讀紅樓白話 · 白話文解讀書中白話。站�
         '<p class="foot-visits"><b style="color:#2e7d32">你是第 <span id="ftVis">—</span> 位訪客</b>（累計取自 GitHub 倉庫 Traffic·每日更新；GitHub Pages 不提供頁面訪問統計）</p>' 
          '<p class="foot-fund"><a href="https://github.com/sponsors/judickzhu" target="_blank" rel="noopener">♥ 資助本站（GitHub Sponsors）</a> —— 用於網站維護。</p></footer>')
 
+CSS_VER = hashlib.md5(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "style.css"), encoding="utf-8").read().encode()).hexdigest()[:8] if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "style.css")) else "1"
+
 def page(title, desc, body, active="", sub=False, prefix=""):
     pre = "../" if sub else ""
     if not prefix: prefix = pre  # 站点根前缀:根页="" 章节页="../"
@@ -585,7 +587,7 @@ def page(title, desc, body, active="", sub=False, prefix=""):
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:type" content="website">
-<link rel="stylesheet" href="{pre}style.css?v=c7849cd7">
+<link rel="stylesheet" href="{pre}style.css?v={CSS_VER}">
 <script>var PREFIX="{prefix}";</script>
 </head><body>
 {nav_html(active, sub)}
