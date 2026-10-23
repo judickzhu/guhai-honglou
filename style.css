@@ -213,8 +213,8 @@ ul.poems>li{
   margin:22px 0;
   box-shadow:0 1px 3px rgba(0,0,0,.04);
 }
-ul.poems .poemtitle{
-  display:block;
+ul.poems .poemhead .poemtitle{
+  display:inline;
   color:var(--accent);
   font-family:"Songti SC","STSong","Noto Serif CJK TC",serif;
   font-size:1.06em;
