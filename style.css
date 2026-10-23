@@ -231,12 +231,12 @@ ul.poems .poemtext{
   color:var(--ink);
   white-space:pre-wrap;
   word-break:break-word;
-  padding:10px 10px 12px;
-  margin:0 0 12px;
-  background:#fdfaf2;
-  border-radius:4px;
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
+  padding:6px 10px 8px;
+  margin:0 0 10px;
+  background:transparent;
+  border-radius:0;
+  border-top:none;
+  border-bottom:none;
   font-variant-east-asian:full-width;
 }
 ul.poems .poemnote{
