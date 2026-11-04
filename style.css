@@ -268,3 +268,9 @@ ul.poems .poemhead .poemtitle{padding-bottom:0;margin-bottom:0;border-bottom:non
 ul.poems .poemmeta{display:flex;align-items:center;gap:10px;flex-shrink:0;font-size:.85em}
 ul.poems .poemmeta .s{color:var(--sub);font-size:.9em}
 ul.poems .poemmeta .s:hover{color:var(--accent)}
+
+/* 朱紅標記：重點條目（理治大綱等） */
+.redmark{color:var(--accent)}
+.redmark b,.redmark strong{color:var(--accent)}
+li.redmark-item{border-left:3px solid var(--accent);padding-left:14px;background:rgba(163,43,35,.04);border-radius:0 4px 4px 0}
+html[data-theme="dark"] li.redmark-item{background:rgba(224,120,107,.08)}
